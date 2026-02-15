@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
-import bannerImage from '../../assets/images/Banner-4.png';
 import MeshGradient from '../animations/MeshGradient';
+
+const bannerImage = '/images/Banner-4.png';
 
 const ConferenceBanner = () => {
   return (

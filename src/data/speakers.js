@@ -1,12 +1,13 @@
-import marcoImage from '../assets/images/Marco.jpg';
-import irfanImage from '../assets/images/irfan.jpg';
-import melloImage from '../assets/images/Mello.jpg';
-import manzoorImage from '../assets/images/manzoor.jpg';
-import atifImage from '../assets/images/atif.jpg';
-import jawwadImage from '../assets/images/jawwad.jpg';
-import rehmaniImage from '../assets/images/Rehmani.jpg';
-import rafiImage from '../assets/images/rafi.jpg';
-import jibranImage from '../assets/images/jibran.jpg';
+// Images are now in public folder, accessed directly via path
+const marcoImage = '/images/Marco.jpg';
+const irfanImage = '/images/irfan.jpg';
+const melloImage = '/images/Mello.jpg';
+const manzoorImage = '/images/manzoor.jpg';
+const atifImage = '/images/atif.jpg';
+const jawwadImage = '/images/jawwad.jpg';
+const rehmaniImage = '/images/Rehmani.jpg';
+const rafiImage = '/images/rafi.jpg';
+const jibranImage = '/images/jibran.jpg';
 
 export const speakers = [
   {

@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import Button from '../common/Button';
-import nedImage from '../../assets/images/ned.jpg';
+
+const nedImage = '/images/ned.jpg';
 
 const AboutSnippet = () => {
   return (
