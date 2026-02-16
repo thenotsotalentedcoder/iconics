@@ -2,14 +2,11 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '../../utils/constants';
-import ThemeToggle from '../common/ThemeToggle';
-import { useTheme } from '../../contexts/ThemeContext';
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
-  const { theme } = useTheme();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,15 +32,9 @@ const Navbar = () => {
   }, [mobileMenuOpen]);
 
   const getNavbarClasses = () => {
-    if (theme === 'light') {
-      if (mobileMenuOpen) return 'bg-white shadow-md';
-      if (scrolled) return 'bg-white/90 backdrop-blur-lg shadow-sm';
-      return 'bg-transparent';
-    } else {
-      if (mobileMenuOpen) return 'bg-black';
-      if (scrolled) return 'bg-black/80 backdrop-blur-lg';
-      return 'bg-transparent';
-    }
+    if (mobileMenuOpen) return 'bg-white shadow-md';
+    if (scrolled) return 'bg-white/90 backdrop-blur-lg shadow-sm border-b border-border-light';
+    return 'bg-transparent';
   };
 
   return (
@@ -57,9 +48,9 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="text-xl sm:text-2xl font-bold font-heading flex items-center">
-            <span className="text-accent-red">i</span>
-            <span className={theme === 'light' ? 'text-gray-900' : 'text-white'}>CONICS</span>
-            <span className="text-accent-red">'26</span>
+            <span className="text-accent-dark">i</span>
+            <span className="text-text-primary">CONICS</span>
+            <span className="text-accent-dark">'26</span>
           </Link>
 
           {/* Desktop Navigation Links */}
@@ -68,24 +59,22 @@ const Navbar = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative text-sm font-medium ${theme === 'light' ? 'text-gray-700 hover:text-accent-red' : 'text-white hover:text-accent-red'} transition-colors group`}
+                className="relative text-sm font-medium text-text-primary hover:text-accent-dark transition-colors group"
               >
                 {link.name}
                 <span
-                  className={`absolute bottom-0 left-0 w-0 h-0.5 bg-accent-red transition-all duration-300 group-hover:w-full ${
+                  className={`absolute bottom-0 left-0 w-0 h-0.5 bg-accent-dark transition-all duration-300 group-hover:w-full ${
                     location.pathname === link.path ? 'w-full' : ''
                   }`}
                 />
               </Link>
             ))}
-            <ThemeToggle />
           </div>
 
-          {/* Mobile Menu Button & Theme Toggle */}
-          <div className="lg:hidden flex items-center gap-3">
-            <ThemeToggle />
+          {/* Mobile Menu Button */}
+          <div className="lg:hidden flex items-center">
             <button
-              className={`p-2 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}
+              className="p-2 text-text-primary"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -113,7 +102,7 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className={`lg:hidden fixed inset-0 top-[60px] z-40 ${theme === 'light' ? 'bg-white' : 'bg-black'}`}
+            className="lg:hidden fixed inset-0 top-[60px] z-40 bg-white"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -125,10 +114,8 @@ const Navbar = () => {
                   <Link
                     key={link.path}
                     to={link.path}
-                    className={`text-lg font-medium transition-colors py-3 ${
-                      theme === 'light'
-                        ? `border-b border-gray-200 ${location.pathname === link.path ? 'text-accent-red' : 'text-gray-700 hover:text-accent-red'}`
-                        : `border-b border-border-subtle ${location.pathname === link.path ? 'text-accent-red' : 'text-white hover:text-accent-red'}`
+                    className={`text-lg font-medium transition-colors py-3 border-b border-border-light ${
+                      location.pathname === link.path ? 'text-accent-dark' : 'text-text-primary hover:text-accent-dark'
                     }`}
                   >
                     {link.name}

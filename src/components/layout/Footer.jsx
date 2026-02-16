@@ -41,9 +41,9 @@ const Footer = () => {
           {/* About */}
           <div>
             <h3 className="text-lg sm:text-xl font-bold font-heading mb-3 sm:mb-4 flex items-center">
-              <span className="text-accent-red">i</span>
-              <span className="text-white dark:text-white light:text-gray-900">CONICS</span>
-              <span className="text-accent-red">'26</span>
+              <span className="text-accent-dark">i</span>
+              <span className="text-text-primary">CONICS</span>
+              <span className="text-accent-dark">'26</span>
             </h3>
             <p className="text-text-secondary text-sm">
               International Conference on Innovations in Computer Science at NED University, Karachi.
@@ -52,13 +52,13 @@ const Footer = () => {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Quick Links</h4>
+            <h4 className="text-base sm:text-lg font-semibold text-text-primary mb-3 sm:mb-4">Quick Links</h4>
             <ul className="space-y-2">
               {NAV_LINKS.slice(0, 5).map((link) => (
                 <li key={link.path}>
                   <Link
                     to={link.path}
-                    className="text-text-secondary hover:text-accent-red transition-colors text-sm"
+                    className="text-text-secondary hover:text-accent-dark transition-colors text-sm"
                   >
                     {link.name}
                   </Link>
@@ -69,18 +69,18 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Contact</h4>
+            <h4 className="text-base sm:text-lg font-semibold text-text-primary mb-3 sm:mb-4">Contact</h4>
             <div className="space-y-2 text-sm">
               <a
                 href={EXTERNAL_LINKS.EMAIL}
-                className="flex items-center text-text-secondary hover:text-accent-red transition-colors"
+                className="flex items-center text-text-secondary hover:text-accent-dark transition-colors"
               >
                 <EmailIcon />
                 <span className="ml-2">secretary@nediconics.com</span>
               </a>
               <a
                 href={EXTERNAL_LINKS.PHONE}
-                className="flex items-center text-text-secondary hover:text-accent-red transition-colors"
+                className="flex items-center text-text-secondary hover:text-accent-dark transition-colors"
               >
                 <PhoneIcon />
                 <span className="ml-2">(+92-21) 99261261</span>
@@ -90,13 +90,13 @@ const Footer = () => {
 
           {/* Social Media */}
           <div>
-            <h4 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Follow Us</h4>
+            <h4 className="text-base sm:text-lg font-semibold text-text-primary mb-3 sm:mb-4">Follow Us</h4>
             <div className="flex space-x-4">
               <a
                 href={EXTERNAL_LINKS.FACEBOOK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-secondary hover:text-accent-red transition-colors"
+                className="text-text-secondary hover:text-accent-dark transition-colors"
                 aria-label="Facebook"
               >
                 <FacebookIcon />
@@ -105,7 +105,7 @@ const Footer = () => {
                 href={EXTERNAL_LINKS.TWITTER}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-secondary hover:text-accent-red transition-colors"
+                className="text-text-secondary hover:text-accent-dark transition-colors"
                 aria-label="Twitter"
               >
                 <TwitterIcon />
@@ -114,7 +114,7 @@ const Footer = () => {
                 href={EXTERNAL_LINKS.LINKEDIN}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-text-secondary hover:text-accent-red transition-colors"
+                className="text-text-secondary hover:text-accent-dark transition-colors"
                 aria-label="LinkedIn"
               >
                 <LinkedInIcon />

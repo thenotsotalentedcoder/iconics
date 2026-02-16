@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence } from 'framer-motion';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { useEffect } from 'react';
-import { ThemeProvider } from './contexts/ThemeContext';
+import { initScrollTrigger } from './utils/scrollConfig';
 
 // Layout
 import Navbar from './components/layout/Navbar';
@@ -38,30 +38,33 @@ function ScrollToTop() {
 function App() {
   useSmoothScroll();
 
+  useEffect(() => {
+    // Initialize ScrollTrigger config
+    initScrollTrigger();
+  }, []);
+
   return (
-    <ThemeProvider>
-      <Router>
-        <ScrollToTop />
-        <ScrollProgress />
-        <Navbar />
+    <Router>
+      <ScrollToTop />
+      <ScrollProgress />
+      <Navbar />
 
-        <AnimatePresence mode="wait">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/speakers" element={<Speakers />} />
-            <Route path="/callforpapers" element={<CallForPapers />} />
-            <Route path="/schedule" element={<Schedule />} />
-            <Route path="/registration" element={<Registration />} />
-            <Route path="/committee" element={<Committee />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/contact" element={<Contact />} />
-          </Routes>
-        </AnimatePresence>
+      <AnimatePresence mode="wait">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/speakers" element={<Speakers />} />
+          <Route path="/callforpapers" element={<CallForPapers />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/registration" element={<Registration />} />
+          <Route path="/committee" element={<Committee />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+      </AnimatePresence>
 
-        <Footer />
-      </Router>
-    </ThemeProvider>
+      <Footer />
+    </Router>
   );
 }
 

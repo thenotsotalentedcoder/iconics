@@ -1,9 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { useTheme } from '../../contexts/ThemeContext';
 
 const MeshGradient = () => {
   const canvasRef = useRef(null);
-  const { theme } = useTheme();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -33,16 +31,10 @@ const MeshGradient = () => {
         Math.max(canvas.width, canvas.height)
       );
 
-      // Different colors for light/dark mode
-      if (theme === 'light') {
-        gradient.addColorStop(0, '#FFE5E5');
-        gradient.addColorStop(0.5, '#FFF0F0');
-        gradient.addColorStop(1, '#FFFFFF');
-      } else {
-        gradient.addColorStop(0, '#1A0505');
-        gradient.addColorStop(0.5, '#0D0D0D');
-        gradient.addColorStop(1, '#000000');
-      }
+      // Monochrome gradient
+      gradient.addColorStop(0, '#F9FAFB');
+      gradient.addColorStop(0.5, '#F3F4F6');
+      gradient.addColorStop(1, '#FFFFFF');
 
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -55,13 +47,13 @@ const MeshGradient = () => {
     return () => {
       window.removeEventListener('resize', resizeCanvas);
     };
-  }, [theme]);
+  }, []);
 
   return (
     <canvas
       ref={canvasRef}
       className="absolute inset-0 z-0"
-      style={{ opacity: theme === 'light' ? 0.6 : 0.4 }}
+      style={{ opacity: 0.5 }}
     />
   );
 };

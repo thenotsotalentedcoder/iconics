@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+/* Brutalist Monochrome Typography */
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -11,136 +12,40 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto; /* Let Locomotive/Lenis handle smooth scrolling */
 }
 
 body {
   font-family: 'Inter', sans-serif;
+  background-color: #FFFFFF;
+  color: #111827;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Dark mode (default) */
-.dark body {
-  background-color: #000000;
-  color: #E5E5E5;
-}
-
-/* Light mode */
-.light body {
-  background-color: #FFFFFF;
-  color: #1A1A1A;
-}
-
-/* Light mode - override all dark backgrounds */
-.light .bg-bg-primary {
-  background-color: #FFFFFF !important;
-}
-
-.light .bg-bg-secondary {
-  background-color: #F8F9FA !important;
-}
-
-.light .bg-bg-card {
-  background-color: #FFFFFF !important;
-  border-color: #E5E7EB !important;
-}
-
-.light .bg-bg-card-hover {
-  background-color: #FFF5F5 !important;
-}
-
-/* Light mode - text colors */
-.light .text-white {
-  color: #1A1A1A !important;
-}
-
-.light .text-text-primary {
-  color: #1A1A1A !important;
-}
-
-.light .text-text-secondary {
-  color: #4A4A4A !important;
-}
-
-.light .text-text-muted {
-  color: #6B7280 !important;
-}
-
-/* Light mode - borders */
-.light .border-border-subtle {
-  border-color: #E5E7EB !important;
-}
-
-.light .border-red-600 {
-  border-color: #DC143C !important;
-}
-
-/* Light mode - navbar */
-.light nav {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(10px);
-}
-
-.light nav.bg-black {
-  background-color: rgba(255, 255, 255, 0.95) !important;
-}
-
-.light nav.bg-transparent {
-  background-color: transparent !important;
-}
-
-/* Light mode - shadows for depth */
-.light .shadow-glow-red {
-  box-shadow: 0 4px 14px 0 rgba(220, 20, 60, 0.2) !important;
-}
-
-.light .hover\:shadow-glow-red:hover {
-  box-shadow: 0 8px 20px 0 rgba(220, 20, 60, 0.25) !important;
-}
-
-/* Custom scrollbar - Dark mode */
-.dark ::-webkit-scrollbar {
+/* Custom scrollbar - Monochrome */
+::-webkit-scrollbar {
   width: 8px;
 }
 
-.dark ::-webkit-scrollbar-track {
-  background: #0D0D0D;
+::-webkit-scrollbar-track {
+  background: #F3F4F6;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: #DC143C;
+::-webkit-scrollbar-thumb {
+  background: #6B7280;
   border-radius: 4px;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: #B91C1C;
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
 }
 
-/* Custom scrollbar - Light mode */
-.light ::-webkit-scrollbar {
-  width: 8px;
-}
-
-.light ::-webkit-scrollbar-track {
-  background: #F5F5F5;
-}
-
-.light ::-webkit-scrollbar-thumb {
-  background: #DC143C;
-  border-radius: 4px;
-}
-
-.light ::-webkit-scrollbar-thumb:hover {
-  background: #B91C1C;
-}
-
-/* Selection color */
+/* Selection color - Charcoal */
 ::selection {
-  background-color: #DC143C;
+  background-color: #1F2937;
   color: #FFFFFF;
 }
 
@@ -153,11 +58,6 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* Optimize animations for performance */
-[data-framer-component-type] {
-  will-change: auto;
 }
 
 /* Force hardware acceleration for smooth animations */
@@ -184,7 +84,7 @@ img {
 /* Mobile touch optimization */
 @media (max-width: 768px) {
   * {
-    -webkit-tap-highlight-color: rgba(220, 20, 60, 0.2);
+    -webkit-tap-highlight-color: rgba(31, 41, 55, 0.1);
   }
 
   /* Improve touch target sizes */
@@ -197,43 +97,5 @@ img {
   /* Prevent text size adjustment */
   html {
     -webkit-text-size-adjust: 100%;
-  }
-}
-
-/* Theme-aware utility classes */
-@layer utilities {
-  /* Background colors */
-  .bg-theme-primary {
-    @apply bg-bg-primary dark:bg-bg-primary light:bg-light-bg-primary;
-  }
-
-  .bg-theme-secondary {
-    @apply bg-bg-secondary dark:bg-bg-secondary light:bg-light-bg-secondary;
-  }
-
-  .bg-theme-card {
-    @apply bg-bg-card dark:bg-bg-card light:bg-light-bg-card;
-  }
-
-  .bg-theme-card-hover {
-    @apply bg-bg-card-hover dark:bg-bg-card-hover light:bg-light-bg-card-hover;
-  }
-
-  /* Text colors */
-  .text-theme-primary {
-    @apply text-text-primary dark:text-text-primary light:text-light-text-primary;
-  }
-
-  .text-theme-secondary {
-    @apply text-text-secondary dark:text-text-secondary light:text-light-text-secondary;
-  }
-
-  .text-theme-muted {
-    @apply text-text-muted dark:text-text-muted light:text-light-text-muted;
-  }
-
-  /* Border colors */
-  .border-theme-subtle {
-    @apply border-border-subtle dark:border-border-subtle light:border-light-border-subtle;
   }
 }
