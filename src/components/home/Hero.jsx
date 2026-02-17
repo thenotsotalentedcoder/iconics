@@ -1,13 +1,70 @@
 import { motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
 import HeroBackground from '../animations/HeroNetwork';
 import { Link } from 'react-router-dom';
 
-const Hero = () => {
-  const statsData = [
-    { value: '150+', label: 'Papers' },
-    { value: '20+', label: 'Countries' },
-    { value: '50+', label: 'Speakers' },
+// Countdown Timer Component
+const CountdownTimer = ({ targetDate }) => {
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  function calculateTimeLeft() {
+    const difference = new Date(targetDate) - new Date();
+    if (difference <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+
+    return {
+      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+      minutes: Math.floor((difference / 1000 / 60) % 60),
+      seconds: Math.floor((difference / 1000) % 60),
+    };
+  }
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [targetDate]);
+
+  const timeUnits = [
+    { value: timeLeft.days, label: 'Days' },
+    { value: timeLeft.hours, label: 'Hours' },
+    { value: timeLeft.minutes, label: 'Minutes' },
+    { value: timeLeft.seconds, label: 'Seconds' },
   ];
+
+  return (
+    <div className="flex gap-6 md:gap-8">
+      {timeUnits.map((unit, index) => (
+        <div key={unit.label} className="text-center">
+          <motion.div
+            className="relative"
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ delay: index * 0.1, duration: 0.5 }}
+          >
+            <div className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-2xl bg-bg-card border border-white/10 flex items-center justify-center backdrop-blur-sm">
+              <motion.span
+                key={unit.value}
+                className="text-3xl md:text-5xl lg:text-6xl font-bold text-accent"
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3 }}
+              >
+                {String(unit.value).padStart(2, '0')}
+              </motion.span>
+            </div>
+          </motion.div>
+          <span className="text-sm md:text-base text-text-muted mt-3 block">{unit.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const Hero = () => {
+  // Conference date: October 10, 2026
+  const conferenceDate = '2026-10-10T09:00:00';
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-bg-dark">
@@ -37,22 +94,23 @@ const Hero = () => {
               transition={{ duration: 0.8, delay: 0.1 }}
             >
               <h1 className="text-hero font-bold leading-[1.1] tracking-tight">
-                <span className="text-white">Advance </span>
-                <span className="gradient-text">Computer Science</span>
-                <br />
-                <span className="text-white">Research</span>
+                <span className="gradient-text">iCONICS</span>
+                <span className="text-white">'26</span>
               </h1>
+              <p className="text-xl md:text-2xl text-text-muted mt-4">
+                International Conference on Innovations in Computer Science
+              </p>
             </motion.div>
 
             {/* Description */}
             <motion.p
-              className="text-lg md:text-xl text-text-muted max-w-xl leading-relaxed"
+              className="text-lg text-text-muted max-w-xl leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Join the International Conference on Innovations in Computer Science. 
-              Present cutting-edge research and connect with global experts.
+              Present cutting-edge research and connect with global experts 
+              at NED University, Karachi.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -78,80 +136,20 @@ const Hero = () => {
                 Learn More
               </Link>
             </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              className="flex gap-8 pt-8 border-t border-white/10"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              {statsData.map((stat, index) => (
-                <div key={index}>
-                  <div className="text-3xl md:text-4xl font-bold text-accent">{stat.value}</div>
-                  <div className="text-sm text-text-muted mt-1">{stat.label}</div>
-                </div>
-              ))}
-            </motion.div>
           </div>
 
-          {/* Right Content - Feature Image/Visual */}
+          {/* Right Content - Countdown Timer */}
           <motion.div
-            className="relative hidden lg:block"
+            className="flex flex-col items-center lg:items-start justify-center"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            <div className="relative">
-              {/* Main visual card */}
-              <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-bg-card to-bg-dark border border-white/10 p-8 shadow-large">
-                {/* Decorative elements */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 rounded-full blur-3xl" />
-                <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary-600/10 rounded-full blur-3xl" />
-                
-                {/* Content */}
-                <div className="relative z-10 space-y-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-accent/20 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                      </svg>
-                    </div>
-                    <div>
-                      <h3 className="text-white font-semibold">iCONICS 2026</h3>
-                      <p className="text-text-muted text-sm">International Conference</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 text-text-muted">
-                      <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                      </svg>
-                      <span>NED University, Karachi</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-text-muted">
-                      <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <span>October 10-11, 2026</span>
-                    </div>
-                  </div>
-
-                  <div className="pt-4 border-t border-white/10">
-                    <p className="text-sm text-text-muted">8 Research Tracks covering AI, Security, Cloud Computing, and more.</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating accent element */}
-              <motion.div
-                className="absolute -bottom-6 -left-6 w-24 h-24 rounded-2xl bg-accent/20 backdrop-blur-sm border border-accent/30"
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              />
+            <div className="text-center lg:text-left mb-8">
+              <h3 className="text-white text-xl font-semibold mb-1">Conference Starts In</h3>
+              <p className="text-text-muted">October 10-11, 2026</p>
             </div>
+            <CountdownTimer targetDate={conferenceDate} />
           </motion.div>
         </div>
       </div>
