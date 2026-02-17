@@ -1,31 +1,13 @@
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// Scroll utilities (GSAP removed - using Framer Motion for animations)
 
-// Register GSAP plugins globally
-gsap.registerPlugin(ScrollTrigger);
-
-// Configure ScrollTrigger defaults
-export const initScrollTrigger = () => {
-  ScrollTrigger.config({
-    // Sync ScrollTrigger with Lenis
-    syncInterval: 0,
-    autoRefreshEvents: 'visibilitychange,DOMContentLoaded,load'
-  });
-
-  ScrollTrigger.defaults({
-    markers: false, // Set to true for debugging
-    toggleActions: 'play none none reverse'
-  });
-
-  // Refresh ScrollTrigger on resize
-  window.addEventListener('resize', () => {
-    ScrollTrigger.refresh();
-  });
+// Initialize scroll behavior
+export const initScroll = () => {
+  // Smooth scroll is now handled by Lenis via useSmoothScroll hook
 };
 
 // Cleanup function
-export const cleanupScrollTrigger = () => {
-  ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+export const cleanupScroll = () => {
+  // No cleanup needed with Framer Motion
 };
 
-export default { initScrollTrigger, cleanupScrollTrigger };
+export default { initScroll, cleanupScroll };

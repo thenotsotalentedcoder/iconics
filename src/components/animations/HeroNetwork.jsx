@@ -1,202 +1,67 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { motion } from 'framer-motion';
 
-const HeroNetwork = () => {
-  const containerRef = useRef(null);
-  const sceneRef = useRef(null);
-  const rendererRef = useRef(null);
-  const particlesRef = useRef([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-
-    // Scene setup
-    const scene = new THREE.Scene();
-    sceneRef.current = scene;
-
-    // Camera
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.z = 50;
-
-    // Renderer
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true
-    });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    containerRef.current.appendChild(renderer.domElement);
-    rendererRef.current = renderer;
-
-    // Particles
-    const particleCount = window.innerWidth < 768 ? 50 : 100;
-    const particles = [];
-    const geometry = new THREE.BufferGeometry();
-    const positions = [];
-    const velocities = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      // Random positions
-      const x = (Math.random() - 0.5) * 100;
-      const y = (Math.random() - 0.5) * 100;
-      const z = (Math.random() - 0.5) * 50;
-
-      positions.push(x, y, z);
-
-      // Random velocities for drift animation
-      velocities.push(
-        (Math.random() - 0.5) * 0.02,
-        (Math.random() - 0.5) * 0.02,
-        (Math.random() - 0.5) * 0.01
-      );
-
-      particles.push({
-        x, y, z,
-        vx: velocities[i * 3],
-        vy: velocities[i * 3 + 1],
-        vz: velocities[i * 3 + 2],
-        originalX: x,
-        originalY: y,
-        originalZ: z
-      });
-    }
-
-    particlesRef.current = particles;
-
-    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-
-    // Particle material (light gray circles)
-    const material = new THREE.PointsMaterial({
-      color: 0xE5E7EB,
-      size: 2,
-      transparent: true,
-      opacity: 0.6
-    });
-
-    const points = new THREE.Points(geometry, material);
-    scene.add(points);
-
-    // Lines material
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x111827,
-      transparent: true,
-      opacity: 0.15
-    });
-
-    const lineSegments = new THREE.Group();
-    scene.add(lineSegments);
-
-    // Mouse tracking
-    const handleMouseMove = (event) => {
-      mouseRef.current.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouseRef.current.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    // Resize handler
-    const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    // Animation loop
-    const animate = () => {
-      requestAnimationFrame(animate);
-
-      // Update particle positions with drift
-      const positions = geometry.attributes.position.array;
-
-      particles.forEach((particle, i) => {
-        // Drift animation
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-        particle.z += particle.vz;
-
-        // Bounce back if too far from origin
-        if (Math.abs(particle.x - particle.originalX) > 10) particle.vx *= -1;
-        if (Math.abs(particle.y - particle.originalY) > 10) particle.vy *= -1;
-        if (Math.abs(particle.z - particle.originalZ) > 5) particle.vz *= -1;
-
-        // Mouse interaction (magnetic pull)
-        const mouseX = mouseRef.current.x * 50;
-        const mouseY = mouseRef.current.y * 50;
-        const dx = mouseX - particle.x;
-        const dy = mouseY - particle.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < 20) {
-          const force = (20 - distance) / 20;
-          particle.x += dx * force * 0.05;
-          particle.y += dy * force * 0.05;
-        }
-
-        positions[i * 3] = particle.x;
-        positions[i * 3 + 1] = particle.y;
-        positions[i * 3 + 2] = particle.z;
-      });
-
-      geometry.attributes.position.needsUpdate = true;
-
-      // Draw lines between nearby particles
-      lineSegments.clear();
-      const maxDistance = 15;
-
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const dz = particles[i].z - particles[j].z;
-          const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-          if (distance < maxDistance) {
-            const lineGeometry = new THREE.BufferGeometry();
-            const linePositions = new Float32Array([
-              particles[i].x, particles[i].y, particles[i].z,
-              particles[j].x, particles[j].y, particles[j].z
-            ]);
-            lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-
-            const line = new THREE.Line(lineGeometry, lineMaterial);
-            lineSegments.add(line);
-          }
-        }
-      }
-
-      renderer.render(scene, camera);
-    };
-
-    animate();
-
-    // Cleanup
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('resize', handleResize);
-      if (containerRef.current && renderer.domElement) {
-        containerRef.current.removeChild(renderer.domElement);
-      }
-      geometry.dispose();
-      material.dispose();
-      renderer.dispose();
-    };
-  }, []);
+const HeroBackground = () => {
+  // Create floating orbs for visual interest
+  const orbs = [
+    { size: 600, x: '70%', y: '20%', delay: 0, duration: 20 },
+    { size: 400, x: '20%', y: '60%', delay: 2, duration: 25 },
+    { size: 300, x: '80%', y: '70%', delay: 4, duration: 22 },
+    { size: 200, x: '10%', y: '20%', delay: 1, duration: 18 },
+  ];
 
   return (
-    <div
-      ref={containerRef}
-      className="absolute inset-0 z-0"
-      style={{ pointerEvents: 'none' }}
-    />
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-bg-dark via-bg-dark to-bg-darker" />
+      
+      {/* Animated gradient orbs */}
+      {orbs.map((orb, index) => (
+        <motion.div
+          key={index}
+          className="absolute rounded-full"
+          style={{
+            width: orb.size,
+            height: orb.size,
+            left: orb.x,
+            top: orb.y,
+            background: `radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, rgba(20, 184, 166, 0.05) 40%, transparent 70%)`,
+            filter: 'blur(40px)',
+          }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ 
+            opacity: [0.3, 0.6, 0.3],
+            scale: [1, 1.2, 1],
+            x: [0, 30, 0],
+            y: [0, -20, 0],
+          }}
+          transition={{
+            duration: orb.duration,
+            delay: orb.delay,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      ))}
+
+      {/* Subtle grid pattern */}
+      <div 
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px'
+        }}
+      />
+
+      {/* Top gradient fade */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg-dark to-transparent" />
+      
+      {/* Bottom gradient fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg-dark to-transparent" />
+    </div>
   );
 };
 
-export default HeroNetwork;
+export default HeroBackground;

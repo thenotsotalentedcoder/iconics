@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { AnimatePresence } from 'framer-motion';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 import { useEffect } from 'react';
-import { initScrollTrigger } from './utils/scrollConfig';
 
 // Layout
 import Navbar from './components/layout/Navbar';
@@ -37,11 +36,6 @@ function ScrollToTop() {
 
 function App() {
   useSmoothScroll();
-
-  useEffect(() => {
-    // Initialize ScrollTrigger config
-    initScrollTrigger();
-  }, []);
 
   return (
     <Router>

@@ -1,5 +1,5 @@
-/* Brutalist Monochrome Typography */
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+/* Minimal Dark Teal Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -12,41 +12,41 @@
 }
 
 html {
-  scroll-behavior: auto; /* Let Locomotive/Lenis handle smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background-color: #FFFFFF;
-  color: #111827;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #0a1628;
+  color: #ffffff;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
 }
 
-/* Custom scrollbar - Monochrome */
+/* Custom scrollbar - Dark theme */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #F3F4F6;
+  background: #0a1628;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #6B7280;
+  background: #14b8a6;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #374151;
+  background: #0d9488;
 }
 
-/* Selection color - Charcoal */
+/* Selection color - Teal */
 ::selection {
-  background-color: #1F2937;
-  color: #FFFFFF;
+  background-color: rgba(20, 184, 166, 0.3);
+  color: #ffffff;
 }
 
 /* Smooth animations */
@@ -60,41 +60,79 @@ body {
   }
 }
 
-/* Force hardware acceleration for smooth animations */
-.will-change-transform {
-  will-change: transform;
+/* Custom utility classes */
+@layer utilities {
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent;
+  }
+
+  .bg-glass {
+    @apply bg-white/5 backdrop-blur-lg border border-white/10;
+  }
+
+  .bg-glass-dark {
+    @apply bg-dark-900/80 backdrop-blur-lg border border-white/5;
+  }
+
+  .transition-smooth {
+    @apply transition-all duration-500 ease-out;
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+
+  .hover-glow {
+    @apply transition-shadow duration-300 hover:shadow-glow;
+  }
 }
 
-.will-change-opacity {
-  will-change: opacity;
+/* Section backgrounds */
+.section-dark {
+  background: linear-gradient(180deg, #0a1628 0%, #050d18 100%);
 }
 
-/* Prevent layout shift during load */
+.section-light {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+}
+
+/* Card styles */
+.card-dark {
+  background: linear-gradient(135deg, rgba(15, 38, 56, 0.8) 0%, rgba(10, 22, 40, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.card-light {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 50%, #5eead4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Smooth image rendering */
 img {
   image-rendering: -webkit-optimize-contrast;
-}
-
-/* Smooth rendering */
-* {
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
 }
 
 /* Mobile touch optimization */
 @media (max-width: 768px) {
   * {
-    -webkit-tap-highlight-color: rgba(31, 41, 55, 0.1);
+    -webkit-tap-highlight-color: rgba(20, 184, 166, 0.1);
   }
 
-  /* Improve touch target sizes */
   button,
   a {
     min-height: 44px;
-    min-width: 44px;
   }
 
-  /* Prevent text size adjustment */
   html {
     -webkit-text-size-adjust: 100%;
   }
