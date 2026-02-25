@@ -32,8 +32,8 @@ const Navbar = () => {
   }, [mobileMenuOpen]);
 
   const getNavbarClasses = () => {
-    if (mobileMenuOpen) return 'bg-bg-dark/95 backdrop-blur-xl border-b border-white/10';
-    if (scrolled) return 'bg-bg-dark/90 backdrop-blur-xl shadow-lg border-b border-white/5';
+    if (mobileMenuOpen) return 'bg-bg-darker/95 backdrop-blur-xl border-b border-white/10';
+    if (scrolled) return 'bg-bg-darker/90 backdrop-blur-xl shadow-lg border-b border-white/5';
     return 'bg-transparent';
   };
 
@@ -44,7 +44,7 @@ const Navbar = () => {
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
     >
-      <div className="container mx-auto px-6 lg:px-12 py-4">
+      <div className="container mx-auto px-6 xl:px-10 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="text-xl font-bold flex items-center group">
@@ -54,15 +54,15 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden xl:flex items-center gap-5">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`relative text-sm font-medium transition-all duration-300 group ${
-                  location.pathname === link.path 
-                    ? 'text-accent' 
-                    : 'text-white/70 hover:text-white'
+                className={`relative text-xs font-medium tracking-wide transition-all duration-300 group whitespace-nowrap ${
+                  location.pathname === link.path
+                    ? 'text-accent'
+                    : 'text-white/60 hover:text-white'
                 }`}
               >
                 {link.name}
@@ -76,17 +76,17 @@ const Navbar = () => {
           </div>
 
           {/* CTA Button - Desktop */}
-          <div className="hidden lg:block">
+          <div className="hidden xl:block">
             <Link
               to="/registration"
-              className="px-5 py-2.5 bg-accent hover:bg-accent-light text-white text-sm font-semibold rounded-lg transition-all duration-300 hover:shadow-glow-sm"
+              className="px-4 py-2 bg-accent hover:bg-accent-light text-white text-xs font-semibold rounded-lg transition-all duration-300 hover:shadow-glow-sm whitespace-nowrap"
             >
               Register Now
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="lg:hidden">
+          <div className="xl:hidden">
             <button
               className="p-2 text-white/80 hover:text-white transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -116,7 +116,7 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="lg:hidden fixed inset-0 top-[72px] z-40 bg-bg-dark/98 backdrop-blur-xl"
+            className="xl:hidden fixed inset-0 top-[72px] z-40 bg-bg-darker/98 backdrop-blur-xl"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}

@@ -1,4 +1,4 @@
-/* Minimal Dark Teal Theme */
+/* ICONICS'26 - Deep Crimson Dark Theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -17,35 +17,35 @@ html {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background-color: #0a1628;
-  color: #ffffff;
+  background-color: #0A0A0A;
+  color: #E5E5E5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
 }
 
-/* Custom scrollbar - Dark theme */
+/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a1628;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #14b8a6;
+  background: #A90007;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0d9488;
+  background: #C8000A;
 }
 
-/* Selection color - Teal */
+/* Selection color */
 ::selection {
-  background-color: rgba(20, 184, 166, 0.3);
+  background-color: rgba(169, 0, 7, 0.35);
   color: #ffffff;
 }
 
@@ -63,7 +63,7 @@ body {
 /* Custom utility classes */
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent;
   }
 
   .bg-glass {
@@ -89,17 +89,17 @@ body {
 
 /* Section backgrounds */
 .section-dark {
-  background: linear-gradient(180deg, #0a1628 0%, #050d18 100%);
+  background: linear-gradient(180deg, #0A0A0A 0%, #000000 100%);
 }
 
 .section-light {
-  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #f4f4f4 0%, #ffffff 100%);
 }
 
 /* Card styles */
 .card-dark {
-  background: linear-gradient(135deg, rgba(15, 38, 56, 0.8) 0%, rgba(10, 22, 40, 0.9) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(10px);
 }
 
@@ -111,7 +111,7 @@ body {
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #14b8a6 0%, #2dd4bf 50%, #5eead4 100%);
+  background: linear-gradient(135deg, #C8000A 0%, #A90007 50%, #8A0006 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -125,7 +125,7 @@ img {
 /* Mobile touch optimization */
 @media (max-width: 768px) {
   * {
-    -webkit-tap-highlight-color: rgba(20, 184, 166, 0.1);
+    -webkit-tap-highlight-color: rgba(169, 0, 7, 0.1);
   }
 
   button,

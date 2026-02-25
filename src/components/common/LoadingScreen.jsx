@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 const LoadingScreen = () => {
   return (
     <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-bg-primary"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-bg-darker"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.5 }}
@@ -23,7 +23,7 @@ const LoadingScreen = () => {
 
         {/* Loading spinner */}
         <motion.div
-          className="w-12 h-12 mx-auto border-4 border-border-light border-t-accent-dark rounded-full"
+          className="w-12 h-12 mx-auto border-4 border-border-subtle border-t-accent rounded-full"
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />

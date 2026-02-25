@@ -15,7 +15,7 @@ const Speakers = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             title="Keynote Speakers"

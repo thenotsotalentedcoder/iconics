@@ -18,6 +18,8 @@ import Registration from './pages/Registration';
 import Committee from './pages/Committee';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
+import Workshops from './pages/Workshops';
+import Sponsors from './pages/Sponsors';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -52,6 +54,8 @@ function App() {
           <Route path="/schedule" element={<Schedule />} />
           <Route path="/registration" element={<Registration />} />
           <Route path="/committee" element={<Committee />} />
+          <Route path="/workshops" element={<Workshops />} />
+          <Route path="/sponsors" element={<Sponsors />} />
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>

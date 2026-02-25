@@ -40,8 +40,8 @@ const MagneticButton = ({
   const baseStyles = "relative px-8 py-4 font-semibold rounded-lg transition-all duration-300 inline-flex items-center gap-2 overflow-hidden group";
 
   const variants = {
-    primary: "bg-accent-dark text-white hover:bg-accent-medium",
-    secondary: "border-2 border-accent-dark text-accent-dark hover:bg-accent-dark hover:text-white"
+    primary: "bg-accent text-white hover:bg-accent-light",
+    secondary: "border-2 border-accent text-accent hover:bg-accent hover:text-white"
   };
 
   const buttonClasses = `${baseStyles} ${variants[variant]} ${className}`;
@@ -49,7 +49,7 @@ const MagneticButton = ({
   const buttonContent = (
     <>
       {/* Ripple effect background */}
-      <span className="absolute inset-0 bg-accent-medium opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <span className="absolute inset-0 bg-accent-dark opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
       {/* Content */}
       <span className="relative z-10">{children}</span>

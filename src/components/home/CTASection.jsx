@@ -6,12 +6,12 @@ const CTASection = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-bg-light relative overflow-hidden">
+    <section ref={ref} className="py-24 lg:py-32 bg-bg-dark relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="relative bg-gradient-to-br from-bg-dark via-bg-card to-bg-dark rounded-3xl overflow-hidden">
           {/* Decorative elements */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary-600/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/8 rounded-full blur-3xl" />
           
           <div className="relative z-10 px-8 py-16 lg:px-16 lg:py-24 text-center">
             <motion.span

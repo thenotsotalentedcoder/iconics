@@ -14,8 +14,8 @@ const Button = ({
   const baseStyles = "inline-flex items-center justify-center font-semibold rounded-full transition-all duration-300";
 
   const variants = {
-    primary: "bg-gradient-to-r from-red-600 to-red-700 text-white hover:shadow-glow-red",
-    secondary: "bg-transparent border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white",
+    primary: "bg-gradient-to-r from-accent to-accent-dark text-white hover:shadow-glow-red hover:from-accent-light hover:to-accent",
+    secondary: "bg-transparent border-2 border-accent text-accent hover:bg-accent hover:text-white",
     outline: "bg-transparent border-2 border-white text-white hover:bg-white hover:text-black"
   };
 

@@ -19,7 +19,7 @@ const TimelineItem = ({ item }) => {
       {/* Dot */}
       <div className="absolute left-0 top-1 sm:top-2 w-2.5 sm:w-3 h-2.5 sm:h-3 bg-red-600 rounded-full -translate-x-[4.5px] sm:-translate-x-[5px]" />
 
-      <div className="text-xs sm:text-sm text-red-600 font-semibold mb-1">
+      <div className="text-xs sm:text-sm text-accent font-semibold mb-1">
         {item.date}
       </div>
       <div className="text-base sm:text-lg text-white font-medium">

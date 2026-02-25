@@ -12,7 +12,7 @@ const Schedule = () => {
   const getTypeColor = (type) => {
     switch (type) {
       case 'keynote':
-        return 'border-red-600 bg-red-600/10';
+        return 'border-accent bg-accent/10';
       case 'session':
         return 'border-blue-600 bg-blue-600/10';
       case 'workshop':
@@ -28,7 +28,7 @@ const Schedule = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <SectionHeading
             title="Conference Schedule"

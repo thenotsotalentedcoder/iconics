@@ -63,7 +63,7 @@ const AboutStatsSection = () => {
   };
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-bg-light relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-bg-dark relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
           {/* Left Panel - About */}
@@ -72,15 +72,15 @@ const AboutStatsSection = () => {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <span className="inline-block text-accent-dark text-sm font-semibold tracking-wider uppercase mb-4">
+            <span className="inline-block text-accent text-sm font-semibold tracking-wider uppercase mb-4">
               About The Conference
             </span>
-            
-            <h2 className="text-display font-bold text-text-dark mb-6 leading-tight">
-              We're <span className="text-accent-dark">iCONICS</span>
+
+            <h2 className="text-display font-bold text-white mb-6 leading-tight">
+              We're <span className="text-accent">iCONICS</span>
             </h2>
 
-            <div className="space-y-4 text-dark-500 leading-relaxed">
+            <div className="space-y-4 text-text-muted leading-relaxed">
               <p className="text-lg">
                 NED University presents the 5th International Conference on Innovations in Computer Science, bringing together researchers and innovators from around the world.
               </p>
@@ -93,7 +93,7 @@ const AboutStatsSection = () => {
             <div className="mt-8">
               <Link
                 to="/about"
-                className="inline-flex items-center gap-2 text-accent-dark font-semibold group"
+                className="inline-flex items-center gap-2 text-accent font-semibold group"
               >
                 Learn More
                 <svg 
@@ -119,17 +119,17 @@ const AboutStatsSection = () => {
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="bg-white p-6 rounded-2xl border border-dark-200/50 hover:border-accent/30 transition-all duration-500 hover:shadow-soft group"
+                className="bg-bg-card p-6 rounded-2xl border border-border-subtle hover:border-accent/40 transition-all duration-500 hover:shadow-glow group"
               >
                 <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent mb-4 group-hover:bg-accent group-hover:text-white transition-all duration-300">
                   {stat.icon}
                 </div>
 
-                <div className="text-4xl font-bold text-text-dark mb-1">
+                <div className="text-4xl font-bold text-white mb-1">
                   {stat.value}
                 </div>
 
-                <div className="text-sm text-dark-500">
+                <div className="text-sm text-text-muted">
                   {stat.label}
                 </div>
               </motion.div>

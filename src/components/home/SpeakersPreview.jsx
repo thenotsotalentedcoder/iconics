@@ -12,13 +12,13 @@ const SpeakersPreview = () => {
   const featuredSpeakers = speakers.slice(0, 4);
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-bg-light relative overflow-hidden">
+    <section ref={ref} className="py-24 lg:py-32 bg-bg-dark relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
           <div>
             <motion.span
-              className="inline-block text-accent-dark text-sm font-semibold tracking-wider uppercase mb-4"
+              className="inline-block text-accent text-sm font-semibold tracking-wider uppercase mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6 }}
@@ -26,7 +26,7 @@ const SpeakersPreview = () => {
               Expert Speakers
             </motion.span>
             <motion.h2
-              className="text-display font-bold text-text-dark"
+              className="text-display font-bold text-white"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -41,7 +41,7 @@ const SpeakersPreview = () => {
           >
             <Link
               to="/speakers"
-              className="inline-flex items-center gap-2 text-accent-dark font-semibold group"
+              className="inline-flex items-center gap-2 text-accent font-semibold group"
             >
               View All Speakers
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -74,11 +74,11 @@ const SpeakersPreview = () => {
                   <span className="text-white text-sm font-medium">View Profile →</span>
                 </div>
               </div>
-              <h3 className="font-semibold text-text-dark group-hover:text-accent-dark transition-colors">
+              <h3 className="font-semibold text-white group-hover:text-accent transition-colors">
                 {speaker.name}
               </h3>
-              <p className="text-sm text-dark-500 mt-1">{speaker.title}</p>
-              <p className="text-sm text-accent-dark font-medium">{speaker.institution}</p>
+              <p className="text-sm text-text-muted mt-1">{speaker.title}</p>
+              <p className="text-sm text-accent font-medium">{speaker.institution}</p>
             </motion.div>
           ))}
         </div>

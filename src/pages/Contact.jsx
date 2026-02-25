@@ -7,7 +7,7 @@ import { EXTERNAL_LINKS } from '../utils/constants';
 const Contact = () => {
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <SectionHeading
             title="Contact Us"
@@ -143,7 +143,7 @@ const Contact = () => {
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-red-600 to-red-700 text-white font-semibold py-3 rounded-lg hover:shadow-glow-red transition-all hover:scale-105"
+                  className="w-full bg-gradient-to-r from-accent to-accent-dark text-white font-semibold py-3 rounded-lg hover:shadow-glow-red hover:from-accent-light hover:to-accent transition-all hover:scale-105"
                 >
                   Send Message
                 </button>

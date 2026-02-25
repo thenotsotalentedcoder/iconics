@@ -13,7 +13,7 @@ const CallForPapers = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <SectionHeading
             title="Call for Papers"
@@ -59,7 +59,7 @@ const CallForPapers = () => {
                     <div className="flex items-center gap-3 sm:gap-4">
                       <span className="text-base sm:text-lg font-semibold text-white text-left">{track.name}</span>
                     </div>
-                    <span className="text-accent-red text-xl sm:text-2xl flex-shrink-0">
+                    <span className="text-accent text-xl sm:text-2xl flex-shrink-0">
                       {openTrack === track.id ? '−' : '+'}
                     </span>
                   </button>
@@ -94,23 +94,23 @@ const CallForPapers = () => {
             <div className="bg-bg-card border border-border-subtle rounded-lg p-6">
               <ul className="space-y-3 text-text-secondary">
                 <li className="flex items-start">
-                  <span className="text-accent-red mr-2">•</span>
+                  <span className="text-accent mr-2">•</span>
                   <span><strong className="text-white">Format:</strong> IEEE Conference format (template will be provided)</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-accent-red mr-2">•</span>
+                  <span className="text-accent mr-2">•</span>
                   <span><strong className="text-white">Length:</strong> Full papers (6-8 pages), Short papers (4 pages)</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-accent-red mr-2">•</span>
+                  <span className="text-accent mr-2">•</span>
                   <span><strong className="text-white">Submission System:</strong> EasyChair</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-accent-red mr-2">•</span>
+                  <span className="text-accent mr-2">•</span>
                   <span><strong className="text-white">Review:</strong> Double-blind peer review</span>
                 </li>
                 <li className="flex items-start">
-                  <span className="text-accent-red mr-2">•</span>
+                  <span className="text-accent mr-2">•</span>
                   <span><strong className="text-white">Notification:</strong> Authors will be notified via email</span>
                 </li>
               </ul>

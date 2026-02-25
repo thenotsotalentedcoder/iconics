@@ -7,7 +7,7 @@ import { FaEnvelope } from 'react-icons/fa';
 const Committee = () => {
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <SectionHeading
             title="Committee"
@@ -21,7 +21,7 @@ const Committee = () => {
               {organizingCommittee.map((member, index) => (
                 <motion.div
                   key={index}
-                  className="bg-bg-card border border-border-subtle rounded-lg p-4 sm:p-6 hover:border-red-600 transition-all hover:-translate-y-1"
+                  className="bg-bg-card border border-border-subtle rounded-lg p-4 sm:p-6 hover:border-accent transition-all hover:-translate-y-1"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
@@ -51,7 +51,7 @@ const Committee = () => {
               {technicalCommittee.map((member, index) => (
                 <motion.div
                   key={index}
-                  className="bg-bg-card border border-border-subtle rounded-lg p-4 hover:border-red-600 transition-all"
+                  className="bg-bg-card border border-border-subtle rounded-lg p-4 hover:border-accent transition-all"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}

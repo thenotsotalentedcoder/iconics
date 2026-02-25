@@ -14,7 +14,7 @@ const SpeakerCard = ({ speaker, onClick }) => {
 
   return (
     <motion.div
-      className="bg-bg-card rounded-xl overflow-hidden border border-border-subtle cursor-pointer transition-all duration-300 hover:border-red-600 hover:-translate-y-2 hover:shadow-glow-red active:border-red-600 active:shadow-glow-red group"
+      className="bg-bg-card rounded-xl overflow-hidden border border-border-subtle cursor-pointer transition-all duration-300 hover:border-accent hover:-translate-y-2 hover:shadow-glow-red active:border-accent active:shadow-glow-red group"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}

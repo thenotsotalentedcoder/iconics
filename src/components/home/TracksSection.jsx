@@ -17,9 +17,9 @@ const TrackCard = ({ track, index }) => {
       <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
       <div className="relative p-6 lg:p-8">
-        {/* Icon */}
-        <div className="w-14 h-14 rounded-xl bg-accent/10 flex items-center justify-center text-3xl mb-5 group-hover:bg-accent/20 transition-colors duration-300">
-          {track.icon}
+        {/* Track number */}
+        <div className="text-xs font-bold tracking-widest text-accent/50 uppercase mb-5">
+          {String(track.id).padStart(2, '0')}
         </div>
 
         {/* Title */}
@@ -67,7 +67,7 @@ const TracksSection = () => {
     <section ref={ref} className="py-24 lg:py-32 bg-bg-dark relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary-600/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         {/* Section Header */}

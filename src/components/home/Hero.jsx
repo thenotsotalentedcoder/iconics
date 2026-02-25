@@ -67,7 +67,7 @@ const Hero = () => {
   const conferenceDate = '2026-10-10T09:00:00';
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-bg-dark">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-bg-darker">
       {/* Animated Background */}
       <HeroBackground />
 
@@ -154,24 +154,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-      >
-        <motion.div
-          className="flex flex-col items-center gap-2 cursor-pointer"
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <span className="text-xs text-text-muted uppercase tracking-wider">Scroll</span>
-          <svg className="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        </motion.div>
-      </motion.div>
     </section>
   );
 };

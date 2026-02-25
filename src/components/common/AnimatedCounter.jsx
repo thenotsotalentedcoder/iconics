@@ -15,7 +15,7 @@ const AnimatedCounter = ({
 
   return (
     <div ref={ref} className="text-center">
-      <div className="text-3xl sm:text-4xl md:text-5xl font-bold font-accent text-red-600 mb-1 sm:mb-2">
+      <div className="text-3xl sm:text-4xl md:text-5xl font-bold font-accent text-accent mb-1 sm:mb-2">
         {inView && (
           <CountUp
             end={end}

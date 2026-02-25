@@ -7,54 +7,61 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Dark Navy/Teal Palette - Minimal Medical Theme
+        // Deep Crimson Red Palette
         'primary': {
-          50: '#f0fdfa',
-          100: '#ccfbf1',
-          200: '#99f6e4',
-          300: '#5eead4',
-          400: '#2dd4bf',
-          500: '#14b8a6',
-          600: '#0d9488',
-          700: '#0f766e',
-          800: '#115e59',
-          900: '#134e4a',
+          50: '#fff0f0',
+          100: '#ffd6d6',
+          200: '#ffadad',
+          300: '#ff7a7a',
+          400: '#f04040',
+          500: '#C8000A',  // lighter hover variant
+          600: '#A90007',  // MAIN accent
+          700: '#8A0006',  // darker shade
+          800: '#6B0005',
+          900: '#4D0003',
         },
         'dark': {
-          50: '#f8fafc',
-          100: '#f1f5f9',
-          200: '#e2e8f0',
-          300: '#cbd5e1',
-          400: '#94a3b8',
-          500: '#64748b',
-          600: '#475569',
-          700: '#334155',
-          800: '#1e293b',
-          900: '#0f172a',
-          950: '#020617',
+          50: '#f4f4f4',
+          100: '#e8e8e8',
+          200: '#d1d1d1',
+          300: '#b0b0b0',
+          400: '#888888',
+          500: '#666666',
+          600: '#444444',
+          700: '#2a2a2a',
+          800: '#1a1a1a',
+          900: '#111111',
+          950: '#0a0a0a',
         },
-        // Semantic colors
-        'bg-dark': '#0a1628',
-        'bg-darker': '#050d18',
-        'bg-light': '#f8fafc',
-        'bg-card': '#0f2638',
-        'bg-card-hover': '#153248',
-        
-        'accent': '#14b8a6',
-        'accent-light': '#2dd4bf',
-        'accent-dark': '#0d9488',
-        
+        // Semantic colors — pure black base
+        'bg-primary': '#0A0A0A',
+        'bg-dark': '#0A0A0A',
+        'bg-darker': '#000000',
+        'bg-light': '#f4f4f4',
+        'bg-card': '#141414',
+        'bg-card-hover': '#1C1C1C',
+        'bg-secondary': '#0F0F0F',
+
+        'accent': '#A90007',
+        'accent-light': '#C8000A',
+        'accent-dark': '#8A0006',
+        'accent-red': '#A90007',
+
+        'text-primary': '#FFFFFF',
+        'text-secondary': '#E5E5E5',
         'text-light': '#ffffff',
-        'text-muted': '#94a3b8',
-        'text-dark': '#0f172a',
-        
-        'border-dark': '#1e3a50',
-        'border-light': '#e2e8f0',
+        'text-muted': '#9A9A9A',
+        'text-dark': '#111111',
+
+        'border-subtle': '#262626',
+        'border-dark': '#262626',
+        'border-light': '#e8e8e8',
       },
       fontFamily: {
         'sans': ['Inter', 'system-ui', 'sans-serif'],
         'heading': ['Inter', 'system-ui', 'sans-serif'],
         'body': ['Inter', 'system-ui', 'sans-serif'],
+        'accent': ['Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'hero': 'clamp(2.5rem, 8vw, 5rem)',
@@ -63,16 +70,17 @@ export default {
         'subheading': 'clamp(1.25rem, 2vw, 1.75rem)',
       },
       boxShadow: {
-        'soft': '0 2px 20px rgba(0, 0, 0, 0.1)',
-        'medium': '0 4px 30px rgba(0, 0, 0, 0.15)',
-        'large': '0 8px 40px rgba(0, 0, 0, 0.2)',
-        'glow': '0 0 40px rgba(20, 184, 166, 0.3)',
-        'glow-sm': '0 0 20px rgba(20, 184, 166, 0.2)',
+        'soft': '0 2px 20px rgba(0, 0, 0, 0.3)',
+        'medium': '0 4px 30px rgba(0, 0, 0, 0.4)',
+        'large': '0 8px 40px rgba(0, 0, 0, 0.5)',
+        'glow': '0 0 40px rgba(169, 0, 7, 0.35)',
+        'glow-sm': '0 0 20px rgba(169, 0, 7, 0.25)',
+        'glow-red': '0 0 30px rgba(169, 0, 7, 0.4)',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-dark': 'linear-gradient(180deg, #0a1628 0%, #050d18 100%)',
-        'gradient-card': 'linear-gradient(135deg, #0f2638 0%, #0a1628 100%)',
+        'gradient-dark': 'linear-gradient(180deg, #0A0A0A 0%, #000000 100%)',
+        'gradient-card': 'linear-gradient(135deg, #141414 0%, #0A0A0A 100%)',
       },
       animation: {
         'float': 'float 6s ease-in-out infinite',

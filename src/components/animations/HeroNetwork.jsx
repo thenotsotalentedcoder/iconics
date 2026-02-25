@@ -24,7 +24,7 @@ const HeroBackground = () => {
             height: orb.size,
             left: orb.x,
             top: orb.y,
-            background: `radial-gradient(circle, rgba(20, 184, 166, 0.15) 0%, rgba(20, 184, 166, 0.05) 40%, transparent 70%)`,
+            background: `radial-gradient(circle, rgba(169, 0, 7, 0.15) 0%, rgba(169, 0, 7, 0.05) 40%, transparent 70%)`,
             filter: 'blur(40px)',
           }}
           initial={{ opacity: 0, scale: 0.8 }}
