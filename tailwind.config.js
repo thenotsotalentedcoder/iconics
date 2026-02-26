@@ -21,24 +21,24 @@ export default {
           900: '#1F000A',
         },
 
-        // Cream palette
+        // Off-white palette (warm-neutral, pairs with burgundy)
         'cream': {
-          50:  '#FCFFE3',  // main bg
-          100: '#F5F8D0',  // slightly darker cream
-          200: '#ECF0B8',  // section differentiation
-          300: '#DDE3A0',  // borders warm
-          400: '#C8CF80',
-          500: '#A8AF58',
+          50:  '#FAFAFA',
+          100: '#F5F0F1',
+          200: '#EDE8E9',
+          300: '#E8DEE0',
+          400: '#D4C8CB',
+          500: '#B8A8AC',
         },
 
-        // Semantic tokens — light cream base
-        'bg-primary':    '#FCFFE3',
-        'bg-dark':       '#F0F3C8',   // "dark" variant = deeper cream
-        'bg-darker':     '#ECF0B8',   // deepest cream
-        'bg-light':      '#FFFFFF',   // pure white for contrast
-        'bg-card':       '#FFFFFF',   // cards = white on cream
-        'bg-card-hover': '#FDF9F0',   // warm tint on hover
-        'bg-secondary':  '#F7FAD8',   // subtle mid-cream
+        // Semantic tokens — off-white base
+        'bg-primary':    '#FAFAFA',   // near-pure off-white
+        'bg-dark':       '#EDE8E9',   // soft warm-gray section bg
+        'bg-darker':     '#E8E2E3',   // deeper section bg
+        'bg-light':      '#FFFFFF',   // pure white
+        'bg-card':       '#FFFFFF',   // cards = white
+        'bg-card-hover': '#F9F5F6',   // very faint warm on hover
+        'bg-secondary':  '#F5F0F1',   // subtle warm-tinted off-white
 
         'accent':        '#80002A',   // burgundy
         'accent-light':  '#9E0034',   // lighter burgundy for hover
@@ -51,9 +51,9 @@ export default {
         'text-muted':    '#7A5C63',   // warm rose-gray
         'text-dark':     '#1A0A0E',
 
-        'border-subtle': '#DDD8B8',   // warm cream border
-        'border-dark':   '#C8C4A0',   // stronger cream border
-        'border-light':  '#F0F3C8',
+        'border-subtle': '#E8DEE0',   // soft warm-rose border
+        'border-dark':   '#D4C8CB',   // stronger border
+        'border-light':  '#F0EAEB',
       },
       fontFamily: {
         'sans':    ['Inter', 'system-ui', 'sans-serif'],
@@ -78,9 +78,9 @@ export default {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-cream':  'linear-gradient(180deg, #FCFFE3 0%, #F0F3C8 100%)',
-        'gradient-card':   'linear-gradient(135deg, #FFFFFF 0%, #FDF9F0 100%)',
-        'gradient-hero':   'linear-gradient(135deg, #FCFFE3 0%, #F7FAD8 50%, #F0F3C8 100%)',
+        'gradient-cream':  'linear-gradient(180deg, #FAFAFA 0%, #EDE8E9 100%)',
+        'gradient-card':   'linear-gradient(135deg, #FFFFFF 0%, #F9F5F6 100%)',
+        'gradient-hero':   'linear-gradient(135deg, #FAFAFA 0%, #F5F0F1 50%, #EDE8E9 100%)',
       },
       animation: {
         'float':       'float 6s ease-in-out infinite',

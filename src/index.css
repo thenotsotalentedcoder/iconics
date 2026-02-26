@@ -1,4 +1,4 @@
-/* ICONICS'26 — Cream & Burgundy Light Theme */
+/* ICONICS'26 — Off-White & Burgundy Light Theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -17,7 +17,7 @@ html {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background-color: #FCFFE3;
+  background-color: #FAFAFA;
   color: #1A0A0E;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -31,7 +31,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F0F3C8;
+  background: #EDE8E9;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -88,8 +88,8 @@ body {
 }
 
 /* Section backgrounds */
-.section-cream {
-  background: linear-gradient(180deg, #FCFFE3 0%, #F7FAD8 100%);
+.section-offwhite {
+  background: linear-gradient(180deg, #FAFAFA 0%, #F5F0F1 100%);
 }
 
 .section-white {
