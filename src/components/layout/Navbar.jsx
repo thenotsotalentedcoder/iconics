@@ -12,28 +12,21 @@ const Navbar = () => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
-  // Prevent body scroll when menu is open
   useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : 'unset';
   }, [mobileMenuOpen]);
 
   const getNavbarClasses = () => {
-    if (mobileMenuOpen) return 'bg-bg-darker/95 backdrop-blur-xl border-b border-white/10';
-    if (scrolled) return 'bg-bg-darker/90 backdrop-blur-xl shadow-lg border-b border-white/5';
+    if (mobileMenuOpen) return 'bg-bg-primary border-b border-border-subtle shadow-soft';
+    if (scrolled) return 'bg-bg-primary/95 backdrop-blur-xl shadow-soft border-b border-border-subtle';
     return 'bg-transparent';
   };
 
@@ -49,7 +42,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="text-xl font-bold flex items-center group">
             <span className="text-accent group-hover:text-accent-light transition-colors">i</span>
-            <span className="text-white">CONICS</span>
+            <span className="text-text-primary">CONICS</span>
             <span className="text-accent group-hover:text-accent-light transition-colors">'26</span>
           </Link>
 
@@ -62,7 +55,7 @@ const Navbar = () => {
                 className={`relative text-xs font-medium tracking-wide transition-all duration-300 group whitespace-nowrap ${
                   location.pathname === link.path
                     ? 'text-accent'
-                    : 'text-white/60 hover:text-white'
+                    : 'text-text-secondary hover:text-accent'
                 }`}
               >
                 {link.name}
@@ -88,7 +81,7 @@ const Navbar = () => {
           {/* Mobile Menu Button */}
           <div className="xl:hidden">
             <button
-              className="p-2 text-white/80 hover:text-white transition-colors"
+              className="p-2 text-text-primary hover:text-accent transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -116,7 +109,7 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="xl:hidden fixed inset-0 top-[72px] z-40 bg-bg-darker/98 backdrop-blur-xl"
+            className="xl:hidden fixed inset-0 top-[72px] z-40 bg-bg-primary backdrop-blur-xl"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -133,10 +126,10 @@ const Navbar = () => {
                   >
                     <Link
                       to={link.path}
-                      className={`block text-lg font-medium transition-all duration-300 py-4 border-b border-white/5 ${
-                        location.pathname === link.path 
-                          ? 'text-accent' 
-                          : 'text-white/70 hover:text-white hover:pl-2'
+                      className={`block text-lg font-medium transition-all duration-300 py-4 border-b border-border-subtle ${
+                        location.pathname === link.path
+                          ? 'text-accent'
+                          : 'text-text-secondary hover:text-accent hover:pl-2'
                       }`}
                     >
                       {link.name}

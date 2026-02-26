@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 
 const HeroBackground = () => {
-  // Create floating orbs for visual interest
   const orbs = [
     { size: 600, x: '70%', y: '20%', delay: 0, duration: 20 },
     { size: 400, x: '20%', y: '60%', delay: 2, duration: 25 },
@@ -11,10 +10,10 @@ const HeroBackground = () => {
 
   return (
     <div className="absolute inset-0 overflow-hidden">
-      {/* Gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-bg-dark via-bg-dark to-bg-darker" />
-      
-      {/* Animated gradient orbs */}
+      {/* Cream base gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-bg-primary via-bg-secondary to-bg-dark" />
+
+      {/* Animated burgundy orbs — soft and warm */}
       {orbs.map((orb, index) => (
         <motion.div
           key={index}
@@ -24,13 +23,13 @@ const HeroBackground = () => {
             height: orb.size,
             left: orb.x,
             top: orb.y,
-            background: `radial-gradient(circle, rgba(169, 0, 7, 0.15) 0%, rgba(169, 0, 7, 0.05) 40%, transparent 70%)`,
-            filter: 'blur(40px)',
+            background: `radial-gradient(circle, rgba(128, 0, 42, 0.10) 0%, rgba(128, 0, 42, 0.04) 40%, transparent 70%)`,
+            filter: 'blur(48px)',
           }}
           initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ 
-            opacity: [0.3, 0.6, 0.3],
-            scale: [1, 1.2, 1],
+          animate={{
+            opacity: [0.4, 0.8, 0.4],
+            scale: [1, 1.15, 1],
             x: [0, 30, 0],
             y: [0, -20, 0],
           }}
@@ -43,23 +42,22 @@ const HeroBackground = () => {
         />
       ))}
 
-      {/* Subtle grid pattern */}
-      <div 
-        className="absolute inset-0 opacity-[0.03]"
+      {/* Subtle warm grid pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.07]"
         style={{
           backgroundImage: `
-            linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)
+            linear-gradient(rgba(128, 0, 42, 0.15) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(128, 0, 42, 0.15) 1px, transparent 1px)
           `,
           backgroundSize: '60px 60px'
         }}
       />
 
-      {/* Top gradient fade */}
-      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg-dark to-transparent" />
-      
-      {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg-dark to-transparent" />
+      {/* Top fade */}
+      <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-bg-primary to-transparent" />
+      {/* Bottom fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-bg-primary to-transparent" />
     </div>
   );
 };

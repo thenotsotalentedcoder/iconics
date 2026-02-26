@@ -87,7 +87,7 @@ const ContactForm = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h4 className="text-white font-bold text-xl mb-2">Thank you for your interest!</h4>
+        <h4 className="text-text-primary font-bold text-xl mb-2">Thank you for your interest!</h4>
         <p className="text-text-muted">Your email client has been opened with the pre-filled inquiry. We'll get back to you shortly.</p>
       </motion.div>
     );
@@ -104,7 +104,7 @@ const ContactForm = () => {
             value={form.org}
             onChange={handleChange}
             placeholder="Company / Institution name"
-            className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-white text-sm placeholder-text-muted/50 focus:border-accent/60 focus:outline-none transition-colors"
+            className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-text-primary text-sm placeholder-text-muted/50 focus:border-accent/60 focus:outline-none transition-colors"
           />
         </div>
         <div>
@@ -115,7 +115,7 @@ const ContactForm = () => {
             value={form.name}
             onChange={handleChange}
             placeholder="Your full name"
-            className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-white text-sm placeholder-text-muted/50 focus:border-accent/60 focus:outline-none transition-colors"
+            className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-text-primary text-sm placeholder-text-muted/50 focus:border-accent/60 focus:outline-none transition-colors"
           />
         </div>
       </div>
@@ -129,7 +129,7 @@ const ContactForm = () => {
             value={form.email}
             onChange={handleChange}
             placeholder="contact@company.com"
-            className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-white text-sm placeholder-text-muted/50 focus:border-accent/60 focus:outline-none transition-colors"
+            className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-text-primary text-sm placeholder-text-muted/50 focus:border-accent/60 focus:outline-none transition-colors"
           />
         </div>
         <div>
@@ -138,7 +138,7 @@ const ContactForm = () => {
             name="tier"
             value={form.tier}
             onChange={handleChange}
-            className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-sm focus:border-accent/60 focus:outline-none transition-colors text-white"
+            className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-sm focus:border-accent/60 focus:outline-none transition-colors text-text-primary"
           >
             <option value="" className="bg-bg-card">Select a tier...</option>
             {tiers.map(t => (
@@ -156,12 +156,12 @@ const ContactForm = () => {
           onChange={handleChange}
           rows={4}
           placeholder="Tell us about your organization and sponsorship goals..."
-          className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-white text-sm placeholder-text-muted/50 focus:border-accent/60 focus:outline-none transition-colors resize-none"
+          className="w-full bg-bg-secondary border border-border-subtle rounded-lg px-4 py-3 text-text-primary text-sm placeholder-text-muted/50 focus:border-accent/60 focus:outline-none transition-colors resize-none"
         />
       </div>
       <button
         type="submit"
-        className="w-full sm:w-auto px-8 py-3 bg-accent hover:bg-accent-light text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-glow text-sm"
+        className="w-full sm:w-auto px-8 py-3 bg-accent hover:bg-accent-light text-text-primary font-semibold rounded-lg transition-all duration-300 hover:shadow-glow text-sm"
       >
         Send Sponsorship Inquiry
       </button>
@@ -172,7 +172,7 @@ const ContactForm = () => {
 const Sponsors = () => {
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <SectionHeading
             title="Sponsors"
@@ -228,7 +228,7 @@ const Sponsors = () => {
                     {item.icon}
                   </div>
                   <div>
-                    <h4 className="text-white font-semibold mb-1">{item.title}</h4>
+                    <h4 className="text-text-primary font-semibold mb-1">{item.title}</h4>
                     <p className="text-text-muted text-sm leading-relaxed">{item.desc}</p>
                   </div>
                 </motion.div>
@@ -238,7 +238,7 @@ const Sponsors = () => {
 
           {/* Sponsorship Tiers */}
           <section className="mb-14">
-            <h3 className="text-xl font-bold text-white mb-6">Sponsorship Tiers</h3>
+            <h3 className="text-xl font-bold text-text-primary mb-6">Sponsorship Tiers</h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
               {tiers.map((tier, i) => (
                 <motion.div
@@ -270,19 +270,19 @@ const Sponsors = () => {
 
           {/* Current Sponsors placeholder */}
           <section className="mb-14">
-            <h3 className="text-xl font-bold text-white mb-6">Current Sponsors & Partners</h3>
+            <h3 className="text-xl font-bold text-text-primary mb-6">Current Sponsors & Partners</h3>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {/* NED University */}
               <div className="bg-bg-card border border-border-subtle rounded-xl p-6 flex items-center justify-center aspect-[3/2]">
                 <div className="text-center">
-                  <p className="text-white font-bold text-sm">NED University</p>
+                  <p className="text-text-primary font-bold text-sm">NED University</p>
                   <p className="text-text-muted text-xs">Host Institution</p>
                 </div>
               </div>
               {/* IEEE */}
               <div className="bg-bg-card border border-border-subtle rounded-xl p-6 flex items-center justify-center aspect-[3/2]">
                 <div className="text-center">
-                  <p className="text-white font-bold text-sm">IEEE</p>
+                  <p className="text-text-primary font-bold text-sm">IEEE</p>
                   <p className="text-text-muted text-xs">Publication Partner</p>
                 </div>
               </div>
@@ -304,7 +304,7 @@ const Sponsors = () => {
               viewport={{ once: true }}
             >
               <div className="mb-6">
-                <h3 className="text-xl font-bold text-white mb-2">Become a Sponsor</h3>
+                <h3 className="text-xl font-bold text-text-primary mb-2">Become a Sponsor</h3>
                 <p className="text-text-muted text-sm">
                   Interested in sponsoring ICONICS'26? Fill out the form below and we'll get back to you within 2–3 business days.
                 </p>

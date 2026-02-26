@@ -40,7 +40,7 @@ const Modal = ({ isOpen, onClose, children }) => {
               {/* Close button */}
               <button
                 onClick={onClose}
-                className="sticky top-2 sm:top-4 right-2 sm:right-4 float-right text-text-muted hover:text-white transition-colors z-10 bg-bg-secondary rounded-full p-2"
+                className="sticky top-2 sm:top-4 right-2 sm:right-4 float-right text-text-muted hover:text-text-primary transition-colors z-10 bg-bg-secondary border border-border-subtle rounded-full p-2"
                 aria-label="Close"
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

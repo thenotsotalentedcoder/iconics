@@ -7,7 +7,7 @@ import { EXTERNAL_LINKS } from '../utils/constants';
 const Contact = () => {
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <SectionHeading
             title="Contact Us"
@@ -21,15 +21,15 @@ const Contact = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl sm:text-2xl font-bold font-heading text-white mb-3 sm:mb-4 sm:mb-6">Contact Information</h3>
+              <h3 className="text-xl sm:text-2xl font-bold font-heading text-text-primary mb-3 sm:mb-4 sm:mb-6">Contact Information</h3>
 
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <div className="w-12 h-12 bg-accent-red/20 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
-                    <FaMapMarkerAlt className="text-accent-red text-xl" />
+                  <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
+                    <FaMapMarkerAlt className="text-accent text-xl" />
                   </div>
                   <div>
-                    <h4 className="text-white font-semibold mb-1">Address</h4>
+                    <h4 className="text-text-primary font-semibold mb-1">Address</h4>
                     <p className="text-text-secondary">
                       Department of Computer Science & IT<br />
                       NED University of Engineering & Technology<br />
@@ -40,24 +40,24 @@ const Contact = () => {
                 </div>
 
                 <div className="flex items-start">
-                  <div className="w-12 h-12 bg-accent-red/20 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
-                    <FaPhone className="text-accent-red text-xl" />
+                  <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
+                    <FaPhone className="text-accent text-xl" />
                   </div>
                   <div>
-                    <h4 className="text-white font-semibold mb-1">Phone</h4>
-                    <a href={EXTERNAL_LINKS.PHONE} className="text-accent-red hover:underline">
+                    <h4 className="text-text-primary font-semibold mb-1">Phone</h4>
+                    <a href={EXTERNAL_LINKS.PHONE} className="text-accent hover:underline">
                       (+92-21) 99261261 EXT: 2385, 2399
                     </a>
                   </div>
                 </div>
 
                 <div className="flex items-start">
-                  <div className="w-12 h-12 bg-accent-red/20 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
-                    <FaEnvelope className="text-accent-red text-xl" />
+                  <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0 mr-4">
+                    <FaEnvelope className="text-accent text-xl" />
                   </div>
                   <div>
-                    <h4 className="text-white font-semibold mb-1">Email</h4>
-                    <a href={EXTERNAL_LINKS.EMAIL} className="text-accent-red hover:underline">
+                    <h4 className="text-text-primary font-semibold mb-1">Email</h4>
+                    <a href={EXTERNAL_LINKS.EMAIL} className="text-accent hover:underline">
                       secretary@nediconics.com
                     </a>
                   </div>
@@ -66,31 +66,31 @@ const Contact = () => {
 
               {/* Social Media */}
               <div className="mt-8">
-                <h4 className="text-white font-semibold mb-3 sm:mb-4">Follow Us</h4>
+                <h4 className="text-text-primary font-semibold mb-3 sm:mb-4">Follow Us</h4>
                 <div className="flex gap-4">
                   <a
                     href={EXTERNAL_LINKS.FACEBOOK}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-accent-red/20 rounded-lg flex items-center justify-center hover:bg-accent-red transition-colors group"
+                    className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center hover:bg-accent transition-colors group"
                   >
-                    <FaFacebook className="text-accent-red text-xl group-hover:text-white" />
+                    <FaFacebook className="text-accent text-xl group-hover:text-white" />
                   </a>
                   <a
                     href={EXTERNAL_LINKS.TWITTER}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-accent-red/20 rounded-lg flex items-center justify-center hover:bg-accent-red transition-colors group"
+                    className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center hover:bg-accent transition-colors group"
                   >
-                    <FaTwitter className="text-accent-red text-xl group-hover:text-white" />
+                    <FaTwitter className="text-accent text-xl group-hover:text-white" />
                   </a>
                   <a
                     href={EXTERNAL_LINKS.LINKEDIN}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-12 h-12 bg-accent-red/20 rounded-lg flex items-center justify-center hover:bg-accent-red transition-colors group"
+                    className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center hover:bg-accent transition-colors group"
                   >
-                    <FaLinkedin className="text-accent-red text-xl group-hover:text-white" />
+                    <FaLinkedin className="text-accent text-xl group-hover:text-white" />
                   </a>
                 </div>
               </div>
@@ -102,48 +102,48 @@ const Contact = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl sm:text-2xl font-bold font-heading text-white mb-3 sm:mb-4 sm:mb-6">Send us a Message</h3>
+              <h3 className="text-xl sm:text-2xl font-bold font-heading text-text-primary mb-3 sm:mb-4 sm:mb-6">Send us a Message</h3>
 
               <form className="space-y-4">
                 <div>
-                  <label className="block text-white mb-2 text-sm">Name</label>
+                  <label className="block text-text-primary mb-2 text-sm">Name</label>
                   <input
                     type="text"
-                    className="w-full bg-bg-card border border-border-subtle rounded-lg px-4 py-3 text-white focus:border-accent-red focus:outline-none transition-colors"
+                    className="w-full bg-bg-card border border-border-subtle rounded-lg px-4 py-3 text-text-primary focus:border-accent focus:outline-none transition-colors"
                     placeholder="Your name"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white mb-2 text-sm">Email</label>
+                  <label className="block text-text-primary mb-2 text-sm">Email</label>
                   <input
                     type="email"
-                    className="w-full bg-bg-card border border-border-subtle rounded-lg px-4 py-3 text-white focus:border-accent-red focus:outline-none transition-colors"
+                    className="w-full bg-bg-card border border-border-subtle rounded-lg px-4 py-3 text-text-primary focus:border-accent focus:outline-none transition-colors"
                     placeholder="your.email@example.com"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white mb-2 text-sm">Subject</label>
+                  <label className="block text-text-primary mb-2 text-sm">Subject</label>
                   <input
                     type="text"
-                    className="w-full bg-bg-card border border-border-subtle rounded-lg px-4 py-3 text-white focus:border-accent-red focus:outline-none transition-colors"
+                    className="w-full bg-bg-card border border-border-subtle rounded-lg px-4 py-3 text-text-primary focus:border-accent focus:outline-none transition-colors"
                     placeholder="Subject"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-white mb-2 text-sm">Message</label>
+                  <label className="block text-text-primary mb-2 text-sm">Message</label>
                   <textarea
                     rows="5"
-                    className="w-full bg-bg-card border border-border-subtle rounded-lg px-4 py-3 text-white focus:border-accent-red focus:outline-none transition-colors resize-none"
+                    className="w-full bg-bg-card border border-border-subtle rounded-lg px-4 py-3 text-text-primary focus:border-accent focus:outline-none transition-colors resize-none"
                     placeholder="Your message..."
                   ></textarea>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-accent to-accent-dark text-white font-semibold py-3 rounded-lg hover:shadow-glow-red hover:from-accent-light hover:to-accent transition-all hover:scale-105"
+                  className="w-full bg-accent hover:bg-accent-light text-white font-semibold py-3 rounded-lg hover:shadow-glow transition-all"
                 >
                   Send Message
                 </button>

@@ -1,4 +1,4 @@
-/* ICONICS'26 - Deep Crimson Dark Theme */
+/* ICONICS'26 — Cream & Burgundy Light Theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -17,8 +17,8 @@ html {
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background-color: #0A0A0A;
-  color: #E5E5E5;
+  background-color: #FCFFE3;
+  color: #1A0A0E;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,22 +31,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #000000;
+  background: #F0F3C8;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #A90007;
+  background: #80002A;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #C8000A;
+  background: #9E0034;
 }
 
 /* Selection color */
 ::selection {
-  background-color: rgba(169, 0, 7, 0.35);
-  color: #ffffff;
+  background-color: rgba(128, 0, 42, 0.18);
+  color: #1A0A0E;
 }
 
 /* Smooth animations */
@@ -63,15 +63,15 @@ body {
 /* Custom utility classes */
 @layer utilities {
   .text-gradient {
-    @apply bg-gradient-to-r from-primary-600 to-primary-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent;
   }
 
   .bg-glass {
-    @apply bg-white/5 backdrop-blur-lg border border-white/10;
+    @apply bg-white/60 backdrop-blur-lg border border-white/80;
   }
 
-  .bg-glass-dark {
-    @apply bg-dark-900/80 backdrop-blur-lg border border-white/5;
+  .bg-glass-cream {
+    @apply bg-cream-50/80 backdrop-blur-lg border border-cream-300/60;
   }
 
   .transition-smooth {
@@ -88,30 +88,29 @@ body {
 }
 
 /* Section backgrounds */
-.section-dark {
-  background: linear-gradient(180deg, #0A0A0A 0%, #000000 100%);
+.section-cream {
+  background: linear-gradient(180deg, #FCFFE3 0%, #F7FAD8 100%);
 }
 
-.section-light {
-  background: linear-gradient(180deg, #f4f4f4 0%, #ffffff 100%);
+.section-white {
+  background: #FFFFFF;
 }
 
 /* Card styles */
-.card-dark {
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.8) 0%, rgba(10, 10, 10, 0.9) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  backdrop-filter: blur(10px);
+.card-light {
+  background: #FFFFFF;
+  border: 1px solid #DDD8B8;
+  box-shadow: 0 2px 16px rgba(128, 0, 42, 0.06);
 }
 
-.card-light {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  backdrop-filter: blur(10px);
+.card-cream {
+  background: linear-gradient(135deg, #FFFFFF 0%, #FDF9F0 100%);
+  border: 1px solid #DDD8B8;
 }
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #C8000A 0%, #A90007 50%, #8A0006 100%);
+  background: linear-gradient(135deg, #80002A 0%, #9E0034 50%, #5C001E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -125,7 +124,7 @@ img {
 /* Mobile touch optimization */
 @media (max-width: 768px) {
   * {
-    -webkit-tap-highlight-color: rgba(169, 0, 7, 0.1);
+    -webkit-tap-highlight-color: rgba(128, 0, 42, 0.08);
   }
 
   button,

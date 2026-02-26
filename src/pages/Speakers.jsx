@@ -15,7 +15,7 @@ const Speakers = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6">
           <SectionHeading
             title="Keynote Speakers"
@@ -28,8 +28,8 @@ const Speakers = () => {
               onClick={() => setFilter('all')}
               className={`px-4 sm:px-6 py-2 rounded-full font-medium transition-all text-sm sm:text-base ${
                 filter === 'all'
-                  ? 'bg-accent-red text-white'
-                  : 'bg-bg-card text-text-secondary hover:text-white'
+                  ? 'bg-accent text-white'
+                  : 'bg-bg-card text-text-secondary hover:text-text-primary'
               }`}
             >
               All Speakers
@@ -38,8 +38,8 @@ const Speakers = () => {
               onClick={() => setFilter('keynote')}
               className={`px-4 sm:px-6 py-2 rounded-full font-medium transition-all text-sm sm:text-base ${
                 filter === 'keynote'
-                  ? 'bg-accent-red text-white'
-                  : 'bg-bg-card text-text-secondary hover:text-white'
+                  ? 'bg-accent text-white'
+                  : 'bg-bg-card text-text-secondary hover:text-text-primary'
               }`}
             >
               Keynote
@@ -48,8 +48,8 @@ const Speakers = () => {
               onClick={() => setFilter('workshop')}
               className={`px-4 sm:px-6 py-2 rounded-full font-medium transition-all text-sm sm:text-base ${
                 filter === 'workshop'
-                  ? 'bg-accent-red text-white'
-                  : 'bg-bg-card text-text-secondary hover:text-white'
+                  ? 'bg-accent text-white'
+                  : 'bg-bg-card text-text-secondary hover:text-text-primary'
               }`}
             >
               Workshop

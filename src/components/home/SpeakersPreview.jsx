@@ -12,7 +12,7 @@ const SpeakersPreview = () => {
   const featuredSpeakers = speakers.slice(0, 4);
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-bg-dark relative overflow-hidden">
+    <section ref={ref} className="py-24 lg:py-32 bg-bg-primary relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         {/* Section Header */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16">
@@ -26,7 +26,7 @@ const SpeakersPreview = () => {
               Expert Speakers
             </motion.span>
             <motion.h2
-              className="text-display font-bold text-white"
+              className="text-display font-bold text-text-primary"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -39,10 +39,7 @@ const SpeakersPreview = () => {
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <Link
-              to="/speakers"
-              className="inline-flex items-center gap-2 text-accent font-semibold group"
-            >
+            <Link to="/speakers" className="inline-flex items-center gap-2 text-accent font-semibold group">
               View All Speakers
               <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -63,18 +60,18 @@ const SpeakersPreview = () => {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               whileHover={{ y: -5 }}
             >
-              <div className="relative overflow-hidden rounded-2xl mb-4">
+              <div className="relative overflow-hidden rounded-2xl mb-4 border border-border-subtle shadow-card">
                 <img
                   src={speaker.photo}
                   alt={speaker.name}
                   className="w-full aspect-[3/4] object-cover object-top group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-bg-dark/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-gradient-to-t from-accent-dark/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 <div className="absolute bottom-4 left-4 right-4 translate-y-4 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300">
                   <span className="text-white text-sm font-medium">View Profile →</span>
                 </div>
               </div>
-              <h3 className="font-semibold text-white group-hover:text-accent transition-colors">
+              <h3 className="font-semibold text-text-primary group-hover:text-accent transition-colors">
                 {speaker.name}
               </h3>
               <p className="text-sm text-text-muted mt-1">{speaker.title}</p>

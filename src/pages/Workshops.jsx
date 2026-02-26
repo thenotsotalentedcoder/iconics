@@ -41,7 +41,7 @@ const SessionCard = ({ session, index }) => {
             {String(index + 1).padStart(2, '0')}
           </span>
           <div>
-            <h4 className="text-white font-semibold text-base sm:text-lg">{session.title}</h4>
+            <h4 className="text-text-primary font-semibold text-base sm:text-lg">{session.title}</h4>
             <p className="text-text-muted text-sm mt-0.5">{session.instructor.name}</p>
           </div>
         </div>
@@ -71,7 +71,7 @@ const SessionCard = ({ session, index }) => {
                   />
                 </div>
                 <div>
-                  <p className="text-white font-semibold">{session.instructor.name}</p>
+                  <p className="text-text-primary font-semibold">{session.instructor.name}</p>
                   <p className="text-text-muted text-sm">{session.instructor.title}</p>
                   <p className="text-accent text-sm">{session.instructor.institution}</p>
                 </div>
@@ -111,7 +111,7 @@ const WorkshopCard = ({ workshop, index }) => (
         <span className="text-xs font-bold tracking-widest text-accent uppercase mb-3 block">
           Workshop {String(workshop.id).padStart(2, '0')}
         </span>
-        <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 leading-snug">
+        <h2 className="text-2xl sm:text-3xl font-bold text-text-primary mb-3 leading-snug">
           {workshop.title}
         </h2>
         <p className="text-accent text-sm font-medium mb-4">{workshop.tagline}</p>
@@ -130,7 +130,7 @@ const WorkshopCard = ({ workshop, index }) => (
           href={workshop.registrationLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent-light text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-glow text-sm"
+          className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent-light text-text-primary font-semibold rounded-lg transition-all duration-300 hover:shadow-glow text-sm"
         >
           Register for Workshop
           <ExternalLinkIcon />
@@ -141,7 +141,7 @@ const WorkshopCard = ({ workshop, index }) => (
     {/* Learning outcomes (NLP only) */}
     {workshop.learningOutcomes && (
       <div className="mb-8">
-        <h3 className="text-white font-semibold mb-4">Learning Outcomes</h3>
+        <h3 className="text-text-primary font-semibold mb-4">Learning Outcomes</h3>
         <div className="grid sm:grid-cols-2 gap-3">
           {workshop.learningOutcomes.map((outcome, i) => (
             <div key={i} className="flex items-start gap-3 p-4 rounded-lg bg-bg-card border border-border-subtle">
@@ -157,7 +157,7 @@ const WorkshopCard = ({ workshop, index }) => (
 
     {/* Sessions */}
     <div>
-      <h3 className="text-white font-semibold mb-4">
+      <h3 className="text-text-primary font-semibold mb-4">
         {workshop.sessions.length > 1 ? `Sessions (${workshop.sessions.length})` : 'Session Details'}
       </h3>
       <div className="space-y-3">
@@ -172,7 +172,7 @@ const WorkshopCard = ({ workshop, index }) => (
 const Workshops = () => {
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6 max-w-5xl">
           <SectionHeading
             title="Workshops"
@@ -194,7 +194,7 @@ const Workshops = () => {
               </span>
               <div>
                 <p className="text-xs text-text-muted uppercase tracking-wider">Date</p>
-                <p className="text-white text-sm font-medium">October 10–11, 2026</p>
+                <p className="text-text-primary text-sm font-medium">October 10–11, 2026</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -206,7 +206,7 @@ const Workshops = () => {
               </span>
               <div>
                 <p className="text-xs text-text-muted uppercase tracking-wider">Venue</p>
-                <p className="text-white text-sm font-medium">NED University, Karachi</p>
+                <p className="text-text-primary text-sm font-medium">NED University, Karachi</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -217,7 +217,7 @@ const Workshops = () => {
               </span>
               <div>
                 <p className="text-xs text-text-muted uppercase tracking-wider">Workshops</p>
-                <p className="text-white text-sm font-medium">{workshops.length} Workshops Available</p>
+                <p className="text-text-primary text-sm font-medium">{workshops.length} Workshops Available</p>
               </div>
             </div>
           </motion.div>

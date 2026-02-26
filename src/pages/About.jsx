@@ -45,7 +45,7 @@ const pastEditions = [
 const About = () => {
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <SectionHeading
             title="About ICONICS'26"
@@ -60,10 +60,10 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-5">Conference Overview</h3>
+              <h3 className="text-xl sm:text-2xl font-bold text-text-primary mb-5">Conference Overview</h3>
               <div className="space-y-4 text-text-muted text-sm sm:text-base leading-relaxed">
                 <p>
-                  NED University of Engineering and Technology announces the <strong className="text-white">5th International Conference on Innovations in Computer Science (ICONICS'26)</strong>. The conference provides a platform for researchers, both national and international, to exchange novel and contemporary ideas in emerging fields of computing.
+                  NED University of Engineering and Technology announces the <strong className="text-text-primary">5th International Conference on Innovations in Computer Science (ICONICS'26)</strong>. The conference provides a platform for researchers, both national and international, to exchange novel and contemporary ideas in emerging fields of computing.
                 </p>
                 <p>
                   The theme for ICONICS'26 is <strong className="text-accent">"Innovations in AI, Quantum Computing & Cybersecurity"</strong>, reflecting the rapidly evolving landscape of computer science and its impact on society.
@@ -84,7 +84,7 @@ const About = () => {
               viewport={{ once: true }}
             >
               <div className="bg-bg-card border border-border-subtle rounded-xl p-6 sm:p-8">
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">About NED University</h3>
+                <h3 className="text-xl sm:text-2xl font-bold text-text-primary mb-4">About NED University</h3>
                 <div className="space-y-4 text-text-muted text-sm sm:text-base leading-relaxed">
                   <p>
                     NED University of Engineering & Technology is one of the oldest engineering institutions in Pakistan, established in 1921. Located in Karachi, it serves approximately 7,000 students across 25 engineering disciplines at undergraduate and graduate levels.
@@ -107,7 +107,7 @@ const About = () => {
               </div>
 
               <div className="bg-bg-card border border-border-subtle rounded-xl p-6 sm:p-8">
-                <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">Conference Objectives</h3>
+                <h3 className="text-xl sm:text-2xl font-bold text-text-primary mb-4">Conference Objectives</h3>
                 <ul className="space-y-3 text-text-muted text-sm sm:text-base">
                   {[
                     "Foster collaboration between academia and industry",
@@ -128,7 +128,7 @@ const About = () => {
 
           {/* Past Editions Timeline */}
           <section className="mb-12 sm:mb-16">
-            <h3 className="text-xl sm:text-2xl font-bold text-white mb-8 text-center">Past Editions</h3>
+            <h3 className="text-xl sm:text-2xl font-bold text-text-primary mb-8 text-center">Past Editions</h3>
             <div className="relative">
               {/* Timeline line */}
               <div className="absolute left-4 sm:left-8 md:left-1/2 top-0 bottom-0 w-px bg-accent/30" />
@@ -150,7 +150,7 @@ const About = () => {
                     <div className={`ml-12 sm:ml-20 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-14' : 'md:pl-14'}`}>
                       <div className="bg-bg-card border border-border-subtle rounded-xl p-5 sm:p-6 hover:border-accent/30 transition-colors duration-200">
                         <div className="text-accent font-bold text-2xl mb-1 font-mono">{edition.year}</div>
-                        <h4 className="text-lg font-bold text-white mb-1">{edition.edition}</h4>
+                        <h4 className="text-lg font-bold text-text-primary mb-1">{edition.edition}</h4>
                         <p className="text-text-muted text-xs mb-3">{edition.date}</p>
                         <p className="text-text-muted text-sm leading-relaxed mb-4">{edition.description}</p>
                         <div className="flex flex-wrap gap-2">
@@ -211,7 +211,7 @@ const About = () => {
                   viewport={{ once: true }}
                   transition={{ delay }}
                 >
-                  <h3 className="text-xl font-bold text-white mb-3">{title}</h3>
+                  <h3 className="text-xl font-bold text-text-primary mb-3">{title}</h3>
                   <p className="text-text-muted text-sm sm:text-base leading-relaxed">{text}</p>
                 </motion.div>
               ))}

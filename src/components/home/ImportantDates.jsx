@@ -7,12 +7,11 @@ const ImportantDates = () => {
 
   return (
     <section ref={ref} className="py-24 lg:py-32 bg-bg-dark relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute top-1/2 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2" />
+      <div className="absolute top-1/2 left-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl -translate-y-1/2 pointer-events-none" />
 
       <div className="container mx-auto px-6 lg:px-12 relative z-10">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left - Header */}
+          {/* Left — Header */}
           <div>
             <motion.span
               className="inline-block text-accent text-sm font-semibold tracking-wider uppercase mb-4"
@@ -23,7 +22,7 @@ const ImportantDates = () => {
               Timeline
             </motion.span>
             <motion.h2
-              className="text-display font-bold text-white mb-6"
+              className="text-display font-bold text-text-primary mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -40,7 +39,7 @@ const ImportantDates = () => {
             </motion.p>
           </div>
 
-          {/* Right - Timeline */}
+          {/* Right — Timeline */}
           <div className="space-y-4">
             {importantDates.map((item, index) => (
               <motion.div
@@ -52,19 +51,19 @@ const ImportantDates = () => {
               >
                 {/* Timeline line */}
                 {index < importantDates.length - 1 && (
-                  <div className="absolute left-[11px] top-10 bottom-0 w-px bg-white/10" />
+                  <div className="absolute left-[11px] top-10 bottom-0 w-px bg-border-dark" />
                 )}
-                
+
                 {/* Dot */}
-                <div className="absolute left-0 top-3 w-6 h-6 rounded-full bg-bg-card border-2 border-accent flex items-center justify-center">
+                <div className="absolute left-0 top-3 w-6 h-6 rounded-full bg-bg-card border-2 border-accent flex items-center justify-center shadow-card">
                   <div className="w-2 h-2 rounded-full bg-accent" />
                 </div>
 
                 {/* Card */}
-                <div className="bg-bg-card rounded-xl p-5 border border-white/5 hover:border-accent/30 transition-all duration-300 group-hover:bg-bg-card-hover">
+                <div className="bg-bg-card rounded-xl p-5 border border-border-subtle hover:border-accent/40 transition-all duration-300 shadow-card hover:shadow-medium">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                     <div>
-                      <h3 className="font-semibold text-white group-hover:text-accent transition-colors">
+                      <h3 className="font-semibold text-text-primary group-hover:text-accent transition-colors">
                         {item.title}
                       </h3>
                       {item.description && (

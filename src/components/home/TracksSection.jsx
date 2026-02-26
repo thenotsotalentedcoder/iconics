@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 const TrackCard = ({ track, index }) => {
   return (
     <motion.div
-      className="group relative bg-bg-card rounded-2xl border border-white/5 hover:border-accent/30 overflow-hidden transition-all duration-500"
+      className="group relative bg-bg-card rounded-2xl border border-border-subtle hover:border-accent/40 overflow-hidden transition-all duration-500 shadow-card"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
@@ -23,7 +23,7 @@ const TrackCard = ({ track, index }) => {
         </div>
 
         {/* Title */}
-        <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-accent transition-colors duration-300">
+        <h3 className="text-xl font-semibold text-text-primary mb-3 group-hover:text-accent transition-colors duration-300">
           {track.name}
         </h3>
 
@@ -64,7 +64,7 @@ const TracksSection = () => {
   });
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-bg-dark relative overflow-hidden">
+    <section ref={ref} className="py-24 lg:py-32 bg-bg-secondary relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
@@ -81,7 +81,7 @@ const TracksSection = () => {
             Research Areas
           </motion.span>
           <motion.h2
-            className="text-display font-bold text-white mb-4"
+            className="text-display font-bold text-text-primary mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.1 }}

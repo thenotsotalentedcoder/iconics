@@ -1,7 +1,6 @@
 import Modal from '../common/Modal';
 import { useState } from 'react';
 
-// Custom SVG Icons
 const GlobeIcon = () => (
   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="10"></circle>
@@ -40,7 +39,7 @@ const SpeakerModal = ({ speaker, isOpen, onClose }) => {
       <div className="grid md:grid-cols-2 gap-6 sm:gap-8 p-4 sm:p-6 md:p-8">
         {/* Left: Photo */}
         <div>
-          <div className="relative h-64 sm:h-80 md:h-96 overflow-hidden rounded-lg bg-bg-secondary">
+          <div className="relative h-64 sm:h-80 md:h-96 overflow-hidden rounded-lg bg-bg-secondary border border-border-subtle">
             {!imageError ? (
               <img
                 src={speaker.photo}
@@ -58,27 +57,27 @@ const SpeakerModal = ({ speaker, isOpen, onClose }) => {
 
         {/* Right: Info */}
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold font-heading text-white mb-2">
+          <h2 className="text-2xl sm:text-3xl font-bold font-heading text-text-primary mb-2">
             {speaker.name}
           </h2>
           <p className="text-base sm:text-lg text-text-secondary mb-1">{speaker.title}</p>
-          <p className="text-base sm:text-lg text-accent-red mb-2">{speaker.institution}</p>
+          <p className="text-base sm:text-lg text-accent mb-2">{speaker.institution}</p>
           <p className="text-xs sm:text-sm text-text-muted mb-4 sm:mb-6">{speaker.country}</p>
 
           {/* Bio */}
           <div className="mb-4 sm:mb-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3">Biography</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-text-primary mb-2 sm:mb-3">Biography</h3>
             <p className="text-sm sm:text-base text-text-secondary leading-relaxed">{speaker.bio}</p>
           </div>
 
           {/* Topics */}
           <div className="mb-4 sm:mb-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3">Research Areas</h3>
+            <h3 className="text-lg sm:text-xl font-semibold text-text-primary mb-2 sm:mb-3">Research Areas</h3>
             <div className="flex flex-wrap gap-2">
               {speaker.topics.map((topic, index) => (
                 <span
                   key={index}
-                  className="px-2.5 sm:px-3 py-1 bg-accent-red/20 text-accent-red rounded-full text-xs sm:text-sm"
+                  className="px-2.5 sm:px-3 py-1 bg-accent/10 text-accent rounded-full text-xs sm:text-sm border border-accent/20"
                 >
                   {topic}
                 </span>
@@ -89,35 +88,20 @@ const SpeakerModal = ({ speaker, isOpen, onClose }) => {
           {/* Links */}
           <div className="flex gap-3 sm:gap-4">
             {speaker.links.website !== '#' && (
-              <a
-                href={speaker.links.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-text-secondary hover:text-accent-red transition-colors"
-                aria-label="Website"
-              >
+              <a href={speaker.links.website} target="_blank" rel="noopener noreferrer"
+                className="text-text-secondary hover:text-accent transition-colors" aria-label="Website">
                 <GlobeIcon />
               </a>
             )}
             {speaker.links.linkedin !== '#' && (
-              <a
-                href={speaker.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-text-secondary hover:text-accent-red transition-colors"
-                aria-label="LinkedIn"
-              >
+              <a href={speaker.links.linkedin} target="_blank" rel="noopener noreferrer"
+                className="text-text-secondary hover:text-accent transition-colors" aria-label="LinkedIn">
                 <LinkedInIcon />
               </a>
             )}
             {speaker.links.scholar !== '#' && (
-              <a
-                href={speaker.links.scholar}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-text-secondary hover:text-accent-red transition-colors"
-                aria-label="Google Scholar"
-              >
+              <a href={speaker.links.scholar} target="_blank" rel="noopener noreferrer"
+                className="text-text-secondary hover:text-accent transition-colors" aria-label="Google Scholar">
                 <ScholarIcon />
               </a>
             )}

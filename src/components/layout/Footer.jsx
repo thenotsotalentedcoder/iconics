@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { NAV_LINKS, EXTERNAL_LINKS } from '../../utils/constants';
 
-// Custom SVG Icons
 const EmailIcon = () => (
   <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
@@ -35,61 +34,46 @@ const LinkedInIcon = () => (
 
 const Footer = () => {
   return (
-    <footer className="bg-bg-darker border-t border-white/5">
+    <footer className="bg-bg-dark border-t border-border-subtle">
       <div className="container mx-auto px-6 lg:px-12 py-16 lg:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* About */}
           <div className="lg:col-span-1">
             <Link to="/" className="text-2xl font-bold flex items-center mb-4">
               <span className="text-accent">i</span>
-              <span className="text-white">CONICS</span>
+              <span className="text-text-primary">CONICS</span>
               <span className="text-accent">'26</span>
             </Link>
             <p className="text-text-muted text-sm leading-relaxed mb-6">
               International Conference on Innovations in Computer Science at NED University, Karachi.
             </p>
-            {/* Social Media */}
-            <div className="flex gap-4">
-              <a
-                href={EXTERNAL_LINKS.FACEBOOK}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-white/5 hover:bg-accent/20 flex items-center justify-center text-text-muted hover:text-accent transition-all duration-300"
-                aria-label="Facebook"
-              >
-                <FacebookIcon />
-              </a>
-              <a
-                href={EXTERNAL_LINKS.TWITTER}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-white/5 hover:bg-accent/20 flex items-center justify-center text-text-muted hover:text-accent transition-all duration-300"
-                aria-label="Twitter"
-              >
-                <TwitterIcon />
-              </a>
-              <a
-                href={EXTERNAL_LINKS.LINKEDIN}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg bg-white/5 hover:bg-accent/20 flex items-center justify-center text-text-muted hover:text-accent transition-all duration-300"
-                aria-label="LinkedIn"
-              >
-                <LinkedInIcon />
-              </a>
+            <div className="flex gap-3">
+              {[
+                { href: EXTERNAL_LINKS.FACEBOOK, label: 'Facebook', Icon: FacebookIcon },
+                { href: EXTERNAL_LINKS.TWITTER, label: 'Twitter', Icon: TwitterIcon },
+                { href: EXTERNAL_LINKS.LINKEDIN, label: 'LinkedIn', Icon: LinkedInIcon },
+              ].map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-10 h-10 rounded-lg bg-accent/8 hover:bg-accent/15 border border-border-subtle hover:border-accent/30 flex items-center justify-center text-text-muted hover:text-accent transition-all duration-300"
+                >
+                  <Icon />
+                </a>
+              ))}
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-white font-semibold mb-6">Quick Links</h4>
+            <h4 className="text-text-primary font-semibold mb-6">Quick Links</h4>
             <ul className="space-y-3">
               {NAV_LINKS.slice(0, 5).map((link) => (
                 <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-text-muted hover:text-accent transition-colors text-sm"
-                  >
+                  <Link to={link.path} className="text-text-muted hover:text-accent transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -99,14 +83,11 @@ const Footer = () => {
 
           {/* More Links */}
           <div>
-            <h4 className="text-white font-semibold mb-6">Resources</h4>
+            <h4 className="text-text-primary font-semibold mb-6">Resources</h4>
             <ul className="space-y-3">
               {NAV_LINKS.slice(5).map((link) => (
                 <li key={link.path}>
-                  <Link
-                    to={link.path}
-                    className="text-text-muted hover:text-accent transition-colors text-sm"
-                  >
+                  <Link to={link.path} className="text-text-muted hover:text-accent transition-colors text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -116,13 +97,13 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-white font-semibold mb-6">Contact</h4>
+            <h4 className="text-text-primary font-semibold mb-6">Contact</h4>
             <div className="space-y-4">
               <a
                 href={EXTERNAL_LINKS.EMAIL}
                 className="flex items-center gap-3 text-text-muted hover:text-accent transition-colors group"
               >
-                <div className="w-10 h-10 rounded-lg bg-white/5 group-hover:bg-accent/20 flex items-center justify-center transition-all duration-300">
+                <div className="w-10 h-10 rounded-lg bg-accent/8 group-hover:bg-accent/15 border border-border-subtle flex items-center justify-center transition-all duration-300">
                   <EmailIcon />
                 </div>
                 <span className="text-sm">secretary@nediconics.com</span>
@@ -131,7 +112,7 @@ const Footer = () => {
                 href={EXTERNAL_LINKS.PHONE}
                 className="flex items-center gap-3 text-text-muted hover:text-accent transition-colors group"
               >
-                <div className="w-10 h-10 rounded-lg bg-white/5 group-hover:bg-accent/20 flex items-center justify-center transition-all duration-300">
+                <div className="w-10 h-10 rounded-lg bg-accent/8 group-hover:bg-accent/15 border border-border-subtle flex items-center justify-center transition-all duration-300">
                   <PhoneIcon />
                 </div>
                 <span className="text-sm">(+92-21) 99261261</span>
@@ -141,13 +122,9 @@ const Footer = () => {
         </div>
 
         {/* Copyright */}
-        <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-text-muted text-sm">
-            &copy; 2026 iCONICS. All rights reserved.
-          </p>
-          <p className="text-text-muted text-sm">
-            NED University of Engineering & Technology
-          </p>
+        <div className="mt-16 pt-8 border-t border-border-subtle flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-text-muted text-sm">&copy; 2026 iCONICS. All rights reserved.</p>
+          <p className="text-text-muted text-sm">NED University of Engineering &amp; Technology</p>
         </div>
       </div>
     </footer>

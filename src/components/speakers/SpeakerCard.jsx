@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-// Custom SVG Icon
 const UserIcon = () => (
   <svg className="w-full h-full p-12 sm:p-16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -14,14 +13,14 @@ const SpeakerCard = ({ speaker, onClick }) => {
 
   return (
     <motion.div
-      className="bg-bg-card rounded-xl overflow-hidden border border-border-subtle cursor-pointer transition-all duration-300 hover:border-accent hover:-translate-y-2 hover:shadow-glow-red active:border-accent active:shadow-glow-red group"
+      className="bg-bg-card rounded-xl overflow-hidden border border-border-subtle cursor-pointer transition-all duration-300 hover:border-accent hover:-translate-y-2 hover:shadow-medium active:border-accent group shadow-card"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       onClick={() => onClick(speaker)}
       whileTap={{ scale: 0.98 }}
     >
-      {/* Photo - Portrait orientation */}
+      {/* Photo */}
       <div className="relative aspect-[3/4] overflow-hidden bg-bg-secondary">
         {!imageError ? (
           <img
@@ -36,16 +35,16 @@ const SpeakerCard = ({ speaker, onClick }) => {
           </div>
         )}
         {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        <div className="absolute inset-0 bg-gradient-to-t from-accent-dark/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
-      {/* Info - More compact */}
+      {/* Info */}
       <div className="p-3">
-        <h3 className="text-sm sm:text-base font-bold font-heading text-white mb-0.5 line-clamp-2 leading-tight">
+        <h3 className="text-sm sm:text-base font-bold font-heading text-text-primary mb-0.5 line-clamp-2 leading-tight">
           {speaker.name}
         </h3>
         <p className="text-xs text-text-muted mb-0.5 line-clamp-1">{speaker.title}</p>
-        <p className="text-xs text-accent-red mb-1 line-clamp-1 leading-tight">{speaker.institution}</p>
+        <p className="text-xs text-accent mb-1 line-clamp-1 leading-tight font-medium">{speaker.institution}</p>
         <div className="flex items-center gap-1">
           <svg className="w-3 h-3 text-text-muted flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>

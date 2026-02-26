@@ -59,7 +59,7 @@ const Label = ({ children, required }) => (
   </label>
 );
 
-const inputBase = 'w-full bg-bg-darker border rounded-lg px-4 py-3 text-white text-sm placeholder-text-muted/40 focus:outline-none transition-colors duration-200';
+const inputBase = 'w-full bg-bg-primary border rounded-lg px-4 py-3 text-text-primary text-sm placeholder-text-muted/40 focus:outline-none transition-colors duration-200';
 const inputOk   = 'border-border-subtle focus:border-accent/60';
 const inputErr  = 'border-red-500/50 focus:border-red-500/80';
 
@@ -68,7 +68,7 @@ const Input = ({ error, ...props }) => (
 );
 
 const Select = ({ error, children, ...props }) => (
-  <select {...props} className={`${inputBase} ${error ? inputErr : inputOk} text-white`}>
+  <select {...props} className={`${inputBase} ${error ? inputErr : inputOk} text-text-primary`}>
     {children}
   </select>
 );
@@ -94,12 +94,12 @@ const StepBar = ({ current }) => (
         <div className="flex items-center gap-2">
           <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 shrink-0 ${
             i < current  ? 'bg-accent text-white' :
-            i === current ? 'bg-accent text-white ring-2 ring-accent/30 ring-offset-1 ring-offset-bg-card' :
-                           'bg-bg-darker border border-border-subtle text-text-muted'
+            i === current ? 'bg-accent text-text-primary ring-2 ring-accent/30 ring-offset-1 ring-offset-bg-card' :
+                           'bg-bg-primary border border-border-subtle text-text-muted'
           }`}>
             {i < current ? <FaCheck className="w-2.5 h-2.5" /> : i + 1}
           </div>
-          <span className={`text-xs hidden sm:block transition-colors ${i === current ? 'text-white font-medium' : 'text-text-muted'}`}>
+          <span className={`text-xs hidden sm:block transition-colors ${i === current ? 'text-text-primary font-medium' : 'text-text-muted'}`}>
             {name}
           </span>
         </div>
@@ -217,11 +217,11 @@ const RegistrationForm = ({ onClose }) => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
           </svg>
         </motion.div>
-        <h3 className="text-2xl font-bold text-white mb-2">Registration Submitted</h3>
+        <h3 className="text-2xl font-bold text-text-primary mb-2">Registration Submitted</h3>
         <p className="text-text-muted text-sm max-w-sm mb-8 leading-relaxed">
           Your email client has opened with all details pre-filled. Send that email to complete your registration.
         </p>
-        <div className="w-full max-w-sm bg-bg-darker rounded-xl border border-border-subtle p-5 text-left space-y-3 mb-8">
+        <div className="w-full max-w-sm bg-bg-primary rounded-xl border border-border-subtle p-5 text-left space-y-3 mb-8">
           <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">What happens next</p>
           {[
             'Send the pre-filled email from your email client',
@@ -235,7 +235,7 @@ const RegistrationForm = ({ onClose }) => {
             </div>
           ))}
         </div>
-        <button onClick={onClose} className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded-lg text-sm font-semibold transition-all duration-200">
+        <button onClick={onClose} className="px-6 py-2.5 bg-accent hover:bg-accent-light text-text-primary rounded-lg text-sm font-semibold transition-all duration-200">
           Done
         </button>
       </div>
@@ -248,12 +248,12 @@ const RegistrationForm = ({ onClose }) => {
       <div className="px-6 sm:px-8 pt-6 pb-4 border-b border-border-subtle shrink-0">
         <div className="flex items-start justify-between gap-4 mb-5">
           <div>
-            <h3 className="text-xl font-bold text-white">Register for ICONICS'26</h3>
+            <h3 className="text-xl font-bold text-text-primary">Register for ICONICS'26</h3>
             <p className="text-text-muted text-sm mt-0.5">October 10–11, 2026 · NED University, Karachi</p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-bg-darker border border-border-subtle flex items-center justify-center text-text-muted hover:text-white hover:border-white/20 transition-all shrink-0"
+            className="w-8 h-8 rounded-lg bg-bg-primary border border-border-subtle flex items-center justify-center text-text-muted hover:text-text-primary hover:border-border-dark transition-all shrink-0"
           >
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -341,9 +341,9 @@ const RegistrationForm = ({ onClose }) => {
                     <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all shrink-0 ${
                       form.isIEEE ? 'bg-accent border-accent' : 'border-border-subtle group-hover:border-accent/50'
                     }`}>
-                      {form.isIEEE && <FaCheck className="text-white text-xs" />}
+                      {form.isIEEE && <FaCheck className="text-text-primary text-xs" />}
                     </div>
-                    <span className="text-sm text-text-muted group-hover:text-white transition-colors text-left">
+                    <span className="text-sm text-text-muted group-hover:text-text-primary transition-colors text-left">
                       I am an IEEE member <span className="text-accent">(students: fee waived · others: 15% off)</span>
                     </span>
                   </button>
@@ -403,12 +403,12 @@ const RegistrationForm = ({ onClose }) => {
             {step === 2 && (
               <div className="space-y-5">
                 {/* bank reminder */}
-                <div className="p-4 rounded-xl bg-bg-darker border border-border-subtle text-sm">
+                <div className="p-4 rounded-xl bg-bg-primary border border-border-subtle text-sm">
                   <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Transfer payment to</p>
                   <div className="space-y-1.5">
-                    <p className="text-white"><span className="text-text-muted">Bank: </span>{paymentInfo.bank}</p>
-                    <p className="text-white"><span className="text-text-muted">Account: </span>{paymentInfo.accountTitle}</p>
-                    <p className="text-white font-mono text-xs"><span className="text-text-muted">IBAN: </span>{paymentInfo.iban}</p>
+                    <p className="text-text-primary"><span className="text-text-muted">Bank: </span>{paymentInfo.bank}</p>
+                    <p className="text-text-primary"><span className="text-text-muted">Account: </span>{paymentInfo.accountTitle}</p>
+                    <p className="text-text-primary font-mono text-xs"><span className="text-text-muted">IBAN: </span>{paymentInfo.iban}</p>
                   </div>
                   {price && (
                     <div className="mt-3 pt-3 border-t border-border-subtle flex items-center justify-between">
@@ -509,14 +509,14 @@ const RegistrationForm = ({ onClose }) => {
                   },
                 ].map(section => (
                   <div key={section.title} className="rounded-xl border border-border-subtle overflow-hidden">
-                    <div className="px-4 py-2.5 bg-bg-darker border-b border-border-subtle">
+                    <div className="px-4 py-2.5 bg-bg-primary border-b border-border-subtle">
                       <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">{section.title}</p>
                     </div>
                     <div className="px-4 divide-y divide-border-subtle/50">
                       {section.rows.map(([label, value]) => (
                         <div key={label} className="flex items-start justify-between py-2.5 gap-4">
                           <span className="text-text-muted text-sm shrink-0">{label}</span>
-                          <span className="text-white text-sm text-right break-all">{value}</span>
+                          <span className="text-text-primary text-sm text-right break-all">{value}</span>
                         </div>
                       ))}
                     </div>
@@ -538,7 +538,7 @@ const RegistrationForm = ({ onClose }) => {
         <button
           onClick={back}
           disabled={step === 0}
-          className="px-5 py-2.5 border border-border-subtle text-text-muted rounded-lg text-sm font-medium hover:text-white hover:border-white/20 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
+          className="px-5 py-2.5 border border-border-subtle text-text-muted rounded-lg text-sm font-medium hover:text-text-primary hover:border-border-dark transition-all disabled:opacity-30 disabled:cursor-not-allowed"
         >
           Back
         </button>
@@ -622,7 +622,7 @@ const RegistrationModal = ({ isOpen, onClose }) => {
 const PriceRow = ({ label, value }) => (
   <div className="flex items-center justify-between py-2 border-b border-border-subtle/50 last:border-0">
     <span className="text-text-muted text-sm">{label}</span>
-    <span className="text-white font-semibold text-sm">{value}</span>
+    <span className="text-text-primary font-semibold text-sm">{value}</span>
   </div>
 );
 
@@ -633,7 +633,7 @@ const Registration = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <SectionHeading title="Registration" subtitle="Secure your spot at ICONICS'26" />
 
@@ -650,7 +650,7 @@ const Registration = () => {
               </svg>
             </div>
             <div className="flex-1">
-              <p className="text-white font-semibold mb-1">{ieeeDiscount.title}</p>
+              <p className="text-text-primary font-semibold mb-1">{ieeeDiscount.title}</p>
               <ul className="space-y-0.5">
                 {ieeeDiscount.benefits.map((b, i) => (
                   <li key={i} className="flex items-center gap-2 text-sm text-text-muted">
@@ -681,7 +681,7 @@ const Registration = () => {
                     Best Value
                   </div>
                 )}
-                <h3 className="text-xl font-bold text-white mb-1">{regType.type}</h3>
+                <h3 className="text-xl font-bold text-text-primary mb-1">{regType.type}</h3>
                 <p className="text-text-muted text-xs mb-5">Until {regType.deadline}</p>
                 <div className="mb-5">
                   {regType.prices.national_paper        && <PriceRow label="National (Paper)"        value={regType.prices.national_paper} />}
@@ -740,7 +740,7 @@ const Registration = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-lg font-bold text-white mb-4">Bank Details (IBFT)</h3>
+              <h3 className="text-lg font-bold text-text-primary mb-4">Bank Details (IBFT)</h3>
               <div className="space-y-3">
                 {[
                   { label: 'Bank',          value: paymentInfo.bank },
@@ -751,13 +751,13 @@ const Registration = () => {
                 ].map(({ label, value }) => (
                   <div key={label}>
                     <p className="text-xs text-text-muted uppercase tracking-wider mb-0.5">{label}</p>
-                    <p className="text-white text-sm font-medium">{value}</p>
+                    <p className="text-text-primary text-sm font-medium">{value}</p>
                   </div>
                 ))}
               </div>
               <div className="mt-5 pt-4 border-t border-border-subtle">
                 <p className="text-xs text-text-muted uppercase tracking-wider mb-2">Registration Coordinator</p>
-                <p className="text-white text-sm font-medium">{paymentInfo.coordinator.name}</p>
+                <p className="text-text-primary text-sm font-medium">{paymentInfo.coordinator.name}</p>
                 <a href={`mailto:${paymentInfo.coordinator.email}`} className="text-accent text-sm hover:underline">{paymentInfo.coordinator.email}</a>
                 <p className="text-text-muted text-sm">{paymentInfo.coordinator.phone}</p>
               </div>
@@ -770,7 +770,7 @@ const Registration = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
             >
-              <h3 className="text-lg font-bold text-white mb-4">Rules & Policies</h3>
+              <h3 className="text-lg font-bold text-text-primary mb-4">Rules & Policies</h3>
               <ul className="space-y-3">
                 {paymentInfo.rules.map((rule, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm text-text-muted">

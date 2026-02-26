@@ -16,7 +16,7 @@ const Button = ({
   const variants = {
     primary: "bg-gradient-to-r from-accent to-accent-dark text-white hover:shadow-glow-red hover:from-accent-light hover:to-accent",
     secondary: "bg-transparent border-2 border-accent text-accent hover:bg-accent hover:text-white",
-    outline: "bg-transparent border-2 border-white text-white hover:bg-white hover:text-black"
+    outline: "bg-transparent border-2 border-accent/50 text-accent hover:border-accent hover:bg-accent hover:text-white"
   };
 
   const sizes = {

@@ -3,10 +3,7 @@ import { Link } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 
 const AboutStatsSection = () => {
-  const [sectionRef, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1
-  });
+  const [sectionRef, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
 
   const stats = [
     {
@@ -16,7 +13,7 @@ const AboutStatsSection = () => {
         </svg>
       ),
       value: '500+',
-      label: 'Attendees'
+      label: 'Attendees',
     },
     {
       icon: (
@@ -25,7 +22,7 @@ const AboutStatsSection = () => {
         </svg>
       ),
       value: '200+',
-      label: 'Papers'
+      label: 'Papers',
     },
     {
       icon: (
@@ -34,7 +31,7 @@ const AboutStatsSection = () => {
         </svg>
       ),
       value: '50+',
-      label: 'Speakers'
+      label: 'Speakers',
     },
     {
       icon: (
@@ -43,30 +40,25 @@ const AboutStatsSection = () => {
         </svg>
       ),
       value: '20+',
-      label: 'Countries'
-    }
+      label: 'Countries',
+    },
   ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
+    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } }
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
   };
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-bg-dark relative overflow-hidden">
+    <section ref={sectionRef} className="py-24 lg:py-32 bg-bg-secondary relative overflow-hidden">
       <div className="container mx-auto px-6 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          {/* Left Panel - About */}
+          {/* Left — About */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
@@ -76,62 +68,47 @@ const AboutStatsSection = () => {
               About The Conference
             </span>
 
-            <h2 className="text-display font-bold text-white mb-6 leading-tight">
+            <h2 className="text-display font-bold text-text-primary mb-6 leading-tight">
               We're <span className="text-accent">iCONICS</span>
             </h2>
 
-            <div className="space-y-4 text-text-muted leading-relaxed">
+            <div className="space-y-4 text-text-secondary leading-relaxed">
               <p className="text-lg">
                 NED University presents the 5th International Conference on Innovations in Computer Science, bringing together researchers and innovators from around the world.
               </p>
-
               <p>
                 Our platform enables the exchange of cutting-edge ideas in AI, Machine Learning, Quantum Computing, Cybersecurity, and emerging technologies that shape our digital future.
               </p>
             </div>
 
             <div className="mt-8">
-              <Link
-                to="/about"
-                className="inline-flex items-center gap-2 text-accent font-semibold group"
-              >
+              <Link to="/about" className="inline-flex items-center gap-2 text-accent font-semibold group">
                 Learn More
-                <svg 
-                  className="w-5 h-5 group-hover:translate-x-1 transition-transform" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </Link>
             </div>
           </motion.div>
 
-          {/* Right Panel - Stats Grid */}
+          {/* Right — Stats Grid */}
           <motion.div
             variants={containerVariants}
             initial="hidden"
-            animate={inView ? "visible" : "hidden"}
+            animate={inView ? 'visible' : 'hidden'}
             className="grid grid-cols-2 gap-4"
           >
             {stats.map((stat, index) => (
               <motion.div
                 key={index}
                 variants={itemVariants}
-                className="bg-bg-card p-6 rounded-2xl border border-border-subtle hover:border-accent/40 transition-all duration-500 hover:shadow-glow group"
+                className="bg-bg-card p-6 rounded-2xl border border-border-subtle hover:border-accent/40 transition-all duration-500 hover:shadow-medium group shadow-card"
               >
                 <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent mb-4 group-hover:bg-accent group-hover:text-white transition-all duration-300">
                   {stat.icon}
                 </div>
-
-                <div className="text-4xl font-bold text-white mb-1">
-                  {stat.value}
-                </div>
-
-                <div className="text-sm text-text-muted">
-                  {stat.label}
-                </div>
+                <div className="text-4xl font-bold text-text-primary mb-1">{stat.value}</div>
+                <div className="text-sm text-text-muted">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>

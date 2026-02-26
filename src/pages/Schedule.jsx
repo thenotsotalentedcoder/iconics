@@ -20,7 +20,7 @@ const Schedule = () => {
       case 'ceremony':
         return 'border-yellow-600 bg-yellow-600/10';
       case 'break':
-        return 'border-gray-600 bg-gray-600/10';
+        return 'border-border-dark bg-border-subtle/30';
       default:
         return 'border-border-subtle bg-bg-card';
     }
@@ -28,7 +28,7 @@ const Schedule = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <SectionHeading
             title="Conference Schedule"
@@ -41,8 +41,8 @@ const Schedule = () => {
               onClick={() => setActiveDay(1)}
               className={`px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base ${
                 activeDay === 1
-                  ? 'bg-accent-red text-white shadow-glow-red'
-                  : 'bg-bg-card text-text-secondary hover:text-white'
+                  ? 'bg-accent text-white shadow-glow-sm'
+                  : 'bg-bg-card border border-border-subtle text-text-secondary hover:text-accent hover:border-accent/40'
               }`}
             >
               Day 1 - October 10
@@ -51,8 +51,8 @@ const Schedule = () => {
               onClick={() => setActiveDay(2)}
               className={`px-6 sm:px-8 py-2.5 sm:py-3 rounded-lg font-semibold transition-all text-sm sm:text-base ${
                 activeDay === 2
-                  ? 'bg-accent-red text-white shadow-glow-red'
-                  : 'bg-bg-card text-text-secondary hover:text-white'
+                  ? 'bg-accent text-white shadow-glow-sm'
+                  : 'bg-bg-card border border-border-subtle text-text-secondary hover:text-accent hover:border-accent/40'
               }`}
             >
               Day 2 - October 11
@@ -79,16 +79,16 @@ const Schedule = () => {
                 <div className="flex flex-col md:flex-row md:items-start gap-3 sm:gap-4">
                   {/* Time */}
                   <div className="md:w-40 flex-shrink-0">
-                    <p className="text-accent-red font-bold font-accent text-sm sm:text-base">{item.time}</p>
+                    <p className="text-accent font-bold font-accent text-sm sm:text-base">{item.time}</p>
                     <p className="text-text-muted text-xs sm:text-sm mt-1">{item.location}</p>
                   </div>
 
                   {/* Event Details */}
                   <div className="flex-grow">
-                    <h3 className="text-lg sm:text-xl font-bold text-white mb-1 sm:mb-2">{item.event}</h3>
+                    <h3 className="text-lg sm:text-xl font-bold text-text-primary mb-1 sm:mb-2">{item.event}</h3>
                     {item.speaker && (
                       <p className="text-text-secondary mb-1 sm:mb-2 text-sm sm:text-base">
-                        <span className="text-accent-red">Speaker:</span> {item.speaker}
+                        <span className="text-accent">Speaker:</span> {item.speaker}
                       </p>
                     )}
                     {item.description && (
@@ -117,18 +117,18 @@ const Schedule = () => {
           {/* Workshop Info */}
           {activeDay === 2 && (
             <div className="mt-16 bg-bg-card border border-border-subtle rounded-lg p-8">
-              <h3 className="text-2xl font-bold text-white mb-4">Workshops</h3>
+              <h3 className="text-2xl font-bold text-text-primary mb-4">Workshops</h3>
               <p className="text-text-secondary mb-4">
                 Two parallel workshops will be conducted on Day 2. Attendees can choose one workshop to participate in.
               </p>
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="bg-bg-secondary rounded-lg p-6">
-                  <h4 className="text-lg font-semibold text-white mb-2">Quantum Technologies Workshop</h4>
+                  <h4 className="text-lg font-semibold text-text-primary mb-2">Quantum Technologies Workshop</h4>
                   <p className="text-text-muted text-sm mb-2">Instructor: Dr. Manzoor Ikram</p>
                   <p className="text-text-secondary text-sm">Hands-on introduction to quantum computing principles and applications</p>
                 </div>
                 <div className="bg-bg-secondary rounded-lg p-6">
-                  <h4 className="text-lg font-semibold text-white mb-2">NLP Workshop</h4>
+                  <h4 className="text-lg font-semibold text-text-primary mb-2">NLP Workshop</h4>
                   <p className="text-text-muted text-sm mb-2">Instructor: Prof. Dr. Muhammad Rafi</p>
                   <p className="text-text-secondary text-sm">Practical natural language processing techniques and tools</p>
                 </div>

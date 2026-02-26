@@ -103,7 +103,7 @@ const Gallery = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
           <SectionHeading
             title="Gallery & Archive"
@@ -118,8 +118,8 @@ const Gallery = () => {
                 onClick={() => setActiveYear(ed.year)}
                 className={`px-5 py-2 rounded-lg font-semibold text-sm transition-all duration-200 ${
                   activeYear === ed.year
-                    ? 'bg-accent text-white shadow-glow'
-                    : 'bg-bg-card border border-border-subtle text-text-muted hover:text-white hover:border-accent/40'
+                    ? 'bg-accent text-text-primary shadow-glow'
+                    : 'bg-bg-card border border-border-subtle text-text-muted hover:text-text-primary hover:border-accent/40'
                 }`}
               >
                 {ed.label}
@@ -145,7 +145,7 @@ const Gallery = () => {
                     <span className="w-1 h-1 rounded-full bg-border-subtle" />
                     <span className="text-text-muted text-xs">{activeEdition.venue}</span>
                   </div>
-                  <h2 className="text-2xl font-bold text-white mb-3">{activeEdition.label}</h2>
+                  <h2 className="text-2xl font-bold text-text-primary mb-3">{activeEdition.label}</h2>
                   <p className="text-text-muted leading-relaxed mb-5">{activeEdition.description}</p>
                   <div className="flex flex-wrap gap-2">
                     {activeEdition.resources.map((r, i) => (
@@ -195,7 +195,7 @@ const Gallery = () => {
 
           {/* Full Archive Summary */}
           <section className="border-t border-border-subtle pt-12">
-            <h3 className="text-xl font-bold text-white mb-6">Complete Archive</h3>
+            <h3 className="text-xl font-bold text-text-primary mb-6">Complete Archive</h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {editions.map((ed) => (
                 <motion.div
@@ -207,7 +207,7 @@ const Gallery = () => {
                   <div className="text-3xl font-bold text-accent/40 group-hover:text-accent/70 transition-colors mb-2 font-mono">
                     '{ed.year.slice(2)}
                   </div>
-                  <h4 className="text-white font-semibold mb-1">{ed.edition}</h4>
+                  <h4 className="text-text-primary font-semibold mb-1">{ed.edition}</h4>
                   <p className="text-text-muted text-xs mb-3">{ed.date}</p>
                   <div className="flex flex-wrap gap-1.5">
                     {ed.resources.map((r, i) => (

@@ -3,14 +3,12 @@ import { useState, useEffect } from 'react';
 import HeroBackground from '../animations/HeroNetwork';
 import { Link } from 'react-router-dom';
 
-// Countdown Timer Component
 const CountdownTimer = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   function calculateTimeLeft() {
     const difference = new Date(targetDate) - new Date();
     if (difference <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-
     return {
       days: Math.floor(difference / (1000 * 60 * 60 * 24)),
       hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
@@ -20,9 +18,7 @@ const CountdownTimer = ({ targetDate }) => {
   }
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
+    const timer = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
     return () => clearInterval(timer);
   }, [targetDate]);
 
@@ -34,7 +30,7 @@ const CountdownTimer = ({ targetDate }) => {
   ];
 
   return (
-    <div className="flex gap-6 md:gap-8">
+    <div className="flex gap-4 md:gap-6">
       {timeUnits.map((unit, index) => (
         <div key={unit.label} className="text-center">
           <motion.div
@@ -43,7 +39,7 @@ const CountdownTimer = ({ targetDate }) => {
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: index * 0.1, duration: 0.5 }}
           >
-            <div className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-2xl bg-bg-card border border-white/10 flex items-center justify-center backdrop-blur-sm">
+            <div className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-2xl bg-white border border-border-subtle shadow-card flex items-center justify-center">
               <motion.span
                 key={unit.value}
                 className="text-3xl md:text-5xl lg:text-6xl font-bold text-accent"
@@ -55,7 +51,7 @@ const CountdownTimer = ({ targetDate }) => {
               </motion.span>
             </div>
           </motion.div>
-          <span className="text-sm md:text-base text-text-muted mt-3 block">{unit.label}</span>
+          <span className="text-sm md:text-base text-text-muted mt-3 block font-medium">{unit.label}</span>
         </div>
       ))}
     </div>
@@ -63,15 +59,12 @@ const CountdownTimer = ({ targetDate }) => {
 };
 
 const Hero = () => {
-  // Conference date: October 10, 2026
   const conferenceDate = '2026-10-10T09:00:00';
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-bg-darker">
-      {/* Animated Background */}
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-bg-primary">
       <HeroBackground />
 
-      {/* Content */}
       <div className="relative z-10 container mx-auto px-6 lg:px-12 py-32">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Content */}
@@ -82,8 +75,8 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <span className="inline-flex items-center px-4 py-2 rounded-full bg-accent/10 border border-accent/20 text-accent text-sm font-medium">
-                October 10-11, 2026 • NED University
+              <span className="inline-flex items-center px-4 py-2 rounded-full bg-accent/10 border border-accent/25 text-accent text-sm font-semibold">
+                October 10–11, 2026 &nbsp;·&nbsp; NED University
               </span>
             </motion.div>
 
@@ -95,21 +88,21 @@ const Hero = () => {
             >
               <h1 className="text-hero font-bold leading-[1.1] tracking-tight">
                 <span className="gradient-text">iCONICS</span>
-                <span className="text-white">'26</span>
+                <span className="text-text-primary">'26</span>
               </h1>
-              <p className="text-xl md:text-2xl text-text-muted mt-4">
+              <p className="text-xl md:text-2xl text-text-muted mt-4 font-medium">
                 International Conference on Innovations in Computer Science
               </p>
             </motion.div>
 
             {/* Description */}
             <motion.p
-              className="text-lg text-text-muted max-w-xl leading-relaxed"
+              className="text-lg text-text-secondary max-w-xl leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              Present cutting-edge research and connect with global experts 
+              Present cutting-edge research and connect with global experts
               at NED University, Karachi.
             </motion.p>
 
@@ -131,14 +124,14 @@ const Hero = () => {
               </Link>
               <Link
                 to="/about"
-                className="inline-flex items-center justify-center px-8 py-4 border border-white/20 hover:border-accent/50 text-white font-semibold rounded-lg transition-all duration-300 hover:bg-white/5"
+                className="inline-flex items-center justify-center px-8 py-4 border-2 border-accent/40 hover:border-accent text-text-primary font-semibold rounded-lg transition-all duration-300 hover:bg-accent/5"
               >
                 Learn More
               </Link>
             </motion.div>
           </div>
 
-          {/* Right Content - Countdown Timer */}
+          {/* Right Content — Countdown Timer */}
           <motion.div
             className="flex flex-col items-center lg:items-start justify-center"
             initial={{ opacity: 0, scale: 0.95 }}
@@ -146,14 +139,13 @@ const Hero = () => {
             transition={{ duration: 1, delay: 0.3 }}
           >
             <div className="text-center lg:text-left mb-8">
-              <h3 className="text-white text-xl font-semibold mb-1">Conference Starts In</h3>
-              <p className="text-text-muted">October 10-11, 2026</p>
+              <h3 className="text-text-primary text-xl font-semibold mb-1">Conference Starts In</h3>
+              <p className="text-text-muted">October 10–11, 2026</p>
             </div>
             <CountdownTimer targetDate={conferenceDate} />
           </motion.div>
         </div>
       </div>
-
     </section>
   );
 };

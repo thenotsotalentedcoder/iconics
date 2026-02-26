@@ -13,7 +13,7 @@ const CallForPapers = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-darker">
+      <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
         <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
           <SectionHeading
             title="Call for Papers"
@@ -22,27 +22,27 @@ const CallForPapers = () => {
 
           {/* Overview */}
           <section className="mb-12 sm:mb-16">
-            <h3 className="text-xl sm:text-2xl font-bold font-heading text-white mb-3 sm:mb-4">Overview</h3>
+            <h3 className="text-xl sm:text-2xl font-bold font-heading text-text-primary mb-3 sm:mb-4">Overview</h3>
             <div className="text-text-secondary space-y-3 sm:space-y-4 text-sm sm:text-base">
               <p>
                 ICONICS'26 invites original research contributions addressing theoretical, experimental, and
                 application aspects of computer science and related fields.
               </p>
               <p>
-                <strong className="text-white">Paper Types Accepted:</strong> Full papers (6-8 pages), Short papers (4 pages), and Posters
+                <strong className="text-text-primary">Paper Types Accepted:</strong> Full papers (6-8 pages), Short papers (4 pages), and Posters
               </p>
               <p>
-                <strong className="text-white">Review Process:</strong> Double-blind peer review by international experts
+                <strong className="text-text-primary">Review Process:</strong> Double-blind peer review by international experts
               </p>
               <p>
-                <strong className="text-white">Publication:</strong> Accepted papers will be published in IEEE Conference Proceedings (subject to approval)
+                <strong className="text-text-primary">Publication:</strong> Accepted papers will be published in IEEE Conference Proceedings (subject to approval)
               </p>
             </div>
           </section>
 
           {/* Research Tracks */}
           <section className="mb-12 sm:mb-16">
-            <h3 className="text-xl sm:text-2xl font-bold font-heading text-white mb-4 sm:mb-6">Research Tracks</h3>
+            <h3 className="text-xl sm:text-2xl font-bold font-heading text-text-primary mb-4 sm:mb-6">Research Tracks</h3>
             <div className="space-y-3 sm:space-y-4">
               {tracks.map((track) => (
                 <motion.div
@@ -57,7 +57,7 @@ const CallForPapers = () => {
                     className="w-full p-4 sm:p-6 flex items-center justify-between hover:bg-bg-card-hover transition-colors"
                   >
                     <div className="flex items-center gap-3 sm:gap-4">
-                      <span className="text-base sm:text-lg font-semibold text-white text-left">{track.name}</span>
+                      <span className="text-base sm:text-lg font-semibold text-text-primary text-left">{track.name}</span>
                     </div>
                     <span className="text-accent text-xl sm:text-2xl flex-shrink-0">
                       {openTrack === track.id ? '−' : '+'}
@@ -90,28 +90,28 @@ const CallForPapers = () => {
 
           {/* Submission Guidelines */}
           <section className="mb-16">
-            <h3 className="text-2xl font-bold font-heading text-white mb-4">Submission Guidelines</h3>
+            <h3 className="text-2xl font-bold font-heading text-text-primary mb-4">Submission Guidelines</h3>
             <div className="bg-bg-card border border-border-subtle rounded-lg p-6">
               <ul className="space-y-3 text-text-secondary">
                 <li className="flex items-start">
                   <span className="text-accent mr-2">•</span>
-                  <span><strong className="text-white">Format:</strong> IEEE Conference format (template will be provided)</span>
+                  <span><strong className="text-text-primary">Format:</strong> IEEE Conference format (template will be provided)</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2">•</span>
-                  <span><strong className="text-white">Length:</strong> Full papers (6-8 pages), Short papers (4 pages)</span>
+                  <span><strong className="text-text-primary">Length:</strong> Full papers (6-8 pages), Short papers (4 pages)</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2">•</span>
-                  <span><strong className="text-white">Submission System:</strong> EasyChair</span>
+                  <span><strong className="text-text-primary">Submission System:</strong> EasyChair</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2">•</span>
-                  <span><strong className="text-white">Review:</strong> Double-blind peer review</span>
+                  <span><strong className="text-text-primary">Review:</strong> Double-blind peer review</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-accent mr-2">•</span>
-                  <span><strong className="text-white">Notification:</strong> Authors will be notified via email</span>
+                  <span><strong className="text-text-primary">Notification:</strong> Authors will be notified via email</span>
                 </li>
               </ul>
             </div>
@@ -119,7 +119,7 @@ const CallForPapers = () => {
 
           {/* Important Dates */}
           <section className="mb-16">
-            <h3 className="text-2xl font-bold font-heading text-white mb-6">Important Dates</h3>
+            <h3 className="text-2xl font-bold font-heading text-text-primary mb-6">Important Dates</h3>
             <Timeline items={importantDates} />
           </section>
 
