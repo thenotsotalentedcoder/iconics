@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/layout/PageTransition';
 import SectionHeading from '../components/common/SectionHeading';
@@ -97,7 +98,7 @@ const SessionCard = ({ session, index }) => {
   );
 };
 
-const WorkshopCard = ({ workshop, index }) => (
+const WorkshopCard = ({ workshop, index, onRegister }) => (
   <motion.section
     className="mb-16 lg:mb-24"
     initial={{ opacity: 0, y: 30 }}
@@ -126,15 +127,15 @@ const WorkshopCard = ({ workshop, index }) => (
       </div>
 
       <div className="shrink-0">
-        <a
-          href={workshop.registrationLink}
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={onRegister}
           className="inline-flex items-center gap-2 px-6 py-3 bg-accent hover:bg-accent-light text-text-primary font-semibold rounded-lg transition-all duration-300 hover:shadow-glow text-sm"
         >
           Register for Workshop
-          <ExternalLinkIcon />
-        </a>
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </button>
       </div>
     </div>
 
@@ -170,6 +171,9 @@ const WorkshopCard = ({ workshop, index }) => (
 );
 
 const Workshops = () => {
+  const navigate = useNavigate();
+  const handleRegister = () => navigate('/registration?type=workshop');
+
   return (
     <PageTransition>
       <div className="min-h-screen pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 bg-bg-primary">
@@ -224,7 +228,7 @@ const Workshops = () => {
 
           {/* Workshop listings */}
           {workshops.map((workshop, index) => (
-            <WorkshopCard key={workshop.id} workshop={workshop} index={index} />
+            <WorkshopCard key={workshop.id} workshop={workshop} index={index} onRegister={handleRegister} />
           ))}
         </div>
       </div>

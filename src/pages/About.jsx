@@ -8,7 +8,7 @@ const pastEditions = [
     year: "2016",
     date: "December 15–16, 2016",
     edition: "1st Edition",
-    description: "The inaugural ICONICS brought together national and international researchers to discuss innovations in computer science and software engineering.",
+    description: "The inaugural ICONICS received 73 full papers globally with 19 accepted (26% acceptance rate). Sessions covered AI, IoT, data mining, networking, and emerging technologies, with attendees from Pakistan, USA, UK, and Malaysia.",
     proceedings: EXTERNAL_LINKS.PROCEEDINGS_2016,
     proceedingsLabel: "Proceedings PDF",
     ieeeLink: null,

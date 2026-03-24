@@ -32,13 +32,15 @@ const Committee = () => {
                   </div>
                   <h4 className="text-lg sm:text-xl font-bold text-text-primary mb-2">{member.name}</h4>
                   <p className="text-text-secondary text-sm mb-3">{member.institution}</p>
-                  <a
-                    href={`mailto:${member.email}`}
-                    className="flex items-center text-text-muted hover:text-accent transition-colors text-sm"
-                  >
-                    <FaEnvelope className="mr-2" />
-                    {member.email}
-                  </a>
+                  {member.email && (
+                    <a
+                      href={`mailto:${member.email}`}
+                      className="flex items-center text-text-muted hover:text-accent transition-colors text-sm"
+                    >
+                      <FaEnvelope className="mr-2" />
+                      {member.email}
+                    </a>
+                  )}
                 </motion.div>
               ))}
             </div>

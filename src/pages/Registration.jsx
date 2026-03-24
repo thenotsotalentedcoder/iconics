@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/layout/PageTransition';
 import SectionHeading from '../components/common/SectionHeading';
@@ -7,49 +8,8 @@ import { FaCheck } from 'react-icons/fa';
 
 // ─── constants ───────────────────────────────────────────────────────────────
 
-const CATEGORY_OPTIONS = [
-  { value: 'national_paper',         label: 'National — Paper Author',      prices: { early: 'PKR 7,000', regular: 'PKR 8,000', onsite: 'PKR 9,000' } },
-  { value: 'international_paper',    label: 'International — Paper Author', prices: { early: 'USD 40',    regular: 'USD 50',    onsite: 'USD 60'    } },
-  { value: 'professional',           label: 'Professional / Co-Author',     prices: { early: 'PKR 2,500', regular: 'PKR 3,000', onsite: 'PKR 3,500' } },
-  { value: 'student',                label: 'Student / Student Co-Author',  prices: { early: 'PKR 1,000', regular: 'PKR 1,500', onsite: 'PKR 2,000' } },
-  { value: 'international_delegate', label: 'International Delegate',       prices: { early: 'USD 80',    regular: 'USD 100',   onsite: 'USD 120'   } },
-  { value: 'workshop_only',          label: 'Workshop Only',                prices: { early: 'PKR 5,000', regular: 'PKR 5,000', onsite: 'PKR 5,000' } },
-];
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
-const WORKSHOP_OPTIONS = [
-  { value: 'quantum', label: 'Quantum Technologies Workshop' },
-  { value: 'nlp',     label: 'NLP — Contrastive Learning for Word Embedding' },
-  { value: 'both',    label: 'Both Workshops' },
-];
-
-const STEPS = ['Personal Info', 'Registration', 'Payment', 'Review'];
-
-const isPaperCategory    = (c) => ['national_paper', 'international_paper'].includes(c);
-const isWorkshopCategory = (c) => c === 'workshop_only';
-
-const getPriceTier = () => {
-  const now = new Date();
-  if (now <= new Date('2026-08-10')) return 'early';
-  if (now <= new Date('2026-10-05')) return 'regular';
-  return 'onsite';
-};
-
-const getPrice = (catValue, isIEEE) => {
-  if (!catValue) return null;
-  const cat  = CATEGORY_OPTIONS.find(c => c.value === catValue);
-  if (!cat) return null;
-  const base = cat.prices[getPriceTier()];
-  if (isIEEE && catValue === 'student') return { label: 'Free', note: 'IEEE Student Member waiver' };
-  if (isIEEE) return { label: base, note: '−15% IEEE member discount applies' };
-  return { label: base, note: null };
-};
-
-const INITIAL_FORM = {
-  fullName: '', email: '', phone: '', institution: '', country: '',
-  category: '', isIEEE: false, ieeeId: '', workshop: '',
-  paperTitle: '', paperId: '', coAuthors: '',
-  transactionId: '', transactionDate: '', amountPaid: '', bankName: '',
-};
 
 // ─── small field components ──────────────────────────────────────────────────
 
@@ -67,10 +27,24 @@ const Input = ({ error, ...props }) => (
   <input {...props} className={`${inputBase} ${error ? inputErr : inputOk}`} />
 );
 
-const Select = ({ error, children, ...props }) => (
-  <select {...props} className={`${inputBase} ${error ? inputErr : inputOk} text-text-primary`}>
-    {children}
-  </select>
+const Textarea = ({ error, ...props }) => (
+  <textarea {...props} className={`${inputBase} ${error ? inputErr : inputOk} min-h-[80px] resize-y`} />
+);
+
+const FileInput = ({ error, label, accept, note, onChange, fileName }) => (
+  <div>
+    <Label required>{label}</Label>
+    <label className={`flex items-center gap-3 px-4 py-3 rounded-lg border cursor-pointer transition-colors duration-200 ${error ? inputErr : 'border-border-subtle hover:border-accent/60'}`}>
+      <svg className="w-5 h-5 text-text-muted shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+      </svg>
+      <span className="text-sm text-text-muted truncate flex-1">
+        {fileName || 'Choose file...'}
+      </span>
+      <input type="file" accept={accept} onChange={onChange} className="hidden" />
+    </label>
+    {note && <p className="text-text-muted/60 text-xs mt-1">{note}</p>}
+  </div>
 );
 
 const FieldError = ({ msg }) =>
@@ -85,11 +59,43 @@ const InfoNote = ({ children }) => (
   </p>
 );
 
+// ─── Tab selector for registration type ──────────────────────────────────────
+
+const FORM_TYPES = [
+  { key: 'participant', label: 'Conference Participant' },
+  { key: 'paper',       label: 'Paper Author' },
+  { key: 'workshop',    label: 'Workshop' },
+];
+
+const FormTypeSelector = ({ active, onChange }) => (
+  <div className="flex gap-1 p-1 bg-bg-primary rounded-xl border border-border-subtle mb-6">
+    {FORM_TYPES.map(t => (
+      <button
+        key={t.key}
+        onClick={() => onChange(t.key)}
+        className={`flex-1 py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+          active === t.key
+            ? 'bg-accent text-white shadow-sm'
+            : 'text-text-muted hover:text-text-primary'
+        }`}
+      >
+        {t.label}
+      </button>
+    ))}
+  </div>
+);
+
 // ─── step indicator ──────────────────────────────────────────────────────────
 
-const StepBar = ({ current }) => (
+const getSteps = (formType) => {
+  if (formType === 'workshop') return ['Personal Info', 'Details', 'Review'];
+  if (formType === 'paper')   return ['Registration Type', 'Paper Info', 'Payment', 'Review'];
+  return ['Registration Type', 'Personal Info', 'Payment', 'Review'];
+};
+
+const StepBar = ({ current, steps }) => (
   <div className="flex items-center gap-2">
-    {STEPS.map((name, i) => (
+    {steps.map((name, i) => (
       <div key={i} className="flex items-center gap-2">
         <div className="flex items-center gap-2">
           <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-300 shrink-0 ${
@@ -103,7 +109,7 @@ const StepBar = ({ current }) => (
             {name}
           </span>
         </div>
-        {i < STEPS.length - 1 && (
+        {i < steps.length - 1 && (
           <div className={`h-px w-4 sm:w-8 transition-all duration-300 ${i < current ? 'bg-accent' : 'bg-border-subtle'}`} />
         )}
       </div>
@@ -111,14 +117,23 @@ const StepBar = ({ current }) => (
   </div>
 );
 
-// ─── registration form (inside modal) ────────────────────────────────────────
+// ─── Workshop Registration Form ──────────────────────────────────────────────
 
-const RegistrationForm = ({ onClose }) => {
-  const [step, setStep]     = useState(0);
-  const [form, setForm]     = useState(INITIAL_FORM);
+const WorkshopForm = ({ onClose }) => {
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState({
+    email: '', fullName: '', mobileNumber: '', cnicNumber: '',
+    institutionOrg: '', semesterDesignation: '', professionalAddress: '',
+    highestDegree: '', quantumCourses: '', whyWorkshopHelps: '',
+    travelArrangement: '', attendanceCertificate: false, termsAgreed: false,
+  });
+  const [resume, setResume] = useState(null);
   const [errors, setErrors] = useState({});
-  const [done, setDone]     = useState(false);
+  const [done, setDone] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [apiError, setApiError] = useState('');
 
+  const steps = getSteps('workshop');
   const set = (field, value) => {
     setForm(f => ({ ...f, [field]: value }));
     setErrors(e => ({ ...e, [field]: '' }));
@@ -127,28 +142,20 @@ const RegistrationForm = ({ onClose }) => {
   const validate = (s) => {
     const e = {};
     if (s === 0) {
-      if (!form.fullName.trim())    e.fullName    = 'Required.';
-      if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email))
-                                    e.email       = 'Valid email required.';
-      if (!form.phone.trim())       e.phone       = 'Required.';
-      if (!form.institution.trim()) e.institution = 'Required.';
-      if (!form.country.trim())     e.country     = 'Required.';
+      if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Valid email required.';
+      if (!form.fullName.trim()) e.fullName = 'Required.';
+      if (!form.mobileNumber.trim()) e.mobileNumber = 'Required.';
+      if (!form.cnicNumber.trim()) e.cnicNumber = 'Required.';
+      if (!form.institutionOrg.trim()) e.institutionOrg = 'Required.';
+      if (!form.semesterDesignation.trim()) e.semesterDesignation = 'Required.';
+      if (!form.professionalAddress.trim()) e.professionalAddress = 'Required.';
+      if (!form.highestDegree.trim()) e.highestDegree = 'Required.';
     }
     if (s === 1) {
-      if (!form.category)           e.category    = 'Please select a category.';
-      if (form.isIEEE && !form.ieeeId.trim()) e.ieeeId = 'IEEE membership ID required.';
-      if (isPaperCategory(form.category)) {
-        if (!form.paperTitle.trim()) e.paperTitle = 'Paper title required.';
-        if (!form.paperId.trim())    e.paperId    = 'EasyChair paper ID required.';
-      }
-      if (isWorkshopCategory(form.category) && !form.workshop)
-                                    e.workshop    = 'Please select a workshop.';
-    }
-    if (s === 2) {
-      if (!form.transactionId.trim())  e.transactionId  = 'Required.';
-      if (!form.transactionDate)       e.transactionDate = 'Required.';
-      if (!form.amountPaid.trim())     e.amountPaid     = 'Required.';
-      if (!form.bankName.trim())       e.bankName       = 'Required.';
+      if (!form.quantumCourses.trim()) e.quantumCourses = 'Required.';
+      if (!form.whyWorkshopHelps.trim()) e.whyWorkshopHelps = 'Required.';
+      if (!form.travelArrangement.trim()) e.travelArrangement = 'Required.';
+      if (!form.termsAgreed) e.termsAgreed = 'You must agree to the terms.';
     }
     return e;
   };
@@ -159,422 +166,867 @@ const RegistrationForm = ({ onClose }) => {
     setStep(s => s + 1);
   };
 
-  const back = () => setStep(s => s - 1);
+  const submit = async () => {
+    setSubmitting(true);
+    setApiError('');
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([k, v]) => formData.append(k, v));
+      if (resume) formData.append('resume', resume);
 
-  const submit = () => {
-    const catLabel   = CATEGORY_OPTIONS.find(c => c.value === form.category)?.label || form.category;
-    const price      = getPrice(form.category, form.isIEEE);
-    const workshopLbl = WORKSHOP_OPTIONS.find(w => w.value === form.workshop)?.label || '—';
-
-    const subject = encodeURIComponent(`ICONICS'26 Registration — ${form.fullName} — ${catLabel}`);
-    const body = encodeURIComponent([
-      `=== ICONICS'26 CONFERENCE REGISTRATION ===`,
-      ``,
-      `── Personal Information ──`,
-      `Full Name:        ${form.fullName}`,
-      `Email:            ${form.email}`,
-      `Phone:            ${form.phone}`,
-      `Institution:      ${form.institution}`,
-      `Country:          ${form.country}`,
-      ``,
-      `── Registration Details ──`,
-      `Category:         ${catLabel}`,
-      `Fee:              ${price?.label || '—'}${price?.note ? ` (${price.note})` : ''}`,
-      `IEEE Member:      ${form.isIEEE ? `Yes — ID: ${form.ieeeId}` : 'No'}`,
-      ...(isPaperCategory(form.category) ? [
-        `Paper Title:      ${form.paperTitle}`,
-        `EasyChair ID:     ${form.paperId}`,
-        `Co-Authors:       ${form.coAuthors || '—'}`,
-      ] : []),
-      ...(form.workshop ? [`Workshop:         ${workshopLbl}`] : []),
-      ``,
-      `── Payment Information ──`,
-      `Transaction ID:   ${form.transactionId}`,
-      `Transaction Date: ${form.transactionDate}`,
-      `Amount Paid:      ${form.amountPaid}`,
-      `Bank:             ${form.bankName}`,
-      ``,
-      `===========================================`,
-    ].join('\n'));
-
-    window.open(`mailto:registration@nediconics.com?subject=${subject}&body=${body}`, '_blank');
-    setDone(true);
+      const res = await fetch(`${API_BASE}/api/register/workshop`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.message || data.errors?.map(e => e.message).join(', ') || 'Registration failed');
+      }
+      setDone(true);
+    } catch (err) {
+      setApiError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
-  const price = getPrice(form.category, form.isIEEE);
-
-  // ── success ──
-  if (done) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 15 }}
-          className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mb-6"
-        >
-          <svg className="w-10 h-10 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
-          </svg>
-        </motion.div>
-        <h3 className="text-2xl font-bold text-text-primary mb-2">Registration Submitted</h3>
-        <p className="text-text-muted text-sm max-w-sm mb-8 leading-relaxed">
-          Your email client has opened with all details pre-filled. Send that email to complete your registration.
-        </p>
-        <div className="w-full max-w-sm bg-bg-primary rounded-xl border border-border-subtle p-5 text-left space-y-3 mb-8">
-          <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">What happens next</p>
-          {[
-            'Send the pre-filled email from your email client',
-            'Transfer the registration fee to the bank account',
-            'Organizers verify your transaction ID (no duplicates allowed)',
-            'Receive confirmation email within 2–3 business days',
-          ].map((s, i) => (
-            <div key={i} className="flex items-start gap-3 text-sm text-text-muted">
-              <span className="w-5 h-5 rounded-full bg-accent/10 text-accent flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">{i + 1}</span>
-              {s}
-            </div>
-          ))}
-        </div>
-        <button onClick={onClose} className="px-6 py-2.5 bg-accent hover:bg-accent-light text-text-primary rounded-lg text-sm font-semibold transition-all duration-200">
-          Done
-        </button>
-      </div>
-    );
-  }
+  if (done) return <SuccessScreen type="Workshop" onClose={onClose} />;
 
   return (
-    <div className="flex flex-col h-full">
-      {/* ── fixed header ── */}
-      <div className="px-6 sm:px-8 pt-6 pb-4 border-b border-border-subtle shrink-0">
-        <div className="flex items-start justify-between gap-4 mb-5">
-          <div>
-            <h3 className="text-xl font-bold text-text-primary">Register for ICONICS'26</h3>
-            <p className="text-text-muted text-sm mt-0.5">October 10–11, 2026 · NED University, Karachi</p>
+    <FormShell title="Workshop Registration" steps={steps} step={step} onClose={onClose}
+      onBack={() => setStep(s => s - 1)} onNext={next}
+      onSubmit={submit} submitting={submitting} apiError={apiError}
+    >
+      {step === 0 && (
+        <div className="space-y-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <Label required>Email</Label>
+              <Input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" error={errors.email} />
+              <FieldError msg={errors.email} />
+            </div>
+            <div>
+              <Label required>Full Name</Label>
+              <Input value={form.fullName} onChange={e => set('fullName', e.target.value)} placeholder="Muhammad Ali" error={errors.fullName} />
+              <FieldError msg={errors.fullName} />
+            </div>
+            <div>
+              <Label required>Mobile Number</Label>
+              <Input type="tel" value={form.mobileNumber} onChange={e => set('mobileNumber', e.target.value)} placeholder="+92 300 0000000" error={errors.mobileNumber} />
+              <FieldError msg={errors.mobileNumber} />
+            </div>
+            <div>
+              <Label required>CNIC Number</Label>
+              <Input value={form.cnicNumber} onChange={e => set('cnicNumber', e.target.value)} placeholder="42101-1234567-8" error={errors.cnicNumber} />
+              <FieldError msg={errors.cnicNumber} />
+            </div>
+            <div>
+              <Label required>Institution / Organization</Label>
+              <Input value={form.institutionOrg} onChange={e => set('institutionOrg', e.target.value)} placeholder="NED University" error={errors.institutionOrg} />
+              <FieldError msg={errors.institutionOrg} />
+              <InfoNote>Students: add your institution. Professionals: mention your organization.</InfoNote>
+            </div>
+            <div>
+              <Label required>Semester / Designation</Label>
+              <Input value={form.semesterDesignation} onChange={e => set('semesterDesignation', e.target.value)} placeholder="7th Semester / Senior Engineer" error={errors.semesterDesignation} />
+              <FieldError msg={errors.semesterDesignation} />
+              <InfoNote>Students: enter current semester. Professionals: enter designation.</InfoNote>
+            </div>
+            <div className="sm:col-span-2">
+              <Label required>Professional Address</Label>
+              <Input value={form.professionalAddress} onChange={e => set('professionalAddress', e.target.value)} placeholder="Your current professional or residential address" error={errors.professionalAddress} />
+              <FieldError msg={errors.professionalAddress} />
+            </div>
+            <div className="sm:col-span-2">
+              <Label required>Highest Academic Degree</Label>
+              <Input value={form.highestDegree} onChange={e => set('highestDegree', e.target.value)} placeholder="e.g., BS (CS) NEDUET" error={errors.highestDegree} />
+              <FieldError msg={errors.highestDegree} />
+            </div>
           </div>
-          <button
-            onClick={onClose}
-            className="w-8 h-8 rounded-lg bg-bg-primary border border-border-subtle flex items-center justify-center text-text-muted hover:text-text-primary hover:border-border-dark transition-all shrink-0"
-          >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
         </div>
-        <StepBar current={step} />
-      </div>
+      )}
 
-      {/* ── scrollable body ── */}
-      <div className="flex-1 overflow-y-auto px-6 sm:px-8 py-6">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={step}
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -16 }}
-            transition={{ duration: 0.2 }}
-          >
-
-            {/* step 0 — personal */}
-            {step === 0 && (
-              <div className="space-y-4">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <Label required>Full Name</Label>
-                    <Input value={form.fullName} onChange={e => set('fullName', e.target.value)} placeholder="Dr. Jane Smith" error={errors.fullName} />
-                    <FieldError msg={errors.fullName} />
-                  </div>
-                  <div>
-                    <Label required>Email Address</Label>
-                    <Input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="jane@university.edu" error={errors.email} />
-                    <FieldError msg={errors.email} />
-                  </div>
-                  <div>
-                    <Label required>Phone Number</Label>
-                    <Input type="tel" value={form.phone} onChange={e => set('phone', e.target.value)} placeholder="+92 300 0000000" error={errors.phone} />
-                    <FieldError msg={errors.phone} />
-                  </div>
-                  <div>
-                    <Label required>Institution / Affiliation</Label>
-                    <Input value={form.institution} onChange={e => set('institution', e.target.value)} placeholder="NED University" error={errors.institution} />
-                    <FieldError msg={errors.institution} />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <Label required>Country</Label>
-                    <Input value={form.country} onChange={e => set('country', e.target.value)} placeholder="Pakistan" error={errors.country} />
-                    <FieldError msg={errors.country} />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* step 1 — registration details */}
-            {step === 1 && (
-              <div className="space-y-5">
-                {/* category */}
-                <div>
-                  <Label required>Registration Category</Label>
-                  <Select value={form.category} onChange={e => set('category', e.target.value)} error={errors.category}>
-                    <option value="" className="bg-bg-card">Select a category...</option>
-                    {CATEGORY_OPTIONS.map(c => (
-                      <option key={c.value} value={c.value} className="bg-bg-card">{c.label}</option>
-                    ))}
-                  </Select>
-                  <FieldError msg={errors.category} />
-                  {price && (
-                    <div className="mt-2 flex items-center justify-between px-3 py-2 rounded-lg bg-accent/5 border border-accent/20">
-                      <span className="text-xs text-text-muted">Your fee ({getPriceTier()} rate)</span>
-                      <div className="text-right">
-                        <span className="text-accent font-bold text-sm">{price.label}</span>
-                        {price.note && <p className="text-text-muted/60 text-xs">{price.note}</p>}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* IEEE */}
-                <div>
-                  <button
-                    type="button"
-                    onClick={() => set('isIEEE', !form.isIEEE)}
-                    className="flex items-center gap-3 group"
-                  >
-                    <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all shrink-0 ${
-                      form.isIEEE ? 'bg-accent border-accent' : 'border-border-subtle group-hover:border-accent/50'
-                    }`}>
-                      {form.isIEEE && <FaCheck className="text-text-primary text-xs" />}
-                    </div>
-                    <span className="text-sm text-text-muted group-hover:text-text-primary transition-colors text-left">
-                      I am an IEEE member <span className="text-accent">(students: fee waived · others: 15% off)</span>
-                    </span>
-                  </button>
-                  {form.isIEEE && (
-                    <div className="mt-3 ml-8">
-                      <Label required>IEEE Membership ID</Label>
-                      <Input value={form.ieeeId} onChange={e => set('ieeeId', e.target.value)} placeholder="e.g. 12345678" error={errors.ieeeId} />
-                      <FieldError msg={errors.ieeeId} />
-                      <InfoNote>Your ID will be verified by the organizers before confirmation.</InfoNote>
-                    </div>
-                  )}
-                </div>
-
-                {/* paper details */}
-                {isPaperCategory(form.category) && (
-                  <div className="space-y-4 pt-4 border-t border-border-subtle">
-                    <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">Paper Details</p>
-                    <div>
-                      <Label required>Paper Title</Label>
-                      <Input value={form.paperTitle} onChange={e => set('paperTitle', e.target.value)} placeholder="Full title of your submitted paper" error={errors.paperTitle} />
-                      <FieldError msg={errors.paperTitle} />
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div>
-                        <Label required>EasyChair Paper ID</Label>
-                        <Input value={form.paperId} onChange={e => set('paperId', e.target.value)} placeholder="e.g. 42" error={errors.paperId} />
-                        <FieldError msg={errors.paperId} />
-                        <InfoNote>Found in your EasyChair submission dashboard.</InfoNote>
-                      </div>
-                      <div>
-                        <Label>Co-Authors</Label>
-                        <Input value={form.coAuthors} onChange={e => set('coAuthors', e.target.value)} placeholder="Names, comma-separated" />
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* workshop */}
-                <div className="pt-4 border-t border-border-subtle">
-                  <Label required={isWorkshopCategory(form.category)}>
-                    Workshop{!isWorkshopCategory(form.category) && <span className="text-text-muted/50 font-normal normal-case tracking-normal ml-1">(optional)</span>}
-                  </Label>
-                  <Select value={form.workshop} onChange={e => set('workshop', e.target.value)} error={errors.workshop}>
-                    <option value="" className="bg-bg-card">
-                      {isWorkshopCategory(form.category) ? 'Select a workshop...' : 'No workshop'}
-                    </option>
-                    {WORKSHOP_OPTIONS.map(w => (
-                      <option key={w.value} value={w.value} className="bg-bg-card">{w.label}</option>
-                    ))}
-                  </Select>
-                  <FieldError msg={errors.workshop} />
-                </div>
-              </div>
-            )}
-
-            {/* step 2 — payment */}
-            {step === 2 && (
-              <div className="space-y-5">
-                {/* bank reminder */}
-                <div className="p-4 rounded-xl bg-bg-primary border border-border-subtle text-sm">
-                  <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Transfer payment to</p>
-                  <div className="space-y-1.5">
-                    <p className="text-text-primary"><span className="text-text-muted">Bank: </span>{paymentInfo.bank}</p>
-                    <p className="text-text-primary"><span className="text-text-muted">Account: </span>{paymentInfo.accountTitle}</p>
-                    <p className="text-text-primary font-mono text-xs"><span className="text-text-muted">IBAN: </span>{paymentInfo.iban}</p>
-                  </div>
-                  {price && (
-                    <div className="mt-3 pt-3 border-t border-border-subtle flex items-center justify-between">
-                      <span className="text-text-muted text-xs">Amount due</span>
-                      <span className="text-accent font-bold">{price.label}</span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div className="sm:col-span-2">
-                    <Label required>Transaction ID / Reference No.</Label>
-                    <Input
-                      value={form.transactionId}
-                      onChange={e => set('transactionId', e.target.value)}
-                      placeholder="e.g. TXN-20260810-XXXXX"
-                      error={errors.transactionId}
-                    />
-                    <FieldError msg={errors.transactionId} />
-                    <InfoNote>
-                      Each transaction ID can only be used once — duplicate submissions will be rejected by the organizers.
-                    </InfoNote>
-                  </div>
-                  <div>
-                    <Label required>Transaction Date</Label>
-                    <Input
-                      type="date"
-                      value={form.transactionDate}
-                      onChange={e => set('transactionDate', e.target.value)}
-                      error={errors.transactionDate}
-                      max={new Date().toISOString().split('T')[0]}
-                    />
-                    <FieldError msg={errors.transactionDate} />
-                  </div>
-                  <div>
-                    <Label required>Amount Paid</Label>
-                    <Input
-                      value={form.amountPaid}
-                      onChange={e => set('amountPaid', e.target.value)}
-                      placeholder="e.g. PKR 7,000"
-                      error={errors.amountPaid}
-                    />
-                    <FieldError msg={errors.amountPaid} />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <Label required>Your Bank Name</Label>
-                    <Input
-                      value={form.bankName}
-                      onChange={e => set('bankName', e.target.value)}
-                      placeholder="e.g. HBL, UBL, Meezan..."
-                      error={errors.bankName}
-                    />
-                    <FieldError msg={errors.bankName} />
-                  </div>
-                </div>
-                <InfoNote>Keep your payment receipt — the organizers may request it during verification.</InfoNote>
-              </div>
-            )}
-
-            {/* step 3 — review */}
-            {step === 3 && (
-              <div className="space-y-4">
-                <p className="text-text-muted text-sm">Please confirm everything looks correct before submitting.</p>
-
-                {[
-                  {
-                    title: 'Personal Information',
-                    rows: [
-                      ['Full Name',    form.fullName],
-                      ['Email',        form.email],
-                      ['Phone',        form.phone],
-                      ['Institution',  form.institution],
-                      ['Country',      form.country],
-                    ],
-                  },
-                  {
-                    title: 'Registration Details',
-                    rows: [
-                      ['Category',    CATEGORY_OPTIONS.find(c => c.value === form.category)?.label || '—'],
-                      ['Fee',         price ? `${price.label}${price.note ? ` (${price.note})` : ''}` : '—'],
-                      ['IEEE Member', form.isIEEE ? `Yes — ID: ${form.ieeeId}` : 'No'],
-                      ...(isPaperCategory(form.category) ? [
-                        ['Paper Title',   form.paperTitle],
-                        ['EasyChair ID',  form.paperId],
-                        ['Co-Authors',    form.coAuthors || '—'],
-                      ] : []),
-                      ...(form.workshop ? [['Workshop', WORKSHOP_OPTIONS.find(w => w.value === form.workshop)?.label]] : []),
-                    ],
-                  },
-                  {
-                    title: 'Payment',
-                    rows: [
-                      ['Transaction ID',   form.transactionId],
-                      ['Date',             form.transactionDate],
-                      ['Amount Paid',      form.amountPaid],
-                      ['Bank',             form.bankName],
-                    ],
-                  },
-                ].map(section => (
-                  <div key={section.title} className="rounded-xl border border-border-subtle overflow-hidden">
-                    <div className="px-4 py-2.5 bg-bg-primary border-b border-border-subtle">
-                      <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">{section.title}</p>
-                    </div>
-                    <div className="px-4 divide-y divide-border-subtle/50">
-                      {section.rows.map(([label, value]) => (
-                        <div key={label} className="flex items-start justify-between py-2.5 gap-4">
-                          <span className="text-text-muted text-sm shrink-0">{label}</span>
-                          <span className="text-text-primary text-sm text-right break-all">{value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-
-                <p className="text-text-muted/50 text-xs leading-relaxed pt-1">
-                  Submitting will open your email client with these details pre-filled. Send that email to complete registration.
-                </p>
-              </div>
-            )}
-
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {/* ── fixed footer ── */}
-      <div className="px-6 sm:px-8 py-4 border-t border-border-subtle flex items-center justify-between shrink-0">
-        <button
-          onClick={back}
-          disabled={step === 0}
-          className="px-5 py-2.5 border border-border-subtle text-text-muted rounded-lg text-sm font-medium hover:text-text-primary hover:border-border-dark transition-all disabled:opacity-30 disabled:cursor-not-allowed"
-        >
-          Back
-        </button>
-        <div className="flex items-center gap-3">
-          <span className="text-text-muted text-xs hidden sm:block">{step + 1} / {STEPS.length}</span>
-          {step < STEPS.length - 1 ? (
-            <button
-              onClick={next}
-              className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded-lg text-sm font-semibold transition-all duration-200 hover:shadow-glow"
-            >
-              Continue
-            </button>
-          ) : (
-            <button
-              onClick={submit}
-              className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded-lg text-sm font-semibold transition-all duration-200 hover:shadow-glow flex items-center gap-2"
-            >
-              Submit Registration
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-            </button>
-          )}
+      {step === 1 && (
+        <div className="space-y-4">
+          <FileInput
+            label="Resume (PDF or Document)"
+            accept=".pdf,.doc,.docx"
+            note="Upload a simple resume outlining your relevant experience and skills. Max 10MB."
+            onChange={e => setResume(e.target.files[0])}
+            fileName={resume?.name}
+            error={errors.resume}
+          />
+          <div>
+            <Label required>Quantum Computing Courses / Self-learning</Label>
+            <Textarea value={form.quantumCourses} onChange={e => set('quantumCourses', e.target.value)}
+              placeholder="Briefly describe what courses you have taken in quantum computing or topics you have learned on your own."
+              error={errors.quantumCourses} />
+            <FieldError msg={errors.quantumCourses} />
+          </div>
+          <div>
+            <Label required>Why will this workshop help your career?</Label>
+            <Textarea value={form.whyWorkshopHelps} onChange={e => set('whyWorkshopHelps', e.target.value)}
+              placeholder="Briefly describe why this workshop will help you in your career."
+              error={errors.whyWorkshopHelps} />
+            <FieldError msg={errors.whyWorkshopHelps} />
+          </div>
+          <div>
+            <Label required>Travel & Accommodation Arrangements</Label>
+            <Textarea value={form.travelArrangement} onChange={e => set('travelArrangement', e.target.value)}
+              placeholder="NEDUET will not be able to provide travel funds or hostel. Will you be able to manage these on your own?"
+              error={errors.travelArrangement} />
+            <FieldError msg={errors.travelArrangement} />
+          </div>
+          <div className="space-y-3 pt-3 border-t border-border-subtle">
+            <CheckboxField
+              checked={form.attendanceCertificate}
+              onChange={() => set('attendanceCertificate', !form.attendanceCertificate)}
+              label="I would like an attendance certificate (I will attend all sessions)"
+            />
+            <CheckboxField
+              checked={form.termsAgreed}
+              onChange={() => set('termsAgreed', !form.termsAgreed)}
+              label="I have read, understood, and agree to the terms and conditions"
+              error={errors.termsAgreed}
+            />
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+
+      {step === 2 && (
+        <ReviewSection sections={[
+          { title: 'Personal Information', rows: [
+            ['Email', form.email], ['Full Name', form.fullName],
+            ['Mobile', form.mobileNumber], ['CNIC', form.cnicNumber],
+            ['Institution', form.institutionOrg], ['Semester/Designation', form.semesterDesignation],
+            ['Address', form.professionalAddress], ['Degree', form.highestDegree],
+          ]},
+          { title: 'Workshop Details', rows: [
+            ['Resume', resume?.name || 'Not uploaded'],
+            ['Quantum Courses', form.quantumCourses],
+            ['Why Workshop Helps', form.whyWorkshopHelps],
+            ['Travel', form.travelArrangement],
+            ['Attendance Certificate', form.attendanceCertificate ? 'Yes' : 'No'],
+            ['Terms Agreed', form.termsAgreed ? 'Yes' : 'No'],
+          ]},
+        ]} />
+      )}
+    </FormShell>
   );
 };
 
-// ─── registration modal ───────────────────────────────────────────────────────
+// ─── Participant Registration Form ───────────────────────────────────────────
 
-const RegistrationModal = ({ isOpen, onClose }) => {
+const ParticipantForm = ({ onClose }) => {
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState({
+    registrationType: '', email: '', fullName: '', rollNo: '',
+    department: '', institute: '', contactNo: '',
+    stanTransactionId: '', transactionDate: '', bankDetails: '',
+    totalAmountPaid: '', certified: false,
+  });
+  const [receipt, setReceipt] = useState(null);
+  const [studentCard, setStudentCard] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [done, setDone] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [apiError, setApiError] = useState('');
+
+  const steps = getSteps('participant');
+  const set = (field, value) => {
+    setForm(f => ({ ...f, [field]: value }));
+    setErrors(e => ({ ...e, [field]: '' }));
+  };
+
+  const validate = (s) => {
+    const e = {};
+    if (s === 0) {
+      if (!form.registrationType) e.registrationType = 'Please select a type.';
+    }
+    if (s === 1) {
+      if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Valid email required.';
+      if (!form.fullName.trim()) e.fullName = 'Required.';
+      if (!form.department.trim()) e.department = 'Required.';
+      if (!form.institute.trim()) e.institute = 'Required.';
+      if (!form.contactNo.trim()) e.contactNo = 'Required.';
+      if (form.registrationType === 'student' && !form.rollNo.trim()) e.rollNo = 'Roll number is required for students.';
+    }
+    if (s === 2) {
+      if (!form.stanTransactionId.trim()) e.stanTransactionId = 'Required.';
+      if (!form.transactionDate) e.transactionDate = 'Required.';
+      if (!form.bankDetails.trim()) e.bankDetails = 'Required.';
+      if (!form.totalAmountPaid.trim()) e.totalAmountPaid = 'Required.';
+      if (!form.certified) e.certified = 'You must certify the information is correct.';
+    }
+    return e;
+  };
+
+  const next = () => {
+    const e = validate(step);
+    if (Object.keys(e).length) { setErrors(e); return; }
+    setStep(s => s + 1);
+  };
+
+  const submit = async () => {
+    setSubmitting(true);
+    setApiError('');
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([k, v]) => formData.append(k, v));
+      if (receipt) formData.append('transactionReceipt', receipt);
+      if (studentCard) formData.append('studentCard', studentCard);
+
+      const res = await fetch(`${API_BASE}/api/register/participant`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Registration failed');
+      setDone(true);
+    } catch (err) {
+      setApiError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (done) return <SuccessScreen type="Participant" onClose={onClose} />;
+
+  return (
+    <FormShell title="Conference Participant Registration" steps={steps} step={step} onClose={onClose}
+      onBack={() => setStep(s => s - 1)} onNext={next}
+      onSubmit={submit} submitting={submitting} apiError={apiError}
+    >
+      {step === 0 && (
+        <div className="space-y-4">
+          <Label required>Registration Type</Label>
+          <div className="space-y-3">
+            {[
+              { value: 'professional', label: 'Professionals' },
+              { value: 'student',      label: 'Students' },
+            ].map(opt => (
+              <button key={opt.value} type="button" onClick={() => set('registrationType', opt.value)}
+                className={`w-full flex items-center gap-3 p-4 rounded-lg border transition-all ${
+                  form.registrationType === opt.value
+                    ? 'border-accent bg-accent/5'
+                    : 'border-border-subtle hover:border-accent/40'
+                }`}
+              >
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                  form.registrationType === opt.value ? 'border-accent' : 'border-border-subtle'
+                }`}>
+                  {form.registrationType === opt.value && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
+                </div>
+                <span className="text-text-primary text-sm font-medium">{opt.label}</span>
+              </button>
+            ))}
+          </div>
+          <FieldError msg={errors.registrationType} />
+        </div>
+      )}
+
+      {step === 1 && (
+        <div className="space-y-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <Label required>Email</Label>
+              <Input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" error={errors.email} />
+              <FieldError msg={errors.email} />
+            </div>
+            <div>
+              <Label required>Full Name</Label>
+              <Input value={form.fullName} onChange={e => set('fullName', e.target.value)} placeholder="Muhammad Ali" error={errors.fullName} />
+              <FieldError msg={errors.fullName} />
+            </div>
+            {form.registrationType === 'student' && (
+              <div>
+                <Label required>Roll No.</Label>
+                <Input value={form.rollNo} onChange={e => set('rollNo', e.target.value)} placeholder="CS-2022-001" error={errors.rollNo} />
+                <FieldError msg={errors.rollNo} />
+              </div>
+            )}
+            <div>
+              <Label required>Department</Label>
+              <Input value={form.department} onChange={e => set('department', e.target.value)} placeholder="Computer Science & IT" error={errors.department} />
+              <FieldError msg={errors.department} />
+            </div>
+            <div>
+              <Label required>Institute</Label>
+              <Input value={form.institute} onChange={e => set('institute', e.target.value)} placeholder="NED University" error={errors.institute} />
+              <FieldError msg={errors.institute} />
+            </div>
+            <div>
+              <Label required>Contact No.</Label>
+              <Input type="tel" value={form.contactNo} onChange={e => set('contactNo', e.target.value)} placeholder="+92 300 0000000" error={errors.contactNo} />
+              <FieldError msg={errors.contactNo} />
+              <InfoNote>Your privacy will be protected.</InfoNote>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="space-y-5">
+          <PaymentBankInfo />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
+              <Label required>STAN # / Transaction ID (IBFT)</Label>
+              <Input value={form.stanTransactionId} onChange={e => set('stanTransactionId', e.target.value)} placeholder="TXN-20260810-XXXXX" error={errors.stanTransactionId} />
+              <FieldError msg={errors.stanTransactionId} />
+            </div>
+            <div>
+              <Label required>Date of Transaction</Label>
+              <Input type="date" value={form.transactionDate} onChange={e => set('transactionDate', e.target.value)} error={errors.transactionDate} max={new Date().toISOString().split('T')[0]} />
+              <FieldError msg={errors.transactionDate} />
+            </div>
+            <div>
+              <Label required>Total Amount Paid</Label>
+              <Input value={form.totalAmountPaid} onChange={e => set('totalAmountPaid', e.target.value)} placeholder="e.g. PKR 7,000" error={errors.totalAmountPaid} />
+              <FieldError msg={errors.totalAmountPaid} />
+            </div>
+            <div className="sm:col-span-2">
+              <Label required>Bank Details (Name / Branch)</Label>
+              <Input value={form.bankDetails} onChange={e => set('bankDetails', e.target.value)} placeholder="HBL, Gulshan Branch, Karachi" error={errors.bankDetails} />
+              <FieldError msg={errors.bankDetails} />
+            </div>
+          </div>
+          <FileInput
+            label="Scanned Copy of Transaction Receipt"
+            accept=".pdf,.png,.jpg,.jpeg"
+            note="If paid via internet banking, you can share a screenshot. Max 100MB."
+            onChange={e => setReceipt(e.target.files[0])}
+            fileName={receipt?.name}
+          />
+          {form.registrationType === 'student' && (
+            <FileInput
+              label="Scanned Copy of Student Card"
+              accept=".pdf,.png,.jpg,.jpeg"
+              note="Upload 1 file: PDF or image. Max 100MB."
+              onChange={e => setStudentCard(e.target.files[0])}
+              fileName={studentCard?.name}
+            />
+          )}
+          <CheckboxField
+            checked={form.certified}
+            onChange={() => set('certified', !form.certified)}
+            label="I certify that all information presented above is up to date and correct to the best of my knowledge"
+            error={errors.certified}
+          />
+        </div>
+      )}
+
+      {step === 3 && (
+        <ReviewSection sections={[
+          { title: 'Registration', rows: [
+            ['Type', form.registrationType === 'professional' ? 'Professional' : 'Student'],
+          ]},
+          { title: 'Personal Information', rows: [
+            ['Email', form.email], ['Full Name', form.fullName],
+            ...(form.rollNo ? [['Roll No.', form.rollNo]] : []),
+            ['Department', form.department], ['Institute', form.institute],
+            ['Contact No.', form.contactNo],
+          ]},
+          { title: 'Payment', rows: [
+            ['Transaction ID', form.stanTransactionId],
+            ['Date', form.transactionDate], ['Amount', form.totalAmountPaid],
+            ['Bank', form.bankDetails],
+            ['Receipt', receipt?.name || 'Not uploaded'],
+            ...(studentCard ? [['Student Card', studentCard.name]] : []),
+          ]},
+        ]} />
+      )}
+    </FormShell>
+  );
+};
+
+// ─── Paper Registration Form ─────────────────────────────────────────────────
+
+const PaperForm = ({ onClose }) => {
+  const [step, setStep] = useState(0);
+  const [form, setForm] = useState({
+    registrationType: '', email: '', paperId: '', paperTitle: '',
+    authorName: '', rollNo: '', department: '', institution: '',
+    contactNo: '', stanTransactionId: '', transactionDate: '',
+    bankDetails: '', totalAmountPaid: '', certified: false,
+    hasCoAuthors: false,
+  });
+  const [coAuthors, setCoAuthors] = useState([]);
+  const [receipt, setReceipt] = useState(null);
+  const [studentCard, setStudentCard] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [done, setDone] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [apiError, setApiError] = useState('');
+
+  const steps = getSteps('paper');
+  const set = (field, value) => {
+    setForm(f => ({ ...f, [field]: value }));
+    setErrors(e => ({ ...e, [field]: '' }));
+  };
+
+  const addCoAuthor = () => setCoAuthors(prev => [...prev, {
+    registrationType: form.registrationType, email: '', paperId: form.paperId,
+    paperTitle: form.paperTitle, authorName: '', rollNo: '', department: '',
+    institution: '', contactNo: '', stanTransactionId: '', transactionDate: '',
+    bankDetails: '', totalAmountPaid: '', certified: false,
+  }]);
+
+  const updateCoAuthor = (idx, field, value) => {
+    setCoAuthors(prev => prev.map((ca, i) => i === idx ? { ...ca, [field]: value } : ca));
+  };
+
+  const removeCoAuthor = (idx) => setCoAuthors(prev => prev.filter((_, i) => i !== idx));
+
+  const validate = (s) => {
+    const e = {};
+    if (s === 0) {
+      if (!form.registrationType) e.registrationType = 'Please select a type.';
+    }
+    if (s === 1) {
+      if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Valid email required.';
+      if (!form.paperId.trim()) e.paperId = 'Required.';
+      if (!form.paperTitle.trim()) e.paperTitle = 'Required.';
+      if (!form.authorName.trim()) e.authorName = 'Required.';
+      if (!form.department.trim()) e.department = 'Required.';
+      if (!form.institution.trim()) e.institution = 'Required.';
+      if (!form.contactNo.trim()) e.contactNo = 'Required.';
+      if (form.registrationType === 'student' && !form.rollNo.trim()) e.rollNo = 'Required for students.';
+    }
+    if (s === 2) {
+      if (!form.stanTransactionId.trim()) e.stanTransactionId = 'Required.';
+      if (!form.transactionDate) e.transactionDate = 'Required.';
+      if (!form.bankDetails.trim()) e.bankDetails = 'Required.';
+      if (!form.totalAmountPaid.trim()) e.totalAmountPaid = 'Required.';
+      if (!form.certified) e.certified = 'You must certify the information is correct.';
+    }
+    return e;
+  };
+
+  const next = () => {
+    const e = validate(step);
+    if (Object.keys(e).length) { setErrors(e); return; }
+    setStep(s => s + 1);
+  };
+
+  const submit = async () => {
+    setSubmitting(true);
+    setApiError('');
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([k, v]) => formData.append(k, v));
+      if (receipt) formData.append('transactionReceipt', receipt);
+      if (studentCard) formData.append('studentCard', studentCard);
+      if (coAuthors.length > 0) {
+        formData.set('hasCoAuthors', 'true');
+        formData.append('coAuthors', JSON.stringify(coAuthors));
+      }
+
+      const res = await fetch(`${API_BASE}/api/register/paper`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Registration failed');
+      setDone(true);
+    } catch (err) {
+      setApiError(err.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (done) return <SuccessScreen type="Paper" onClose={onClose} />;
+
+  return (
+    <FormShell title="Paper Registration" steps={steps} step={step} onClose={onClose}
+      onBack={() => setStep(s => s - 1)} onNext={next}
+      onSubmit={submit} submitting={submitting} apiError={apiError}
+    >
+      {step === 0 && (
+        <div className="space-y-4">
+          <Label required>Registration Type</Label>
+          <div className="space-y-3">
+            {[
+              { value: 'student',          label: 'Author is a Student' },
+              { value: 'academia_industry', label: 'Authors from Academia / Industry' },
+            ].map(opt => (
+              <button key={opt.value} type="button" onClick={() => set('registrationType', opt.value)}
+                className={`w-full flex items-center gap-3 p-4 rounded-lg border transition-all ${
+                  form.registrationType === opt.value
+                    ? 'border-accent bg-accent/5'
+                    : 'border-border-subtle hover:border-accent/40'
+                }`}
+              >
+                <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                  form.registrationType === opt.value ? 'border-accent' : 'border-border-subtle'
+                }`}>
+                  {form.registrationType === opt.value && <div className="w-2.5 h-2.5 rounded-full bg-accent" />}
+                </div>
+                <span className="text-text-primary text-sm font-medium">{opt.label}</span>
+              </button>
+            ))}
+          </div>
+          <FieldError msg={errors.registrationType} />
+        </div>
+      )}
+
+      {step === 1 && (
+        <div className="space-y-4">
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div>
+              <Label required>Paper ID</Label>
+              <Input value={form.paperId} onChange={e => set('paperId', e.target.value)} placeholder="e.g. 42" error={errors.paperId} />
+              <FieldError msg={errors.paperId} />
+            </div>
+            <div>
+              <Label required>Email</Label>
+              <Input type="email" value={form.email} onChange={e => set('email', e.target.value)} placeholder="you@example.com" error={errors.email} />
+              <FieldError msg={errors.email} />
+            </div>
+            <div className="sm:col-span-2">
+              <Label required>Paper Title</Label>
+              <Input value={form.paperTitle} onChange={e => set('paperTitle', e.target.value)} placeholder="Full title of your paper" error={errors.paperTitle} />
+              <FieldError msg={errors.paperTitle} />
+            </div>
+            <div>
+              <Label required>Author Name</Label>
+              <Input value={form.authorName} onChange={e => set('authorName', e.target.value)} placeholder="Your full name (for certificate)" error={errors.authorName} />
+              <FieldError msg={errors.authorName} />
+              <InfoNote>Please double check — your name will appear on the certificate.</InfoNote>
+            </div>
+            {form.registrationType === 'student' && (
+              <div>
+                <Label required>Roll No.</Label>
+                <Input value={form.rollNo} onChange={e => set('rollNo', e.target.value)} placeholder="CS-2022-001" error={errors.rollNo} />
+                <FieldError msg={errors.rollNo} />
+              </div>
+            )}
+            <div>
+              <Label required>Department</Label>
+              <Input value={form.department} onChange={e => set('department', e.target.value)} placeholder="Computer Science & IT" error={errors.department} />
+              <FieldError msg={errors.department} />
+            </div>
+            <div>
+              <Label required>Institution</Label>
+              <Input value={form.institution} onChange={e => set('institution', e.target.value)} placeholder="NED University" error={errors.institution} />
+              <FieldError msg={errors.institution} />
+            </div>
+            <div>
+              <Label required>Contact No.</Label>
+              <Input type="tel" value={form.contactNo} onChange={e => set('contactNo', e.target.value)} placeholder="+92 300 0000000" error={errors.contactNo} />
+              <FieldError msg={errors.contactNo} />
+              <InfoNote>Your privacy will be protected.</InfoNote>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {step === 2 && (
+        <div className="space-y-5">
+          <PaymentBankInfo />
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="sm:col-span-2">
+              <Label required>STAN # / Transaction ID (IBFT)</Label>
+              <Input value={form.stanTransactionId} onChange={e => set('stanTransactionId', e.target.value)} placeholder="TXN-20260810-XXXXX" error={errors.stanTransactionId} />
+              <FieldError msg={errors.stanTransactionId} />
+            </div>
+            <div>
+              <Label required>Date of Transaction</Label>
+              <Input type="date" value={form.transactionDate} onChange={e => set('transactionDate', e.target.value)} error={errors.transactionDate} max={new Date().toISOString().split('T')[0]} />
+              <FieldError msg={errors.transactionDate} />
+            </div>
+            <div>
+              <Label required>Total Amount Paid</Label>
+              <Input value={form.totalAmountPaid} onChange={e => set('totalAmountPaid', e.target.value)} placeholder="e.g. PKR 7,000" error={errors.totalAmountPaid} />
+              <FieldError msg={errors.totalAmountPaid} />
+            </div>
+            <div className="sm:col-span-2">
+              <Label required>Bank Details (Name / Branch)</Label>
+              <Input value={form.bankDetails} onChange={e => set('bankDetails', e.target.value)} placeholder="HBL, Gulshan Branch, Karachi" error={errors.bankDetails} />
+              <FieldError msg={errors.bankDetails} />
+            </div>
+          </div>
+          <FileInput
+            label="Scanned Copy of Transaction Receipt"
+            accept=".pdf,.png,.jpg,.jpeg"
+            note="If paid via internet banking, share a screenshot. Max 100MB."
+            onChange={e => setReceipt(e.target.files[0])}
+            fileName={receipt?.name}
+          />
+          {form.registrationType === 'student' && (
+            <FileInput
+              label="Scanned Copy of Student Card"
+              accept=".pdf,.png,.jpg,.jpeg"
+              note="Upload 1 file: PDF or image. Max 100MB."
+              onChange={e => setStudentCard(e.target.files[0])}
+              fileName={studentCard?.name}
+            />
+          )}
+          <CheckboxField
+            checked={form.certified}
+            onChange={() => set('certified', !form.certified)}
+            label="I certify that all information is up to date and correct to the best of my knowledge"
+            error={errors.certified}
+          />
+
+          {/* Co-author section */}
+          <div className="pt-4 border-t border-border-subtle">
+            <div className="flex items-center justify-between mb-3">
+              <Label>Do you want to register co-authors?</Label>
+              <button type="button" onClick={addCoAuthor}
+                className="text-xs text-accent hover:underline font-medium">
+                + Add Co-Author
+              </button>
+            </div>
+            {coAuthors.map((ca, idx) => (
+              <div key={idx} className="mb-4 p-4 rounded-lg border border-border-subtle bg-bg-primary">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-sm font-semibold text-text-primary">Co-Author {idx + 1}</p>
+                  <button type="button" onClick={() => removeCoAuthor(idx)} className="text-xs text-red-400 hover:underline">Remove</button>
+                </div>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <Label required>Email</Label>
+                    <Input type="email" value={ca.email} onChange={e => updateCoAuthor(idx, 'email', e.target.value)} placeholder="co-author@example.com" />
+                  </div>
+                  <div>
+                    <Label required>Author Name</Label>
+                    <Input value={ca.authorName} onChange={e => updateCoAuthor(idx, 'authorName', e.target.value)} placeholder="Full name" />
+                  </div>
+                  {form.registrationType === 'student' && (
+                    <div>
+                      <Label>Roll No.</Label>
+                      <Input value={ca.rollNo} onChange={e => updateCoAuthor(idx, 'rollNo', e.target.value)} placeholder="CS-2022-002" />
+                    </div>
+                  )}
+                  <div>
+                    <Label required>Department</Label>
+                    <Input value={ca.department} onChange={e => updateCoAuthor(idx, 'department', e.target.value)} placeholder="Computer Science" />
+                  </div>
+                  <div>
+                    <Label required>Institution</Label>
+                    <Input value={ca.institution} onChange={e => updateCoAuthor(idx, 'institution', e.target.value)} placeholder="NED University" />
+                  </div>
+                  <div>
+                    <Label required>Contact No.</Label>
+                    <Input value={ca.contactNo} onChange={e => updateCoAuthor(idx, 'contactNo', e.target.value)} placeholder="+92 300 0000000" />
+                  </div>
+                  <div>
+                    <Label required>Transaction ID</Label>
+                    <Input value={ca.stanTransactionId} onChange={e => updateCoAuthor(idx, 'stanTransactionId', e.target.value)} placeholder="TXN-XXXXX" />
+                  </div>
+                  <div>
+                    <Label required>Transaction Date</Label>
+                    <Input type="date" value={ca.transactionDate} onChange={e => updateCoAuthor(idx, 'transactionDate', e.target.value)} max={new Date().toISOString().split('T')[0]} />
+                  </div>
+                  <div>
+                    <Label required>Bank Details</Label>
+                    <Input value={ca.bankDetails} onChange={e => updateCoAuthor(idx, 'bankDetails', e.target.value)} placeholder="Bank name / Branch" />
+                  </div>
+                  <div>
+                    <Label required>Total Amount Paid</Label>
+                    <Input value={ca.totalAmountPaid} onChange={e => updateCoAuthor(idx, 'totalAmountPaid', e.target.value)} placeholder="PKR 7,000" />
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <CheckboxField
+                    checked={ca.certified}
+                    onChange={() => updateCoAuthor(idx, 'certified', !ca.certified)}
+                    label="I certify this co-author's information is correct"
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {step === 3 && (
+        <ReviewSection sections={[
+          { title: 'Registration', rows: [
+            ['Type', form.registrationType === 'student' ? 'Student Author' : 'Academia / Industry'],
+          ]},
+          { title: 'Paper Information', rows: [
+            ['Paper ID', form.paperId], ['Paper Title', form.paperTitle],
+            ['Author', form.authorName], ['Email', form.email],
+            ...(form.rollNo ? [['Roll No.', form.rollNo]] : []),
+            ['Department', form.department], ['Institution', form.institution],
+            ['Contact', form.contactNo],
+          ]},
+          { title: 'Payment', rows: [
+            ['Transaction ID', form.stanTransactionId],
+            ['Date', form.transactionDate], ['Amount', form.totalAmountPaid],
+            ['Bank', form.bankDetails],
+            ['Receipt', receipt?.name || 'Not uploaded'],
+            ...(studentCard ? [['Student Card', studentCard.name]] : []),
+          ]},
+          ...(coAuthors.length > 0 ? [{
+            title: `Co-Authors (${coAuthors.length})`,
+            rows: coAuthors.map((ca, i) => [`Co-Author ${i + 1}`, `${ca.authorName} — ${ca.email}`]),
+          }] : []),
+        ]} />
+      )}
+    </FormShell>
+  );
+};
+
+// ─── Shared components ───────────────────────────────────────────────────────
+
+const CheckboxField = ({ checked, onChange, label, error }) => (
+  <div>
+    <button type="button" onClick={onChange} className="flex items-center gap-3 group">
+      <div className={`w-5 h-5 rounded border flex items-center justify-center transition-all shrink-0 ${
+        checked ? 'bg-accent border-accent' : 'border-border-subtle group-hover:border-accent/50'
+      }`}>
+        {checked && <FaCheck className="text-white text-xs" />}
+      </div>
+      <span className="text-sm text-text-muted group-hover:text-text-primary transition-colors text-left">{label}</span>
+    </button>
+    {error && <FieldError msg={error} />}
+  </div>
+);
+
+const PaymentBankInfo = () => (
+  <div className="p-4 rounded-xl bg-bg-primary border border-border-subtle text-sm">
+    <p className="text-xs font-semibold text-text-muted uppercase tracking-wider mb-3">Transfer payment to</p>
+    <div className="space-y-1.5">
+      <p className="text-text-primary"><span className="text-text-muted">Bank: </span>{paymentInfo.bank}</p>
+      <p className="text-text-primary"><span className="text-text-muted">Account: </span>{paymentInfo.accountTitle}</p>
+      <p className="text-text-primary font-mono text-xs"><span className="text-text-muted">IBAN: </span>{paymentInfo.iban}</p>
+      <p className="text-text-primary"><span className="text-text-muted">Account No.: </span>{paymentInfo.accountNumber}</p>
+      <p className="text-text-primary"><span className="text-text-muted">Branch: </span>{paymentInfo.branch}</p>
+    </div>
+  </div>
+);
+
+const ReviewSection = ({ sections }) => (
+  <div className="space-y-4">
+    <p className="text-text-muted text-sm">Please confirm everything looks correct before submitting.</p>
+    {sections.map(section => (
+      <div key={section.title} className="rounded-xl border border-border-subtle overflow-hidden">
+        <div className="px-4 py-2.5 bg-bg-primary border-b border-border-subtle">
+          <p className="text-xs font-semibold text-text-muted uppercase tracking-wider">{section.title}</p>
+        </div>
+        <div className="px-4 divide-y divide-border-subtle/50">
+          {section.rows.map(([label, value]) => (
+            <div key={label} className="flex items-start justify-between py-2.5 gap-4">
+              <span className="text-text-muted text-sm shrink-0">{label}</span>
+              <span className="text-text-primary text-sm text-right break-all">{value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+const SuccessScreen = ({ type, onClose }) => (
+  <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+    <motion.div
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+      className="w-20 h-20 rounded-full bg-accent/10 flex items-center justify-center mb-6"
+    >
+      <svg className="w-10 h-10 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+      </svg>
+    </motion.div>
+    <h3 className="text-2xl font-bold text-text-primary mb-2">{type} Registration Submitted</h3>
+    <p className="text-text-muted text-sm max-w-sm mb-8 leading-relaxed">
+      Your registration has been submitted successfully. You will receive a confirmation email within 2–3 business days.
+    </p>
+    <button onClick={onClose} className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded-lg text-sm font-semibold transition-all duration-200">
+      Done
+    </button>
+  </div>
+);
+
+const FormShell = ({ title, steps, step, onClose, onBack, onNext, onSubmit, submitting, apiError, children }) => (
+  <div className="flex flex-col h-full min-h-0 overflow-hidden">
+    <div className="px-6 sm:px-8 pt-6 pb-4 border-b border-border-subtle shrink-0">
+      <div className="flex items-start justify-between gap-4 mb-5">
+        <div>
+          <h3 className="text-xl font-bold text-text-primary">{title}</h3>
+          <p className="text-text-muted text-sm mt-0.5">ICONICS'26 · October 10–11, 2026 · NED University</p>
+        </div>
+        <button onClick={onClose}
+          className="w-8 h-8 rounded-lg bg-bg-primary border border-border-subtle flex items-center justify-center text-text-muted hover:text-text-primary hover:border-border-dark transition-all shrink-0">
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <StepBar current={step} steps={steps} />
+    </div>
+
+    <div className="flex-1 overflow-y-auto overscroll-contain px-6 sm:px-8 py-6">
+      <AnimatePresence mode="wait">
+        <motion.div key={step} initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -16 }} transition={{ duration: 0.2 }}>
+          {children}
+        </motion.div>
+      </AnimatePresence>
+    </div>
+
+    {apiError && (
+      <div className="mx-6 sm:mx-8 mb-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
+        {apiError}
+      </div>
+    )}
+
+    <div className="px-6 sm:px-8 py-4 border-t border-border-subtle flex items-center justify-between shrink-0">
+      <button onClick={onBack} disabled={step === 0}
+        className="px-5 py-2.5 border border-border-subtle text-text-muted rounded-lg text-sm font-medium hover:text-text-primary hover:border-border-dark transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+        Back
+      </button>
+      <div className="flex items-center gap-3">
+        <span className="text-text-muted text-xs hidden sm:block">{step + 1} / {steps.length}</span>
+        {step < steps.length - 1 ? (
+          <button onClick={onNext}
+            className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded-lg text-sm font-semibold transition-all duration-200 hover:shadow-glow">
+            Continue
+          </button>
+        ) : (
+          <button onClick={onSubmit} disabled={submitting}
+            className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded-lg text-sm font-semibold transition-all duration-200 hover:shadow-glow flex items-center gap-2 disabled:opacity-50">
+            {submitting ? 'Submitting...' : 'Submit Registration'}
+            {!submitting && (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            )}
+          </button>
+        )}
+      </div>
+    </div>
+  </div>
+);
+
+// ─── Registration Modal ──────────────────────────────────────────────────────
+
+const RegistrationModal = ({ isOpen, onClose, defaultType }) => {
+  const [formType, setFormType] = useState(defaultType || 'participant');
+
   useEffect(() => {
-    if (isOpen)  document.body.style.overflow = 'hidden';
-    else         document.body.style.overflow = '';
-    return ()  => { document.body.style.overflow = ''; };
+    if (defaultType) setFormType(defaultType);
+  }, [defaultType]);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      // Stop Lenis smooth scroll so it doesn't hijack wheel events
+      if (window.lenis) window.lenis.stop();
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (window.lenis) window.lenis.start();
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      if (window.lenis) window.lenis.start();
+    };
   }, [isOpen]);
 
   useEffect(() => {
@@ -583,32 +1035,38 @@ const RegistrationModal = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('keydown', handler);
   }, [isOpen, onClose]);
 
+  const FormComponent = {
+    participant: ParticipantForm,
+    paper: PaperForm,
+    workshop: WorkshopForm,
+  }[formType];
+
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* backdrop */}
           <motion.div
             className="fixed inset-0 bg-black/75 backdrop-blur-sm z-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             transition={{ duration: 0.25 }}
             onClick={onClose}
           />
-
-          {/* panel */}
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto overscroll-contain" onWheel={e => e.stopPropagation()}>
             <motion.div
-              className="bg-bg-card border border-border-subtle rounded-2xl w-full max-w-2xl flex flex-col"
-              style={{ maxHeight: 'min(90vh, 700px)' }}
+              className="bg-bg-card border border-border-subtle rounded-2xl w-full max-w-2xl flex flex-col overflow-hidden my-auto"
+              style={{ height: 'min(92vh, 800px)' }}
               initial={{ opacity: 0, scale: 0.96, y: 16 }}
-              animate={{ opacity: 1, scale: 1,    y: 0  }}
-              exit={{ opacity: 0,    scale: 0.96, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 16 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               onClick={e => e.stopPropagation()}
             >
-              <RegistrationForm onClose={onClose} />
+              <div className="px-6 sm:px-8 pt-5 shrink-0">
+                <FormTypeSelector active={formType} onChange={setFormType} />
+              </div>
+              <div className="flex-1 flex flex-col min-h-0 overflow-hidden">
+                <FormComponent onClose={onClose} />
+              </div>
             </motion.div>
           </div>
         </>
@@ -617,7 +1075,7 @@ const RegistrationModal = ({ isOpen, onClose }) => {
   );
 };
 
-// ─── price display helper (page) ─────────────────────────────────────────────
+// ─── Price display helper (page) ─────────────────────────────────────────────
 
 const PriceRow = ({ label, value }) => (
   <div className="flex items-center justify-between py-2 border-b border-border-subtle/50 last:border-0">
@@ -626,10 +1084,26 @@ const PriceRow = ({ label, value }) => (
   </div>
 );
 
-// ─── page ────────────────────────────────────────────────────────────────────
+// ─── Page ────────────────────────────────────────────────────────────────────
 
 const Registration = () => {
+  const [searchParams] = useSearchParams();
   const [modalOpen, setModalOpen] = useState(false);
+  const [defaultType, setDefaultType] = useState('participant');
+
+  // Open modal with specific form type if ?type=workshop is in URL
+  useEffect(() => {
+    const type = searchParams.get('type');
+    if (type && ['participant', 'paper', 'workshop'].includes(type)) {
+      setDefaultType(type);
+      setModalOpen(true);
+    }
+  }, [searchParams]);
+
+  const openModal = (type = 'participant') => {
+    setDefaultType(type);
+    setModalOpen(true);
+  };
 
   return (
     <PageTransition>
@@ -708,22 +1182,33 @@ const Registration = () => {
             ))}
           </div>
 
-          {/* Register CTA */}
+          {/* Register CTAs */}
           <motion.div
             className="text-center mb-14"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <button
-              onClick={() => setModalOpen(true)}
-              className="inline-flex items-center gap-3 px-10 py-4 bg-accent hover:bg-accent-light text-white font-semibold rounded-xl text-base transition-all duration-300 hover:shadow-glow"
-            >
-              Register Now
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </button>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
+              <button onClick={() => openModal('participant')}
+                className="inline-flex items-center gap-3 px-8 py-3.5 bg-accent hover:bg-accent-light text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-glow">
+                Register as Participant
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+              <button onClick={() => openModal('paper')}
+                className="inline-flex items-center gap-3 px-8 py-3.5 border border-accent text-accent hover:bg-accent hover:text-white font-semibold rounded-xl text-sm transition-all duration-300">
+                Register Paper
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+              <button onClick={() => openModal('workshop')}
+                className="inline-flex items-center gap-3 px-8 py-3.5 border border-border-subtle text-text-muted hover:border-accent hover:text-accent font-semibold rounded-xl text-sm transition-all duration-300">
+                Register for Workshop
+              </button>
+            </div>
             <p className="text-text-muted text-sm mt-3">
               Questions?{' '}
               <a href="mailto:registration@nediconics.com" className="text-accent hover:underline">
@@ -786,7 +1271,7 @@ const Registration = () => {
         </div>
       </div>
 
-      <RegistrationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
+      <RegistrationModal isOpen={modalOpen} onClose={() => setModalOpen(false)} defaultType={defaultType} />
     </PageTransition>
   );
 };
