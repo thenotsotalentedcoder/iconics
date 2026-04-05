@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/layout/PageTransition';
@@ -6,144 +6,119 @@ import SectionHeading from '../components/common/SectionHeading';
 import PageBackground from '../components/animations/PageBackground';
 import { workshops } from '../data/workshops';
 
-/* ─── 1. MATH-DRIVEN KINEMATIC NETWORK ────────────────────────── */
-const NeuralNetworkBG = () => {
-  const canvasRef = useRef(null);
+/* ─── Brand tokens ─────────────────────────────────────── */
+const TEAL    = '#3E8B87';
+const TEAL_L  = '#5AA8A3';
+const TEAL_LL = '#8DCBC7';
+const DARK    = '#0F4C5C';
+const MID     = '#2F7C7A';
+const MUTED   = '#5AA8A3';
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let animationFrameId;
+/* ─── Reveal ────────────────────────────────────────────── */
+const Reveal = ({ children, delay = 0, y = 20, style = {} }) => (
+  <motion.div
+    initial={{ opacity: 0, y }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: '-50px' }}
+    transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+    style={style}
+  >
+    {children}
+  </motion.div>
+);
 
-    const settings = {
-      count: 90,
-      radius: 1.5,
-      maxDist: 150,
-      mouseRadius: 160,
-      tealPrimary: '#5AA8A3',
-    };
+/* ─── Chevron ───────────────────────────────────────────── */
+const Chevron = ({ open }) => (
+  <motion.svg
+    animate={{ rotate: open ? 180 : 0 }}
+    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+    width="16" height="16" viewBox="0 0 24 24"
+    fill="none" stroke={TEAL} strokeWidth="2"
+    strokeLinecap="round" strokeLinejoin="round"
+  >
+    <polyline points="6 9 12 15 18 9" />
+  </motion.svg>
+);
 
-    const mouse = { x: -1000, y: -1000 };
+/* ─── Mono label ────────────────────────────────────────── */
+const MonoLabel = ({ children, style = {} }) => (
+  <div style={{ fontFamily: 'monospace', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.22em', color: MUTED, ...style }}>
+    {children}
+  </div>
+);
 
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.6;
-        this.vy = (Math.random() - 0.5) * 0.6;
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < settings.mouseRadius) {
-          const force = (settings.mouseRadius - dist) / settings.mouseRadius;
-          this.x -= dx * force * 0.03;
-          this.y -= dy * force * 0.03;
-        }
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, settings.radius, 0, Math.PI * 2);
-        ctx.fillStyle = settings.tealPrimary;
-        ctx.fill();
-      }
-    }
-
-    const init = () => {
-      particles = Array.from({ length: settings.count }, () => new Particle());
-    };
-
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      for (let i = 0; i < particles.length; i++) {
-        const p1 = particles[i];
-        p1.update();
-        p1.draw();
-
-        for (let j = i + 1; j < particles.length; j++) {
-          const p2 = particles[j];
-          const dx = p1.x - p2.x;
-          const dy = p1.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < settings.maxDist) {
-            ctx.beginPath();
-            ctx.strokeStyle = `rgba(90, 168, 163, ${1 - dist / settings.maxDist})`;
-            ctx.lineWidth = 0.6;
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-          }
-        }
-      }
-      animationFrameId = requestAnimationFrame(animate);
-    };
-
-    window.addEventListener('resize', resize);
-    window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
-
-    resize();
-    init();
-    animate();
-
-    return () => {
-      window.removeEventListener('resize', resize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, []);
-
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0 bg-transparent" />;
-};
-
-const SessionItem = ({ session, index }) => {
-  const [isOpen, setIsOpen] = useState(index === 0);
+/* ─── Session accordion ─────────────────────────────────── */
+const SessionCard = ({ session, index }) => {
+  const [open, setOpen] = useState(index === 0);
 
   return (
-    <div className={`border rounded-2xl mb-4 transition-all duration-300 ${isOpen ? 'bg-white border-[#5AA8A3]/40 shadow-lg' : 'bg-gray-50/50 border-gray-100'}`}>
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.07, duration: 0.4 }}
+      style={{
+        background: 'rgba(255,255,255,0.72)',
+        border: `1px solid ${open ? 'rgba(62,139,135,0.28)' : 'rgba(62,139,135,0.12)'}`,
+        borderRadius: 2,
+        backdropFilter: 'blur(8px)',
+        overflow: 'hidden',
+        transition: 'border-color 0.25s',
+      }}
+    >
+      {/* Accent line when open */}
+      <motion.div
+        animate={{ scaleX: open ? 1 : 0 }}
+        transition={{ duration: 0.3 }}
+        style={{ height: 2, background: `linear-gradient(90deg, ${TEAL}, ${TEAL_L})`, transformOrigin: 'left' }}
+      />
+
       <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-6 text-left"
+        onClick={() => setOpen(!open)}
+        style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 20px', background: 'transparent', border: 'none', cursor: 'pointer', textAlign: 'left' }}
       >
-        <div className="flex items-center gap-4">
-          <span className="text-[10px] font-black text-[#5AA8A3] tracking-widest uppercase">Mdl {index + 1}</span>
-          <h4 className="text-gray-900 font-bold text-lg">{session.title}</h4>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <span style={{ fontFamily: 'monospace', fontSize: 10, fontWeight: 800, color: open ? TEAL : 'rgba(62,139,135,0.4)', letterSpacing: '0.2em', minWidth: 20 }}>
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: DARK, lineHeight: 1.3 }}>{session.title}</div>
+            <div style={{ fontSize: 12, color: MUTED, marginTop: 2 }}>{session.instructor.name}</div>
+          </div>
         </div>
-        <div className={`transform transition-transform ${isOpen ? 'rotate-180 text-[#5AA8A3]' : 'text-gray-400'}`}>
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-        </div>
+        <Chevron open={open} />
       </button>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden">
-            <div className="px-6 pb-6 pt-2 border-t border-gray-50">
-              <div className="flex items-center gap-4 mb-6 mt-4">
-                <img src={session.instructor.photo} alt="lead" className="w-10 h-10 rounded-full object-cover border border-[#5AA8A3]/30" />
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div style={{ padding: '0 20px 20px', borderTop: '1px solid rgba(62,139,135,0.1)' }}>
+              {/* Instructor strip */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0', marginBottom: 12 }}>
+                <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, background: 'rgba(62,139,135,0.1)', border: '1px solid rgba(62,139,135,0.2)' }}>
+                  <img src={session.instructor.photo} alt={session.instructor.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+                    onError={e => { e.target.style.display = 'none'; }} />
+                </div>
                 <div>
-                  <p className="text-gray-900 font-bold text-xs">{session.instructor.name}</p>
-                  <p className="text-[#5AA8A3] text-[10px] font-bold uppercase">{session.instructor.institution}</p>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>{session.instructor.name}</div>
+                  <div style={{ fontSize: 12, color: MID }}>{session.instructor.title}</div>
+                  <div style={{ fontSize: 12, color: TEAL }}>{session.instructor.institution}</div>
                 </div>
               </div>
-              <div className="grid grid-cols-2 gap-2">
-                {session.topics.map((t, i) => (
-                  <div key={i} className="text-xs text-gray-500 flex items-center gap-2">
-                    <div className="w-1 h-1 bg-[#5AA8A3] rounded-full" /> {t}
+
+              {/* Topics */}
+              <MonoLabel style={{ marginBottom: 10 }}>Topics Covered</MonoLabel>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px' }}>
+                {session.topics.map((topic, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12, color: MID, lineHeight: 1.5 }}>
+                    <span style={{ marginTop: 5, width: 4, height: 4, borderRadius: '50%', background: TEAL, flexShrink: 0, display: 'block' }} />
+                    {topic}
                   </div>
                 ))}
               </div>
@@ -151,75 +126,199 @@ const SessionItem = ({ session, index }) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </motion.div>
   );
 };
 
-export default function Workshops() {
+/* ─── Workshop block ────────────────────────────────────── */
+const WorkshopBlock = ({ workshop, index, onRegister }) => (
+  <motion.section
+    id={`workshop-${workshop.id}`}
+    style={{ marginBottom: 48, scrollMarginTop: 140 }}
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5, delay: index * 0.06 }}
+  >
+    {/* ── Header ── */}
+    <div style={{ background: 'rgba(255,255,255,0.85)', border: '1px solid rgba(62,139,135,0.18)', borderRadius: 4, overflow: 'hidden', backdropFilter: 'blur(12px)', boxShadow: '0 2px 20px rgba(15,76,92,0.07)', marginBottom: 12 }}>
+      {/* Top bar */}
+      <div style={{ height: 3, background: `linear-gradient(90deg, ${TEAL}, ${DARK})` }} />
+
+      <div style={{ padding: '28px 32px' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 24 }}>
+
+          <div style={{ flex: 1, minWidth: 0 }}>
+            {/* Workshop label */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
+              <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 800, color: TEAL, letterSpacing: '0.3em', textTransform: 'uppercase' }}>
+                Workshop {String(workshop.id).padStart(2, '0')}
+              </span>
+              <span style={{ height: 1, width: 32, background: 'rgba(62,139,135,0.25)', display: 'inline-block' }} />
+            </div>
+
+            {/* Title */}
+            <h2 style={{ fontSize: 'clamp(18px, 2.5vw, 23px)', fontWeight: 800, color: DARK, letterSpacing: '-0.025em', lineHeight: 1.25, marginBottom: 6 }}>
+              {workshop.title}
+            </h2>
+
+            {/* Tagline */}
+            <p style={{ color: TEAL, fontSize: 13, fontWeight: 600, marginBottom: 14 }}>{workshop.tagline}</p>
+
+            {/* Description */}
+            <p style={{ color: MID, fontSize: 13.5, lineHeight: 1.75, opacity: 0.9, maxWidth: 600 }}>{workshop.description}</p>
+
+            {/* Target audience */}
+            {workshop.targetAudience && (
+              <div style={{ marginTop: 16, padding: '12px 16px', borderRadius: 8, background: 'rgba(62,139,135,0.05)', border: '1px solid rgba(62,139,135,0.14)', display: 'inline-flex', alignItems: 'flex-start', gap: 10 }}>
+                <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 700, color: MUTED, letterSpacing: '0.25em', textTransform: 'uppercase', whiteSpace: 'nowrap', paddingTop: 2 }}>For</span>
+                <span style={{ fontSize: 13, color: MID }}>{workshop.targetAudience}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Register button */}
+          <motion.button
+            onClick={onRegister}
+            whileHover={{ y: -2, boxShadow: `0 8px 24px ${TEAL}44` }}
+            whileTap={{ scale: 0.97 }}
+            style={{ flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 8, padding: '11px 22px', background: `linear-gradient(135deg, ${TEAL}, ${DARK})`, color: 'white', border: 'none', borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: 'pointer', letterSpacing: '0.04em', whiteSpace: 'nowrap' }}
+          >
+            Register
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" />
+            </svg>
+          </motion.button>
+        </div>
+      </div>
+    </div>
+
+    {/* ── Learning Outcomes ── */}
+    {workshop.learningOutcomes && (
+      <div style={{ marginBottom: 12 }}>
+        <MonoLabel style={{ marginBottom: 10 }}>Learning Outcomes</MonoLabel>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
+          {workshop.learningOutcomes.map((outcome, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '12px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.62)', border: '1px solid rgba(62,139,135,0.12)', backdropFilter: 'blur(6px)' }}>
+              <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20, borderRadius: '50%', background: 'rgba(62,139,135,0.12)', color: TEAL, fontSize: 10, fontWeight: 800, fontFamily: 'monospace', flexShrink: 0, marginTop: 1 }}>
+                {i + 1}
+              </span>
+              <p style={{ fontSize: 13, color: MID, lineHeight: 1.6 }}>{outcome}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    )}
+
+    {/* ── Sessions ── */}
+    <div>
+      <MonoLabel style={{ marginBottom: 10 }}>
+        {workshop.sessions.length > 1 ? `Sessions · ${workshop.sessions.length} total` : 'Session'}
+      </MonoLabel>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {workshop.sessions.map((session, i) => (
+          <SessionCard key={session.id} session={session} index={i} />
+        ))}
+      </div>
+    </div>
+  </motion.section>
+);
+
+/* ══ MAIN ═══════════════════════════════════════════════ */
+const Workshops = () => {
   const navigate = useNavigate();
+  const [activeId, setActiveId] = useState(workshops[0]?.id);
+  const handleRegister = () => navigate('/registration?type=workshop');
+
+  const scrollTo = (id) => {
+    setActiveId(id);
+    const el = document.getElementById(`workshop-${id}`);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <PageTransition>
-      <div
-        className="relative min-h-screen pt-32 pb-24 overflow-hidden"
-        style={{ background: 'linear-gradient(160deg, #EEF6F5 0%, #F4FAFA 40%, #E8F3F2 100%)' }}
-      >
-        <NeuralNetworkBG />
+      <div style={{ position: 'relative', minHeight: '100vh', background: 'linear-gradient(160deg, #EEF6F5 0%, #F4FAFA 40%, #E8F3F2 100%)', paddingBottom: 80 }}>
         <PageBackground />
 
-        <div className="container mx-auto px-6 relative z-10 max-w-6xl">
-          <header className="mb-20">
-            <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} className="mb-4 inline-block bg-[#5AA8A3]/10 px-3 py-1 rounded border border-[#5AA8A3]/20">
-              <span className="text-[#5AA8A3] text-[9px] font-black uppercase tracking-[0.3em]">Curriculum 2026</span>
+        <div style={{ position: 'relative', zIndex: 1, paddingTop: 96 }}>
+          <div style={{ maxWidth: 960, margin: '0 auto', padding: '0 24px' }}>
+
+            {/* ── Hero ── */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              style={{ textAlign: 'center', paddingBottom: 48, paddingTop: 16 }}
+            >
+              <SectionHeading title="Workshops" subtitle="Hands-on technical sessions led by world-class researchers" />
+
+              {/* Divider dots */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 28 }}>
+                <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
+                  style={{ height: 1, width: 60, background: `linear-gradient(90deg, transparent, ${TEAL})`, transformOrigin: 'right' }} />
+                {[0, 1, 2].map(i => (
+                  <motion.span key={i} animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
+                    transition={{ duration: 2, delay: i * 0.3, repeat: Infinity }}
+                    style={{ width: 4, height: 4, borderRadius: '50%', background: TEAL, display: 'inline-block' }} />
+                ))}
+                <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.4 }}
+                  style={{ height: 1, width: 60, background: `linear-gradient(90deg, ${TEAL}, transparent)`, transformOrigin: 'left' }} />
+              </div>
             </motion.div>
-            <SectionHeading title="Workshops" subtitle="Hands-on mastery of the next generation of computing." className="!text-left !text-gray-900" />
-          </header>
 
-          <div className="space-y-20">
-            {workshops.map((w) => (
-              <motion.section
-                key={w.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="bg-white/90 backdrop-blur-md p-8 lg:p-12 rounded-[3rem] border border-gray-100 shadow-2xl"
-              >
-                <div className="flex flex-col lg:flex-row justify-between items-start gap-8 mb-12">
-                  <div className="flex-1">
-                    <h2 className="text-4xl font-extrabold text-gray-900 mb-4">{w.title}</h2>
-                    <p className="text-[#3E8B87] font-bold text-xs uppercase tracking-widest mb-6">{w.tagline}</p>
-                    <p className="text-gray-500 leading-relaxed max-w-2xl">{w.description}</p>
-                  </div>
-                  <button
-                    onClick={() => navigate('/registration')}
-                    className="px-10 py-4 bg-[#5AA8A3] text-white font-black rounded-full text-[10px] uppercase tracking-widest hover:bg-[#3E8B87] transition-all"
-                  >
-                    Register Spot
-                  </button>
-                </div>
-
-                <div className="grid lg:grid-cols-[0.4fr_1.1fr] gap-12">
-                  <div>
-                    <h3 className="text-gray-900 font-black text-sm uppercase mb-6 tracking-tighter italic underline decoration-[#5AA8A3]">Expected_Outcomes</h3>
-                    <div className="space-y-4">
-                      {w.learningOutcomes?.map((o, i) => (
-                        <div key={i} className="flex gap-4">
-                          <span className="text-[#5AA8A3] font-bold text-lg opacity-30 italic">0{i + 1}</span>
-                          <p className="text-xs text-gray-500 leading-tight">{o}</p>
-                        </div>
-                      ))}
+            {/* ── Info bar ── */}
+            <Reveal style={{ marginBottom: 24 }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(62,139,135,0.16)', borderRadius: 10, backdropFilter: 'blur(10px)', overflow: 'hidden' }}>
+                {[
+                  { path: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', label: 'Date', val: 'October 10–11, 2026' },
+                  { path: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z', label: 'Venue', val: 'NED University, Karachi' },
+                  { path: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253', label: 'Workshops', val: `${workshops.length} Available` },
+                ].map(({ path, label, val }, i) => (
+                  <div key={label} style={{ flex: '1 1 180px', display: 'flex', alignItems: 'center', gap: 12, padding: '16px 24px', borderRight: i < 2 ? '1px solid rgba(62,139,135,0.1)' : 'none' }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(62,139,135,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke={TEAL} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={path} /></svg>
+                    </div>
+                    <div>
+                      <MonoLabel style={{ marginBottom: 2 }}>{label}</MonoLabel>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>{val}</div>
                     </div>
                   </div>
-                  <div>
-                    <h3 className="text-gray-900 font-black text-sm uppercase mb-6 tracking-tighter">Sessions</h3>
-                    {w.sessions.map((s, idx) => <SessionItem key={idx} session={s} index={idx} />)}
-                  </div>
-                </div>
-              </motion.section>
+                ))}
+              </div>
+            </Reveal>
+
+            {/* ── Sticky nav ── */}
+            <div style={{ position: 'sticky', top: 76, zIndex: 30, marginBottom: 32 }}>
+              <motion.div
+                initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.2 }}
+                style={{ display: 'flex', gap: 4, overflowX: 'auto', padding: '6px', scrollbarWidth: 'none', background: 'rgba(238,246,245,0.9)', backdropFilter: 'blur(16px)', borderRadius: 6, border: '1px solid rgba(62,139,135,0.18)', boxShadow: '0 2px 16px rgba(15,76,92,0.08)' }}
+              >
+                {workshops.map((w) => {
+                  const isActive = activeId === w.id;
+                  return (
+                    <motion.button key={w.id} onClick={() => scrollTo(w.id)}
+                      whileHover={{ background: isActive ? undefined : 'rgba(62,139,135,0.08)' }}
+                      style={{ flexShrink: 0, padding: '8px 16px', borderRadius: 7, border: 'none', cursor: 'pointer', background: isActive ? `linear-gradient(135deg, ${TEAL}, ${DARK})` : 'transparent', color: isActive ? 'white' : MID, fontSize: 11, fontWeight: 700, fontFamily: 'monospace', letterSpacing: '0.08em', whiteSpace: 'nowrap', transition: 'color 0.2s' }}
+                    >
+                      WS{String(w.id).padStart(2, '0')} · {w.title.split(':')[0].slice(0, 22)}
+                    </motion.button>
+                  );
+                })}
+              </motion.div>
+            </div>
+
+            {/* ── Workshop listings ── */}
+            {workshops.map((workshop, index) => (
+              <WorkshopBlock key={workshop.id} workshop={workshop} index={index} onRegister={handleRegister} />
             ))}
+
           </div>
         </div>
       </div>
     </PageTransition>
   );
-}
+};
+
+export default Workshops;
