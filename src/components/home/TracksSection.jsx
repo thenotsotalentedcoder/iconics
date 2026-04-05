@@ -1,130 +1,172 @@
 import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { tracks } from '../../data/tracks';
+import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { tracks } from '../../data/tracks';
 
-const TrackCard = ({ track, index }) => {
-  return (
-    <motion.div
-      className="group relative bg-bg-card rounded-2xl border border-border-subtle hover:border-accent/40 overflow-hidden transition-all duration-500 shadow-card"
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      whileHover={{ y: -5 }}
-    >
-      {/* Glow effect on hover */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+const TEAL = '#3E8B87';
+const DARK = '#1A2E38';
+
+// --- CLEAN NEURAL CANVAS ---
+const NeuralBg = () => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animationFrameId;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+
+    class Point {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        // Faster, cleaner movement
+        this.vx = (Math.random() - 0.5) * 0.6;
+        this.vy = (Math.random() - 0.5) * 0.6;
+      }
+      move() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+      }
+    }
+
+    const init = () => {
+      // Fewer points for a "cleaner" look
+      particles = Array.from({ length: 40 }, () => new Point());
+    };
+
+    const render = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      <div className="relative p-6 lg:p-8">
-        {/* Track number */}
-        <div className="text-xs font-bold tracking-widest text-accent/50 uppercase mb-5">
-          {String(track.id).padStart(2, '0')}
-        </div>
+      particles.forEach((p, i) => {
+        p.move();
+        
+        // Draw connection lines
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = p.x - particles[j].x;
+          const dy = p.y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < 180) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(62, 139, 135, ${0.15 - dist/1200})`;
+            ctx.lineWidth = 0.8;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
 
-        {/* Title */}
-        <h3 className="text-xl font-semibold text-text-primary mb-3 group-hover:text-accent transition-colors duration-300">
-          {track.name}
-        </h3>
+        // Draw the node point
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(62, 139, 135, 0.3)`;
+        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      animationFrameId = requestAnimationFrame(render);
+    };
 
-        {/* Topics */}
-        <div className="space-y-2 mb-4">
-          {track.topics.slice(0, 3).map((topic, i) => (
-            <div key={i} className="flex items-center gap-2 text-sm text-text-muted">
-              <div className="w-1 h-1 bg-accent rounded-full" />
-              {topic}
-            </div>
-          ))}
-          {track.topics.length > 3 && (
-            <div className="text-xs text-text-muted/60">
-              +{track.topics.length - 3} more topics
-            </div>
-          )}
-        </div>
+    window.addEventListener('resize', resize);
+    resize();
+    init();
+    render();
+    return () => {
+      window.removeEventListener('resize', resize);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
-        {/* Learn More */}
-        <div className="flex items-center gap-2 text-accent text-sm font-medium group-hover:gap-3 transition-all duration-300">
-          <span>Explore</span>
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </div>
-      </div>
-
-      {/* Bottom accent line */}
-      <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent via-accent-light to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-    </motion.div>
+  return (
+    <canvas 
+      ref={canvasRef} 
+      className="absolute inset-0 -z-10 pointer-events-none" 
+      style={{ background: 'transparent' }} 
+    />
   );
 };
 
-const TracksSection = () => {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1
-  });
+export default function TracksSection() {
+  // Triple the array to ensure the loop never shows a gap on wide screens
+  const tickerItems = [...tracks, ...tracks, ...tracks];
 
   return (
-    <section ref={ref} className="py-24 lg:py-32 bg-bg-secondary relative overflow-hidden">
-      {/* Background decorations */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/5 rounded-full blur-3xl" />
+    <section className="relative py-24 overflow-hidden bg-transparent">
+      {/* Background stays inside the section but fills it */}
+      <NeuralBg />
 
-      <div className="container mx-auto px-6 lg:px-12 relative z-10">
-        {/* Section Header */}
-        <div className="max-w-2xl mb-16">
-          <motion.span
-            className="inline-block text-accent text-sm font-semibold tracking-wider uppercase mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-          >
-            Research Areas
-          </motion.span>
-          <motion.h2
-            className="text-display font-bold text-text-primary mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Conference Tracks
-          </motion.h2>
-          <motion.p
-            className="text-lg text-text-muted"
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            Submit your research across 8 specialized tracks covering cutting-edge computer science domains.
-          </motion.p>
+      <div className="container mx-auto px-6 mb-16 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div className="max-w-xl">
+            <h2 className="text-4xl md:text-6xl font-bold mb-4" style={{ color: DARK, letterSpacing: '-0.04em' }}>
+              Conference Tracks
+            </h2>
+            <p className="text-lg text-slate-600 leading-relaxed">
+              Explore specialized domains. Hover over a track to pause and explore.
+            </p>
+          </div>
         </div>
+      </div>
 
-        {/* Tracks Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {tracks.slice(0, 8).map((track, index) => (
-            <TrackCard key={track.id} track={track} index={index} />
-          ))}
-        </div>
-
-        {/* CTA */}
-        <motion.div
-          className="text-center mt-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.5 }}
+      {/* The Self-Swiping Slider */}
+      <div className="relative flex overflow-hidden group">
+        <motion.div 
+          className="flex gap-8 pr-8"
+          animate={{ x: ["0%", "-33.33%"] }} // Adjust based on tripling the array
+          transition={{ 
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 35, // Speed control
+              ease: "linear"
+            }
+          }}
+          // Pauses on hover
+          style={{ cursor: 'grab' }}
+          whileHover={{ animationPlayState: 'paused' }}
         >
-          <Link
-            to="/callforpapers"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-accent hover:bg-accent-light text-white font-semibold rounded-lg transition-all duration-300 hover:shadow-glow"
-          >
-            Submit Your Paper
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+          {tickerItems.map((track, idx) => (
+            <div 
+              key={`${track.id}-${idx}`}
+              className="flex-shrink-0 w-[300px] bg-white/80 backdrop-blur-sm border border-white/40 p-8 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-500 hover:shadow-2xl hover:bg-white hover:-translate-y-3"
+            >
+              <span className="text-[10px] font-black tracking-[0.2em] uppercase opacity-30" style={{ color: TEAL }}>
+                Track {String(track.id).padStart(2, '0')}
+              </span>
+              
+              <h3 className="text-xl font-bold mt-3 mb-4 leading-snug" style={{ color: DARK }}>
+                {track.name}
+              </h3>
+
+              <div className="space-y-2 mb-8">
+                {track.topics.slice(0, 2).map((t, i) => (
+                  <div key={i} className="flex items-center gap-2 text-xs font-medium text-slate-500">
+                    <div className="w-1 h-1 rounded-full" style={{ background: TEAL }} />
+                    {t}
+                  </div>
+                ))}
+              </div>
+
+              <Link 
+                to={`/tracks/${track.id}`}
+                className="inline-flex items-center gap-2 text-[11px] font-black uppercase tracking-widest hover:gap-4 transition-all"
+                style={{ color: TEAL }}
+              >
+                Learn More
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </Link>
+            </div>
+          ))}
         </motion.div>
       </div>
     </section>
   );
-};
-
-export default TracksSection;
+}

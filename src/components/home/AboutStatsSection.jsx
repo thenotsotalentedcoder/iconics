@@ -1,112 +1,150 @@
-import { motion } from 'framer-motion';
+import { motion, useInView, animate } from 'framer-motion';
+import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useInView } from 'react-intersection-observer';
 
-const AboutStatsSection = () => {
-  const [sectionRef, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+const TEAL     = '#3E8B87';
+const DARK     = '#0F4C5C';
+const MID      = '#2F7C7A';
+const MUTED    = '#5AA8A3';
 
-  const stats = [
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-        </svg>
-      ),
-      value: '500+',
-      label: 'Attendees',
-    },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-        </svg>
-      ),
-      value: '200+',
-      label: 'Papers',
-    },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-        </svg>
-      ),
-      value: '50+',
-      label: 'Speakers',
-    },
-  ];
+const useCount = (end, go, dur = 1.6) => {
+  const [v, setV] = useState(0);
+  useEffect(() => {
+    if (!go) return;
+    const c = animate(0, end, { duration: dur, ease: [0.22, 1, 0.36, 1], onUpdate: n => setV(Math.floor(n)) });
+    return c.stop;
+  }, [go, end]);
+  return v;
+};
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
-  };
+const Stat = ({ end, suffix, label, sub, index }) => {
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const count  = useCount(end, inView, 1.5 + index * 0.1);
 
   return (
-    <section ref={sectionRef} className="py-24 lg:py-32 bg-bg-secondary relative overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-12">
-        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          {/* Left — About */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span className="inline-block text-accent text-sm font-semibold tracking-wider uppercase mb-4">
+    <motion.div
+      ref={ref}
+      className="relative pb-10 last:pb-0"
+      /* Changed from PALE to a transparent teal border */
+      style={{ borderBottom: `1px solid rgba(62, 139, 135, 0.1)` }}
+      initial={{ opacity: 0, y: 36 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.75, delay: index * 0.14, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="flex items-baseline gap-2 mb-1.5">
+        <span className="font-bold leading-none" style={{ fontSize: 'clamp(3rem, 7vw, 6rem)', letterSpacing: '-0.04em', color: DARK }}>
+          {count}
+        </span>
+        <span className="font-bold" style={{ fontSize: 'clamp(1.6rem, 3.5vw, 3rem)', color: TEAL }}>{suffix}</span>
+      </div>
+      <p className="font-semibold mb-0.5" style={{ color: DARK }}>{label}</p>
+      <p className="text-sm" style={{ color: MUTED }}>{sub}</p>
+
+      {/* Animated underline */}
+      <motion.div
+        className="absolute bottom-0 left-0 h-px"
+        style={{ background: `linear-gradient(90deg, ${TEAL}, transparent)` }}
+        initial={{ width: 0 }}
+        animate={inView ? { width: '60%' } : {}}
+        transition={{ duration: 1, delay: 0.5 + index * 0.14 }}
+      />
+    </motion.div>
+  );
+};
+
+export default function AboutStatsSection() {
+  const ref    = useRef(null);
+  const inView = useInView(ref, { once: true, margin: '-80px' });
+
+  return (
+    <section
+      ref={ref}
+      className="relative overflow-hidden bg-transparent" // BG set to transparent
+      style={{ padding: '3rem 0 4rem' }}
+    >
+      <div className="container mx-auto px-6 lg:px-16 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
+
+          {/* Left — sticky */}
+          <div className="lg:sticky lg:top-28 space-y-7">
+            <motion.span
+              className="inline-block text-[10px] font-bold tracking-[0.22em] uppercase"
+              style={{ color: TEAL }}
+              initial={{ opacity: 0, y: 14 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6 }}
+            >
               About The Conference
-            </span>
+            </motion.span>
 
-            <h2 className="text-display font-bold text-text-primary mb-6 leading-tight">
-              We're <span className="text-accent">iCONICS</span>
-            </h2>
+            <motion.h2
+              className="font-bold leading-tight"
+              style={{ fontSize: 'clamp(2.2rem, 5vw, 3.8rem)', letterSpacing: '-0.035em', color: DARK }}
+              initial={{ opacity: 0, y: 20 }} animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.75, delay: 0.1 }}
+            >
+              We're{' '}
+              <span className="relative inline-block" style={{ color: TEAL }}>
+                iCONICS
+                <motion.span
+                  className="absolute -bottom-1 left-0 right-0 h-0.5"
+                  style={{ background: `${TEAL}44` }}
+                  initial={{ scaleX: 0, originX: 0 }}
+                  animate={inView ? { scaleX: 1 } : {}}
+                  transition={{ duration: 0.7, delay: 0.55 }}
+                />
+              </span>
+            </motion.h2>
 
-            <div className="space-y-4 text-text-secondary leading-relaxed">
-              <p className="text-lg">
+            <motion.div
+              className="space-y-4 leading-relaxed"
+              initial={{ opacity: 0, y: 14 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.7, delay: 0.22 }}
+            >
+              <p style={{ color: MID, fontSize: '1.05rem' }}>
                 NED University presents the 5th International Conference on Innovations in Computer Science, bringing together researchers and innovators from around the world.
               </p>
-              <p>
+              <p style={{ color: MUTED }}>
                 Our platform enables the exchange of cutting-edge ideas in AI, Machine Learning, Quantum Computing, Cybersecurity, and emerging technologies that shape our digital future.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="mt-8">
-              <Link to="/about" className="inline-flex items-center gap-2 text-accent font-semibold group">
-                Learn More
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-            </div>
-          </motion.div>
-
-          {/* Right — Stats Grid */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={inView ? 'visible' : 'hidden'}
-            className="grid grid-cols-2 gap-4"
-          >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-                className="bg-bg-card p-6 rounded-2xl border border-border-subtle hover:border-accent/40 transition-all duration-500 hover:shadow-medium group shadow-card"
+            <motion.div
+              initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }}
+            >
+              <Link
+                to="/about"
+                className="inline-flex items-center gap-2 text-sm font-bold"
+                style={{ color: TEAL }}
               >
-                <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center text-accent mb-4 group-hover:bg-accent group-hover:text-white transition-all duration-300">
-                  {stat.icon}
-                </div>
-                <div className="text-4xl font-bold text-text-primary mb-1">{stat.value}</div>
-                <div className="text-sm text-text-muted">{stat.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
+                Learn More About ICONICS
+                <motion.svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                  animate={{ x: [0, 5, 0] }} transition={{ duration: 2, repeat: Infinity }}>
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </motion.svg>
+              </Link>
+            </motion.div>
+          </div>
+
+          {/* Right — stats */}
+          <div className="space-y-0 lg:pt-14">
+            <motion.div
+              className="h-px mb-10"
+              /* Updated from PALE to a transparent gradient */
+              style={{ background: `linear-gradient(90deg, ${TEAL}55, transparent)` }}
+              initial={{ scaleX: 0, originX: 0 }}
+              animate={inView ? { scaleX: 1 } : {}}
+              transition={{ duration: 1, delay: 0.3 }}
+            />
+            {[
+              { end: 500, suffix: '+', label: 'Attendees',       sub: 'researchers & practitioners'  },
+              { end: 200, suffix: '+', label: 'Submitted Papers', sub: 'peer-reviewed submissions'    },
+              { end: 50,  suffix: '+', label: 'Speakers',         sub: 'global keynote experts'       },
+            ].map((s, i) => <Stat key={i} {...s} index={i} />)}
+          </div>
         </div>
       </div>
     </section>
   );
-};
-
-export default AboutStatsSection;
+}

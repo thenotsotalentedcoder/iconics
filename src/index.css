@@ -1,4 +1,4 @@
-/* ICONICS'26 — Off-White & Burgundy Light Theme */
+/* ICONICS'26 — Off-White & Teal Light Theme */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 @tailwind base;
@@ -18,7 +18,7 @@ html {
 body {
   font-family: 'Inter', system-ui, sans-serif;
   background-color: #FAFAFA;
-  color: #1A0A0E;
+  color: #16343F;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -31,22 +31,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #EDE8E9;
+  background: #E6F0EF;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #80002A;
+  background: #0c3b38;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #9E0034;
+  background: #0e3836;
 }
 
 /* Selection color */
 ::selection {
-  background-color: rgba(128, 0, 42, 0.18);
-  color: #1A0A0E;
+  background-color: rgba(90, 168, 163, 0.18);
+  color: #16343F;
 }
 
 /* Smooth animations */
@@ -89,7 +89,7 @@ body {
 
 /* Section backgrounds */
 .section-offwhite {
-  background: linear-gradient(180deg, #FAFAFA 0%, #F5F0F1 100%);
+  background: linear-gradient(180deg, #FAFAFA 0%, #EEF6F5 100%);
 }
 
 .section-white {
@@ -100,7 +100,7 @@ body {
 .card-light {
   background: #FFFFFF;
   border: 1px solid #DDD8B8;
-  box-shadow: 0 2px 16px rgba(128, 0, 42, 0.06);
+  box-shadow: 0 2px 16px rgba(62, 139, 135, 0.06);
 }
 
 .card-cream {
@@ -110,7 +110,7 @@ body {
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #80002A 0%, #9E0034 50%, #5C001E 100%);
+  background: linear-gradient(135deg, #2D6E6A 0%, #3E8B87 50%, #5AA8A3 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -124,7 +124,7 @@ img {
 /* Mobile touch optimization */
 @media (max-width: 768px) {
   * {
-    -webkit-tap-highlight-color: rgba(128, 0, 42, 0.08);
+    -webkit-tap-highlight-color: rgba(90, 168, 163, 0.08);
   }
 
   button,
