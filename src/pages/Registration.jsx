@@ -21,7 +21,7 @@ const Label = ({ children, required }) => (
 
 const inputBase = 'w-full bg-bg-primary border rounded-lg px-4 py-3 text-text-primary text-sm placeholder-text-muted/40 focus:outline-none transition-colors duration-200';
 const inputOk   = 'border-border-subtle focus:border-accent/60';
-const inputErr  = 'border-red-500/50 focus:border-red-500/80';
+const inputErr  = 'border-teal-500/50 focus:border-teal-500/80';
 
 const Input = ({ error, ...props }) => (
   <input {...props} className={`${inputBase} ${error ? inputErr : inputOk}`} />
@@ -48,7 +48,7 @@ const FileInput = ({ error, label, accept, note, onChange, fileName }) => (
 );
 
 const FieldError = ({ msg }) =>
-  msg ? <p className="text-red-400 text-xs mt-1">{msg}</p> : null;
+  msg ? <p className="text-[#5AA8A3] text-xs mt-1">{msg}</p> : null;
 
 const InfoNote = ({ children }) => (
   <p className="flex items-start gap-1.5 text-text-muted/60 text-xs mt-1.5 leading-relaxed">
@@ -782,7 +782,7 @@ const PaperForm = ({ onClose }) => {
               <div key={idx} className="mb-4 p-4 rounded-lg border border-border-subtle bg-bg-primary">
                 <div className="flex items-center justify-between mb-3">
                   <p className="text-sm font-semibold text-text-primary">Co-Author {idx + 1}</p>
-                  <button type="button" onClick={() => removeCoAuthor(idx)} className="text-xs text-red-400 hover:underline">Remove</button>
+                  <button type="button" onClick={() => removeCoAuthor(idx)} className="text-xs text-[#5AA8A3] hover:underline">Remove</button>
                 </div>
                 <div className="grid sm:grid-cols-2 gap-3">
                   <div>
@@ -969,9 +969,9 @@ const FormShell = ({ title, steps, step, onClose, onBack, onNext, onSubmit, subm
     </div>
 
     {apiError && (
-      <div className="mx-6 sm:mx-8 mb-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
-        {apiError}
-      </div>
+      <div className="mx-6 sm:mx-8 mb-2 px-4 py-2 bg-teal-500/10 border border-teal-500/30 rounded-lg text-[#5AA8A3] text-sm">
+          {apiError}
+        </div>
     )}
 
     <div className="px-6 sm:px-8 py-4 border-t border-border-subtle flex items-center justify-between shrink-0">

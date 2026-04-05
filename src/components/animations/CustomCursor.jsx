@@ -40,7 +40,7 @@ const CustomCursor = () => {
       }}
       animate={{
         scale: isHovering ? 2 : 1,
-        backgroundColor: isHovering ? '#DC143C' : '#FFFFFF',
+        backgroundColor: isHovering ? '#032a2b' : '#FFFFFF',
       }}
       transition={{ duration: 0.2 }}
     />

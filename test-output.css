@@ -448,23 +448,23 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #DC143C;
+  background: #032a2b;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B91C1C;
+  background: #032a2b;
 }
 
 /* Selection color */
 
 ::-moz-selection {
-  background-color: #DC143C;
+  background-color: #032a2b;
   color: #FFFFFF;
 }
 
 ::selection {
-  background-color: #DC143C;
+  background-color: #032a2b;
   color: #FFFFFF;
 }
 

@@ -20,6 +20,7 @@ import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
 import Workshops from './pages/Workshops';
 import Sponsors from './pages/Sponsors';
+import GlobalCanvasLayers from './pages/GlobalCanvasLayers';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -41,27 +42,33 @@ function App() {
 
   return (
     <Router>
-      <ScrollToTop />
-      <ScrollProgress />
-      <Navbar />
+      {/* Global fixed canvases (particles, ribbons) - render once */}
+      <GlobalCanvasLayers />
 
-      <AnimatePresence mode="wait">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/speakers" element={<Speakers />} />
-          <Route path="/callforpapers" element={<CallForPapers />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/registration" element={<Registration />} />
-          <Route path="/committee" element={<Committee />} />
-          <Route path="/workshops" element={<Workshops />} />
-          <Route path="/sponsors" element={<Sponsors />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/contact" element={<Contact />} />
-        </Routes>
-      </AnimatePresence>
+      {/* Site content wrapped so it stacks above the canvases (zIndex:2) */}
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        <ScrollToTop />
+        <ScrollProgress />
+        <Navbar />
 
-      <Footer />
+        <AnimatePresence mode="wait">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/speakers" element={<Speakers />} />
+            <Route path="/callforpapers" element={<CallForPapers />} />
+            <Route path="/schedule" element={<Schedule />} />
+            <Route path="/registration" element={<Registration />} />
+            <Route path="/committee" element={<Committee />} />
+            <Route path="/workshops" element={<Workshops />} />
+            <Route path="/sponsors" element={<Sponsors />} />
+            <Route path="/gallery" element={<Gallery />} />
+            <Route path="/contact" element={<Contact />} />
+          </Routes>
+        </AnimatePresence>
+
+        <Footer />
+      </div>
     </Router>
   );
 }
