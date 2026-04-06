@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { importantDates } from '../../data/dates';
+import { importantDates as staticDates } from '../../data/dates';
+import { useApiData } from '../../hooks/useApiData';
+import { api } from '../../utils/api';
 
 const ImportantDates = () => {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.1 });
+  const { data: importantDates } = useApiData(api.getDates, staticDates);
 
   return (
     <section ref={ref} className="py-20 lg:py-28 bg-[#0D1F25]/90 relative overflow-hidden backdrop-blur-sm">

@@ -1,7 +1,9 @@
 import { motion } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { tracks } from '../../data/tracks';
+import { tracks as staticTracks } from '../../data/tracks';
+import { useApiData } from '../../hooks/useApiData';
+import { api } from '../../utils/api';
 
 const TEAL = '#3E8B87';
 const DARK = '#1A2E38';
@@ -93,6 +95,7 @@ const NeuralBg = () => {
 };
 
 export default function TracksSection() {
+  const { data: tracks } = useApiData(api.getTracks, staticTracks);
   // Triple the array to ensure the loop never shows a gap on wide screens
   const tickerItems = [...tracks, ...tracks, ...tracks];
 
@@ -148,7 +151,7 @@ export default function TracksSection() {
                 {track.topics.slice(0, 2).map((t, i) => (
                   <div key={i} className="flex items-center gap-2 text-xs font-medium text-slate-500">
                     <div className="w-1 h-1 rounded-full" style={{ background: TEAL }} />
-                    {t}
+                    {typeof t === 'object' ? t.name : t}
                   </div>
                 ))}
               </div>

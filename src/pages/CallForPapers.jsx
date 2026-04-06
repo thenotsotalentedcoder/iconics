@@ -4,8 +4,10 @@ import SectionHeading from '../components/common/SectionHeading';
 import Button from '../components/common/Button';
 import Timeline from '../components/common/Timeline';
 import PageBackground from '../components/animations/PageBackground';
-import { tracks } from '../data/tracks';
-import { importantDates } from '../data/dates';
+import { tracks as staticTracks } from '../data/tracks';
+import { importantDates as staticDates } from '../data/dates';
+import { useApiData } from '../hooks/useApiData';
+import { api } from '../utils/api';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { EXTERNAL_LINKS } from '../utils/constants';
 
@@ -112,6 +114,8 @@ const paperTypes = [
 const CallForPapers = () => {
   const [openTrack, setOpenTrack] = useState(null);
   const [hoveredGuideline, setHoveredGuideline] = useState(null);
+  const { data: tracks } = useApiData(api.getTracks, staticTracks);
+  const { data: importantDates } = useApiData(api.getDates, staticDates);
 
   return (
     <PageTransition>
@@ -284,7 +288,7 @@ const CallForPapers = () => {
                                       whileHover={{ scale:1.05, background:'rgba(62,139,135,0.14)' }}
                                       style={{ fontSize:12, fontFamily:'monospace', color:TEAL, background:'rgba(62,139,135,0.07)', border:'1px solid rgba(62,139,135,0.18)', borderRadius:8, padding:'5px 12px', letterSpacing:'0.04em', cursor:'default' }}
                                     >
-                                      {topic}
+                                      {typeof topic === 'object' ? topic.name : topic}
                                     </motion.span>
                                   ))}
                                 </div>

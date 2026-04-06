@@ -4,7 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import PageTransition from '../components/layout/PageTransition';
 import SectionHeading from '../components/common/SectionHeading';
 import PageBackground from '../components/animations/PageBackground';
-import { workshops } from '../data/workshops';
+import { workshops as staticWorkshops } from '../data/workshops';
+import { useApiData } from '../hooks/useApiData';
+import { api } from '../utils/api';
 
 /* ─── Brand tokens ─────────────────────────────────────── */
 const TEAL    = '#3E8B87';
@@ -227,7 +229,8 @@ const WorkshopBlock = ({ workshop, index, onRegister }) => (
 /* ══ MAIN ═══════════════════════════════════════════════ */
 const Workshops = () => {
   const navigate = useNavigate();
-  const [activeId, setActiveId] = useState(workshops[0]?.id);
+  const { data: workshops } = useApiData(api.getWorkshops, staticWorkshops);
+  const [activeId, setActiveId] = useState(null);
   const handleRegister = () => navigate('/registration?type=workshop');
 
   const scrollTo = (id) => {

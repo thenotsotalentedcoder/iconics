@@ -1,8 +1,10 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
-import { speakers } from '../../data/speakers';
+import { speakers as staticSpeakers } from '../../data/speakers';
 import SpeakerModal from '../speakers/SpeakerModal';
+import { useApiData } from '../../hooks/useApiData';
+import { api } from '../../utils/api';
 
 const TEAL = '#3E8B87';
 const TEAL_L = '#5AA8A3';
@@ -75,7 +77,8 @@ export default function SpeakersPreview() {
   const [selected, setSelected] = useState(null);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
-  
+  const { data: speakers } = useApiData(api.getSpeakers, staticSpeakers);
+
   // Show first 4 or 8 for a balanced grid
   const featured = speakers.slice(0, 4);
 

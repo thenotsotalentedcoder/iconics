@@ -22,6 +22,18 @@ import Workshops from './pages/Workshops';
 import Sponsors from './pages/Sponsors';
 import GlobalCanvasLayers from './pages/GlobalCanvasLayers';
 
+// Admin
+import { AdminProvider } from './contexts/AdminContext';
+import AdminGuard from './pages/admin/AdminGuard';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminLayout from './pages/admin/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import AdminSpeakers from './pages/admin/AdminSpeakers';
+import AdminWorkshops from './pages/admin/AdminWorkshops';
+import AdminDates from './pages/admin/AdminDates';
+import AdminTracks from './pages/admin/AdminTracks';
+import AdminRegistrations from './pages/admin/AdminRegistrations';
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -38,10 +50,38 @@ function ScrollToTop() {
 }
 
 function App() {
-  useSmoothScroll();
 
   return (
-    <Router>
+    <AdminProvider>
+      <Router>
+        <Routes>
+          {/* ── Admin routes (no Navbar/Footer) ─────────────────────────── */}
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin" element={
+            <AdminGuard>
+              <AdminLayout />
+            </AdminGuard>
+          }>
+            <Route index element={<AdminDashboard />} />
+            <Route path="speakers" element={<AdminSpeakers />} />
+            <Route path="workshops" element={<AdminWorkshops />} />
+            <Route path="dates" element={<AdminDates />} />
+            <Route path="tracks" element={<AdminTracks />} />
+            <Route path="registrations" element={<AdminRegistrations />} />
+          </Route>
+
+          {/* ── Public site routes ──────────────────────────────────────── */}
+          <Route path="/*" element={<PublicSite />} />
+        </Routes>
+      </Router>
+    </AdminProvider>
+  );
+}
+
+function PublicSite() {
+  useSmoothScroll();
+  return (
+    <>
       {/* Global fixed canvases (particles, ribbons) - render once */}
       <GlobalCanvasLayers />
 
@@ -69,7 +109,7 @@ function App() {
 
         <Footer />
       </div>
-    </Router>
+    </>
   );
 }
 

@@ -4,7 +4,9 @@ import SectionHeading from '../components/common/SectionHeading';
 import SpeakerCard from '../components/speakers/SpeakerCard';
 import SpeakerModal from '../components/speakers/SpeakerModal';
 import PageBackground from '../components/animations/PageBackground';
-import { speakers } from '../data/speakers';
+import { speakers as staticSpeakers } from '../data/speakers';
+import { useApiData } from '../hooks/useApiData';
+import { api } from '../utils/api';
 
 const TEAL   = '#3E8B87';
 const TEAL_L = '#5AA8A3';
@@ -30,6 +32,7 @@ const FilterPill = ({ active, onClick, children }) => (
 const Speakers = () => {
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState('all');
+  const { data: speakers } = useApiData(api.getSpeakers, staticSpeakers);
 
   const filtered = filter === 'all' ? speakers : speakers.filter(s => s.type === filter);
 
