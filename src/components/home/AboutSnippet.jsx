@@ -75,7 +75,7 @@ const AboutSnippet = () => {
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
                 <div className="text-2xl sm:text-3xl font-bold font-accent">2026</div>
-                <div className="text-xs sm:text-sm">Oct 10–11</div>
+                <div className="text-xs sm:text-sm">Oct 20–21</div>
               </motion.div>
             </div>
           </motion.div>

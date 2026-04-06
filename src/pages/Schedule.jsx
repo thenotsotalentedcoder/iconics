@@ -56,7 +56,7 @@ const Schedule = () => {
                     backdropFilter: 'blur(8px)',
                     boxShadow: activeDay === d ? '0 4px 16px rgba(62,139,135,0.28)' : 'none',
                   }}>
-                  Day {d} — October {9 + d}
+                  Day {d} — October {19 + d}
                 </button>
               ))}
             </div>

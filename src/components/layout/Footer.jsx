@@ -277,7 +277,7 @@ export default function Footer() {
 
           {/* Center: edition pills */}
           <div className="flex items-center gap-2">
-            {['5th Edition', 'Oct 10–11', 'NED UET'].map((t, i) => (
+            {['5th Edition', 'Oct 20–21', 'NED UET'].map((t, i) => (
               <span key={i} className="text-[10px] font-semibold px-2.5 py-1 rounded-full"
                 style={{ background: 'rgba(62,139,135,0.10)', border: '1px solid rgba(62,139,135,0.18)',
                          color: 'rgba(90,168,163,0.65)' }}>

@@ -20,7 +20,7 @@ export const importantDates = [
     description: 'Last day for discounted registration fees'
   },
   {
-    date: 'October 10-11, 2026',
+    date: 'October 20-21, 2026',
     title: 'Conference Dates',
     description: 'Main conference event at NED University'
   }
