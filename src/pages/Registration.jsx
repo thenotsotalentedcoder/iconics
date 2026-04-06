@@ -322,6 +322,7 @@ const ParticipantForm = ({ onClose }) => {
   const [form, setForm] = useState({
     registrationType: '', email: '', fullName: '', rollNo: '',
     department: '', institute: '', contactNo: '',
+    isIeeeMember: false, ieeeNumber: '',
     stanTransactionId: '', transactionDate: '', bankDetails: '',
     totalAmountPaid: '', certified: false,
   });
@@ -331,6 +332,7 @@ const ParticipantForm = ({ onClose }) => {
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [apiError, setApiError] = useState('');
+  const [ieeeChecking, setIeeeChecking] = useState(false);
 
   const steps = getSteps('participant');
   const set = (field, value) => {
@@ -350,6 +352,10 @@ const ParticipantForm = ({ onClose }) => {
       if (!form.institute.trim()) e.institute = 'Required.';
       if (!form.contactNo.trim()) e.contactNo = 'Required.';
       if (form.registrationType === 'student' && !form.rollNo.trim()) e.rollNo = 'Roll number is required for students.';
+      if (form.isIeeeMember) {
+        if (!form.ieeeNumber.trim()) e.ieeeNumber = 'IEEE membership number is required.';
+        else if (!/^\d{8}$/.test(form.ieeeNumber.trim())) e.ieeeNumber = 'IEEE number must be exactly 8 digits.';
+      }
     }
     if (s === 2) {
       if (!form.stanTransactionId.trim()) e.stanTransactionId = 'Required.';
@@ -361,9 +367,24 @@ const ParticipantForm = ({ onClose }) => {
     return e;
   };
 
-  const next = () => {
+  const next = async () => {
     const e = validate(step);
     if (Object.keys(e).length) { setErrors(e); return; }
+
+    if (step === 1 && form.isIeeeMember && form.ieeeNumber.trim()) {
+      setIeeeChecking(true);
+      try {
+        const res = await fetch(`${API_BASE}/api/register/participant/check-ieee?number=${encodeURIComponent(form.ieeeNumber.trim())}`);
+        const data = await res.json();
+        if (data.taken) {
+          setErrors(prev => ({ ...prev, ieeeNumber: 'This IEEE number has already been used for a registration.' }));
+          setIeeeChecking(false);
+          return;
+        }
+      } catch { /* allow proceeding on network error */ }
+      finally { setIeeeChecking(false); }
+    }
+
     setStep(s => s + 1);
   };
 
@@ -462,6 +483,44 @@ const ParticipantForm = ({ onClose }) => {
               <InfoNote>Your privacy will be protected.</InfoNote>
             </div>
           </div>
+
+          {/* IEEE Membership */}
+          <div className="rounded-xl border p-4 transition-all duration-200"
+            style={{ borderColor: form.isIeeeMember ? 'rgba(62,139,135,0.4)' : 'rgba(62,139,135,0.15)', background: form.isIeeeMember ? 'rgba(62,139,135,0.04)' : 'transparent' }}>
+            <button type="button" onClick={() => { set('isIeeeMember', !form.isIeeeMember); if (form.isIeeeMember) set('ieeeNumber', ''); }}
+              className="flex items-center gap-3 w-full text-left">
+              <div className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${form.isIeeeMember ? 'border-accent bg-accent' : 'border-border-subtle'}`}>
+                {form.isIeeeMember && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round"/></svg>}
+              </div>
+              <div>
+                <span className="text-sm font-semibold text-text-primary">I am an IEEE Member</span>
+                <span className="block text-xs text-text-muted mt-0.5">Students: registration fee waived · Members: 15% discount</span>
+              </div>
+            </button>
+            {form.isIeeeMember && (
+              <div className="mt-4">
+                <Label required>IEEE Membership Number</Label>
+                <div className="relative">
+                  <Input
+                    value={form.ieeeNumber}
+                    onChange={e => set('ieeeNumber', e.target.value.replace(/\D/g, '').slice(0, 8))}
+                    placeholder="8-digit number e.g. 12345678"
+                    error={errors.ieeeNumber}
+                  />
+                  {ieeeChecking && (
+                    <span className="absolute right-3 top-1/2 -translate-y-1/2">
+                      <svg className="animate-spin w-4 h-4 text-accent" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
+                      </svg>
+                    </span>
+                  )}
+                </div>
+                <FieldError msg={errors.ieeeNumber} />
+                <InfoNote>Enter your 8-digit IEEE membership number. Checked for uniqueness before proceeding.</InfoNote>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -525,6 +584,7 @@ const ParticipantForm = ({ onClose }) => {
             ...(form.rollNo ? [['Roll No.', form.rollNo]] : []),
             ['Department', form.department], ['Institute', form.institute],
             ['Contact No.', form.contactNo],
+            ...(form.isIeeeMember ? [['IEEE Membership No.', form.ieeeNumber], ['IEEE Discount', 'Applied']] : []),
           ]},
           { title: 'Payment', rows: [
             ['Transaction ID', form.stanTransactionId],
