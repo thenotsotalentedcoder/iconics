@@ -40,7 +40,7 @@ export const registrationTypes = [
   },
   {
     type: "On-site",
-    deadline: "October 10–11, 2026",
+    deadline: "October 20-21, 2026",
     prices: {
       national_paper: "PKR 9,000",
       international_paper: "USD 60",

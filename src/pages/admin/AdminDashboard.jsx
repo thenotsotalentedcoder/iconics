@@ -91,7 +91,7 @@ export default function AdminDashboard() {
         </div>
         <h1 className="text-2xl lg:text-3xl font-bold" style={{ color: '#1A2E38' }}>Dashboard</h1>
         <p className="text-sm mt-1" style={{ color: '#7A9AA6' }}>
-          ICONICS'26 — October 10–11, 2026 · NED University, Karachi
+          ICONICS'26 — October 20-21, 2026 · NED University, Karachi
         </p>
       </motion.div>
 

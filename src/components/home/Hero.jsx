@@ -401,7 +401,7 @@ const CardsStrip = () => {
               {[
                 { k: 'Submission Deadline', v: 'Jun 30, 2026' },
                 { k: 'Notification',        v: 'Aug 15, 2026' },
-                { k: 'Conference',          v: 'Oct 10–11, 2026' },
+                { k: 'Conference',          v: 'Oct 20-21, 2026' },
               ].map(row => (
                 <div
                   key={row.k}
@@ -526,7 +526,7 @@ export default function Hero() {
               className="font-bold tracking-[0.2em] uppercase"
               style={{ fontSize: 'clamp(8px, 2vw, 10px)', color: 'rgba(90,168,163,0.75)' }}
             >
-              October 10–11, 2026 · NED University, Karachi
+              October 20-21, 2026 · NED University, Karachi
             </span>
           </motion.div>
 

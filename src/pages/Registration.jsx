@@ -948,7 +948,7 @@ const FormShell = ({ title, steps, step, onClose, onBack, onNext, onSubmit, subm
       <div className="flex items-start justify-between gap-4 mb-5">
         <div>
           <h3 className="text-xl font-bold text-text-primary">{title}</h3>
-          <p className="text-text-muted text-sm mt-0.5">ICONICS'26 · October 10–11, 2026 · NED University</p>
+          <p className="text-text-muted text-sm mt-0.5">ICONICS'26 · October 20-21, 2026 · NED University</p>
         </div>
         <button onClick={onClose}
           className="w-8 h-8 rounded-lg bg-bg-primary border border-border-subtle flex items-center justify-center text-text-muted hover:text-text-primary hover:border-border-dark transition-all shrink-0">
