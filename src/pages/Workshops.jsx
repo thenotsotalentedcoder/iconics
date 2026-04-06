@@ -85,7 +85,7 @@ const SessionCard = ({ session, index }) => {
           </span>
           <div>
             <div style={{ fontSize: 14, fontWeight: 600, color: DARK, lineHeight: 1.3 }}>{session.title}</div>
-            <div style={{ fontSize: 12, color: MUTED, marginTop: 2 }}>{session.instructor.name}</div>
+            <div style={{ fontSize: 12, color: MUTED, marginTop: 2 }}>{session.instructor?.name ?? session.instructorName}</div>
           </div>
         </div>
         <Chevron open={open} />
@@ -104,23 +104,23 @@ const SessionCard = ({ session, index }) => {
               {/* Instructor strip */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 0', marginBottom: 12 }}>
                 <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, background: 'rgba(62,139,135,0.1)', border: '1px solid rgba(62,139,135,0.2)' }}>
-                  <img src={session.instructor.photo} alt={session.instructor.name} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
+                  <img src={session.instructor?.photo ?? session.instructorPhoto} alt={session.instructor?.name ?? session.instructorName} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top' }}
                     onError={e => { e.target.style.display = 'none'; }} />
                 </div>
                 <div>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>{session.instructor.name}</div>
-                  <div style={{ fontSize: 12, color: MID }}>{session.instructor.title}</div>
-                  <div style={{ fontSize: 12, color: TEAL }}>{session.instructor.institution}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>{session.instructor?.name ?? session.instructorName}</div>
+                  <div style={{ fontSize: 12, color: MID }}>{session.instructor?.title ?? session.instructorTitle}</div>
+                  <div style={{ fontSize: 12, color: TEAL }}>{session.instructor?.institution ?? session.instructorInstitution}</div>
                 </div>
               </div>
 
               {/* Topics */}
               <MonoLabel style={{ marginBottom: 10 }}>Topics Covered</MonoLabel>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px' }}>
-                {session.topics.map((topic, i) => (
+                {(session.topics || []).map((topic, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12, color: MID, lineHeight: 1.5 }}>
                     <span style={{ marginTop: 5, width: 4, height: 4, borderRadius: '50%', background: TEAL, flexShrink: 0, display: 'block' }} />
-                    {topic}
+                    {typeof topic === 'object' ? topic.name : topic}
                   </div>
                 ))}
               </div>
