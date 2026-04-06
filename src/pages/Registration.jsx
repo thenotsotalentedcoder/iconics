@@ -9,6 +9,7 @@ import { FaCheck } from 'react-icons/fa';
 // ─── constants ───────────────────────────────────────────────────────────────
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const EASYCHAIR_URL = 'https://easychair.org/';
 
 
 // ─── small field components ──────────────────────────────────────────────────
@@ -63,7 +64,6 @@ const InfoNote = ({ children }) => (
 
 const FORM_TYPES = [
   { key: 'participant', label: 'Conference Participant' },
-  { key: 'paper',       label: 'Paper Author' },
   { key: 'workshop',    label: 'Workshop' },
 ];
 
@@ -1094,7 +1094,9 @@ const Registration = () => {
   // Open modal with specific form type if ?type=workshop is in URL
   useEffect(() => {
     const type = searchParams.get('type');
-    if (type && ['participant', 'paper', 'workshop'].includes(type)) {
+    if (type === 'paper') {
+      window.open(EASYCHAIR_URL, '_blank', 'noopener,noreferrer');
+    } else if (type && ['participant', 'workshop'].includes(type)) {
       setDefaultType(type);
       setModalOpen(true);
     }
@@ -1197,13 +1199,13 @@ const Registration = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </button>
-              <button onClick={() => openModal('paper')}
+              <a href={EASYCHAIR_URL} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center gap-3 px-8 py-3.5 border border-accent text-accent hover:bg-accent hover:text-white font-semibold rounded-xl text-sm transition-all duration-300">
                 Register Paper
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </button>
+              </a>
               <button onClick={() => openModal('workshop')}
                 className="inline-flex items-center gap-3 px-8 py-3.5 border border-border-subtle text-text-muted hover:border-accent hover:text-accent font-semibold rounded-xl text-sm transition-all duration-300">
                 Register for Workshop
