@@ -4,11 +4,14 @@ import PageTransition from '../components/layout/PageTransition';
 import SectionHeading from '../components/common/SectionHeading';
 import PageBackground from '../components/animations/PageBackground';
 
+const TEAL   = '#3E8B87';
+const TEAL_L = '#5AA8A3';
+const DARK   = '#0F4C5C';
+const MID    = '#2F7C7A';
+
 const tiers = [
   {
     name: 'Platinum',
-    border: 'border-[#5AA8A3]/40',
-    glow: 'hover:shadow-[0_0_30px_rgba(90,168,163,0.2)]',
     perks: [
       'Prominent logo on all conference materials',
       'Dedicated exhibition booth',
@@ -21,8 +24,6 @@ const tiers = [
   },
   {
     name: 'Gold',
-    border: 'border-[#5AA8A3]/20',
-    glow: 'hover:shadow-[0_0_30px_rgba(90,168,163,0.1)]',
     perks: [
       'Logo on conference materials',
       'Exhibition table',
@@ -34,8 +35,6 @@ const tiers = [
   },
   {
     name: 'Silver',
-    border: 'border-gray-200',
-    glow: 'hover:shadow-[0_0_30px_rgba(0,0,0,0.05)]',
     perks: [
       'Logo on conference website',
       'Complimentary registrations (2)',
@@ -45,8 +44,6 @@ const tiers = [
   },
   {
     name: 'Bronze',
-    border: 'border-gray-100',
-    glow: 'hover:shadow-[0_0_20px_rgba(0,0,0,0.02)]',
     perks: [
       'Logo on conference website',
       'Complimentary registration (1)',
@@ -71,16 +68,30 @@ const ContactForm = () => {
     setSubmitted(true);
   };
 
+  const inputStyle = {
+    width: '100%',
+    background: 'white',
+    border: '1px solid rgba(62,139,135,0.2)',
+    borderRadius: 4,
+    padding: '12px 16px',
+    fontSize: 14,
+    color: DARK,
+    outline: 'none',
+    transition: 'border-color 0.2s',
+    boxSizing: 'border-box',
+  };
+
   if (submitted) {
     return (
       <motion.div className="text-center py-12" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <div className="w-16 h-16 rounded-full bg-[#5AA8A3]/10 flex items-center justify-center mx-auto mb-4">
-          <svg className="w-8 h-8 text-[#5AA8A3]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div className="w-16 h-16 flex items-center justify-center mx-auto mb-4"
+          style={{ borderRadius: 6, background: `rgba(90,168,163,0.1)` }}>
+          <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke={TEAL}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h4 className="text-gray-900 font-bold text-xl mb-2">Inquiry Sent</h4>
-        <p className="text-gray-500">Your mail client has been opened. We'll get back to you shortly.</p>
+        <h4 className="font-bold text-xl mb-2" style={{ color: DARK }}>Inquiry Sent</h4>
+        <p style={{ color: MID }}>Your mail client has been opened. We'll get back to you shortly.</p>
       </motion.div>
     );
   }
@@ -88,21 +99,54 @@ const ContactForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="grid sm:grid-cols-2 gap-4">
-        <input name="org" required value={form.org} onChange={handleChange} placeholder="Organization *" className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-gray-900 text-sm focus:border-[#5AA8A3] focus:outline-none transition-colors" />
-        <input name="name" required value={form.name} onChange={handleChange} placeholder="Contact Name *" className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-gray-900 text-sm focus:border-[#5AA8A3] focus:outline-none transition-colors" />
+        <input name="org" required value={form.org} onChange={handleChange} placeholder="Organization *"
+          style={inputStyle}
+          onFocus={e => { e.target.style.borderColor = TEAL; }}
+          onBlur={e => { e.target.style.borderColor = 'rgba(62,139,135,0.2)'; }} />
+        <input name="name" required value={form.name} onChange={handleChange} placeholder="Contact Name *"
+          style={inputStyle}
+          onFocus={e => { e.target.style.borderColor = TEAL; }}
+          onBlur={e => { e.target.style.borderColor = 'rgba(62,139,135,0.2)'; }} />
       </div>
       <div className="grid sm:grid-cols-2 gap-4">
-        <input name="email" type="email" required value={form.email} onChange={handleChange} placeholder="Email *" className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-gray-900 text-sm focus:border-[#5AA8A3] focus:outline-none transition-colors" />
-        <select name="tier" value={form.tier} onChange={handleChange} className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-sm focus:border-[#5AA8A3] focus:outline-none text-gray-900">
+        <input name="email" type="email" required value={form.email} onChange={handleChange} placeholder="Email *"
+          style={inputStyle}
+          onFocus={e => { e.target.style.borderColor = TEAL; }}
+          onBlur={e => { e.target.style.borderColor = 'rgba(62,139,135,0.2)'; }} />
+        <select name="tier" value={form.tier} onChange={handleChange}
+          style={inputStyle}
+          onFocus={e => { e.target.style.borderColor = TEAL; }}
+          onBlur={e => { e.target.style.borderColor = 'rgba(62,139,135,0.2)'; }}>
           <option value="">Select a tier...</option>
           {tiers.map(t => <option key={t.name} value={t.name}>{t.name} Sponsor</option>)}
           <option value="Custom">Custom Inquiry</option>
         </select>
       </div>
-      <textarea name="message" value={form.message} onChange={handleChange} rows={4} placeholder="Your message..." className="w-full bg-white border border-gray-200 rounded-lg px-4 py-3 text-gray-900 text-sm focus:border-[#5AA8A3] focus:outline-none resize-none" />
-      <button type="submit" className="w-full sm:w-auto px-8 py-3 bg-[#5AA8A3] text-white font-bold rounded-lg hover:bg-[#3E8B87] transition-all duration-300 text-sm uppercase tracking-widest">
+      <textarea name="message" value={form.message} onChange={handleChange} rows={4} placeholder="Your message..."
+        style={{ ...inputStyle, resize: 'none' }}
+        onFocus={e => { e.target.style.borderColor = TEAL; }}
+        onBlur={e => { e.target.style.borderColor = 'rgba(62,139,135,0.2)'; }} />
+      {/* Send Inquiry button matches site style */}
+      <motion.button
+        type="submit"
+        whileHover={{ scale: 1.03 }}
+        whileTap={{ scale: 0.97 }}
+        style={{
+          padding: '12px 24px',
+          background: TEAL,
+          color: 'white',
+          border: 'none',
+          borderRadius: 4,
+          fontSize: 14,
+          fontWeight: 600,
+          cursor: 'pointer',
+          letterSpacing: '0.05em',
+          textTransform: 'uppercase',
+          display: 'inline-block',
+        }}
+      >
         Send Inquiry
-      </button>
+      </motion.button>
     </form>
   );
 };
@@ -118,33 +162,62 @@ const Sponsors = () => {
 
         <div className="container mx-auto px-6 relative z-10 max-w-6xl">
           <header className="mb-20">
-            <SectionHeading title="Sponsors" subtitle="Join hands with ICONICS'26 to drive the future of technical research." className="!text-left !text-gray-900" />
+            <SectionHeading title="Sponsors" subtitle="Join hands with ICONICS'26 to drive the future of technical research." />
           </header>
 
+          {/* Stats row */}
           <div className="grid md:grid-cols-3 gap-6 mb-16">
             {[
-              { label: 'Network', val: '500+ Researchers', desc: 'From 20+ countries worldwide.' },
+              { label: 'Network',    val: '500+ Researchers',  desc: 'From 20+ countries worldwide.' },
               { label: 'Visibility', val: 'Global Brand Reach', desc: 'IEEE Proceedings & Conference web.' },
-              { label: 'Trust', val: 'Academic Authority', desc: 'Partnered with NED University.' }
+              { label: 'Trust',      val: 'Academic Authority', desc: 'Partnered with NED University.' },
             ].map((item, i) => (
-              <motion.div key={i} className="bg-white/80 backdrop-blur-md border border-gray-100 p-6 rounded-2xl shadow-sm">
-                <p className="text-[10px] font-black text-[#5AA8A3] uppercase tracking-widest mb-2">{item.label}</p>
-                <h4 className="text-gray-900 font-bold text-xl mb-1">{item.val}</h4>
-                <p className="text-gray-500 text-xs">{item.desc}</p>
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.1 }}
+                className="p-6"
+                style={{ background: 'rgba(255,255,255,0.80)', backdropFilter: 'blur(12px)', border: '1px solid rgba(62,139,135,0.12)', borderRadius: 6, boxShadow: '0 2px 12px rgba(15,76,92,0.05)' }}
+              >
+                <p style={{ fontSize: 10, fontWeight: 800, color: TEAL_L, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 6 }}>{item.label}</p>
+                <h4 style={{ fontSize: 20, fontWeight: 700, color: DARK, marginBottom: 4 }}>{item.val}</h4>
+                <p style={{ fontSize: 12, color: MID }}>{item.desc}</p>
               </motion.div>
             ))}
           </div>
 
+          {/* Sponsorship Tiers */}
           <section className="mb-20">
-            <h3 className="text-gray-900 font-black text-sm uppercase mb-8 tracking-tighter">Sponsorship_Tiers</h3>
+            <h3 style={{ color: DARK, fontWeight: 800, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 32 }}>
+              Sponsorship Tiers
+            </h3>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {tiers.map((tier, i) => (
-                <motion.div key={tier.name} className={`bg-white/90 backdrop-blur-md border ${tier.border} rounded-[2rem] p-8 transition-all duration-300 ${tier.glow}`}>
-                  <h4 className="text-[#5AA8A3] font-black text-xs uppercase tracking-widest mb-6">{tier.name}</h4>
+                <motion.div
+                  key={tier.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                  whileHover={{ y: -4, boxShadow: '0 12px 32px rgba(62,139,135,0.12)' }}
+                  className="p-8 transition-all duration-300"
+                  style={{
+                    background: 'rgba(255,255,255,0.90)',
+                    backdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(62,139,135,0.14)',
+                    borderRadius: 6,
+                    boxShadow: '0 2px 8px rgba(15,76,92,0.04)',
+                  }}
+                >
+                  <h4 style={{ color: TEAL_L, fontWeight: 800, fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: 20 }}>
+                    {tier.name}
+                  </h4>
                   <ul className="space-y-4">
                     {tier.perks.map((perk, j) => (
-                      <li key={j} className="flex items-start gap-3 text-xs text-gray-500 leading-snug">
-                        <div className="w-1 h-1 rounded-full bg-[#5AA8A3] mt-1.5 shrink-0" />
+                      <li key={j} className="flex items-start gap-3" style={{ fontSize: 12, color: MID, lineHeight: 1.5 }}>
+                        <div className="w-1 h-1 rounded-full mt-2 shrink-0" style={{ background: TEAL_L }} />
                         {perk}
                       </li>
                     ))}
@@ -154,27 +227,40 @@ const Sponsors = () => {
             </div>
           </section>
 
+          {/* Current Partners */}
           <section className="mb-20">
-            <h3 className="text-gray-900 font-black text-sm uppercase mb-8 tracking-tighter">Current_Partners</h3>
+            <h3 style={{ color: DARK, fontWeight: 800, fontSize: 12, textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 32 }}>
+              Current Partners
+            </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
               {[
                 { name: 'NED University', sub: 'Host Institution' },
-                { name: 'IEEE', sub: 'Publication' },
-                { name: 'Sponsorship', sub: 'Available' },
-                { name: 'Sponsorship', sub: 'Available' }
+                { name: 'IEEE',           sub: 'Publication'      },
+                { name: 'Sponsorship',    sub: 'Available'        },
+                { name: 'Sponsorship',    sub: 'Available'        },
               ].map((p, i) => (
-                <div key={i} className="bg-white/60 border border-dashed border-gray-200 rounded-3xl p-8 flex flex-col items-center justify-center text-center aspect-[4/3]">
-                  <p className="text-gray-900 font-bold text-sm mb-1">{p.name}</p>
-                  <p className="text-gray-400 text-[10px] uppercase font-bold tracking-tighter">{p.sub}</p>
+                <div key={i} className="flex flex-col items-center justify-center text-center p-8 aspect-[4/3]"
+                  style={{ background: 'rgba(255,255,255,0.60)', border: '1px dashed rgba(62,139,135,0.22)', borderRadius: 6 }}>
+                  <p style={{ fontWeight: 700, fontSize: 13, color: DARK, marginBottom: 4 }}>{p.name}</p>
+                  <p style={{ fontSize: 10, textTransform: 'uppercase', fontWeight: 700, letterSpacing: '0.1em', color: MID }}>{p.sub}</p>
                 </div>
               ))}
             </div>
           </section>
 
-          <motion.section className="bg-white/95 backdrop-blur-xl border border-gray-100 rounded-[3rem] p-10 lg:p-16 shadow-2xl">
+          {/* Inquiry Form */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="p-10 lg:p-16"
+            style={{ background: 'rgba(255,255,255,0.95)', backdropFilter: 'blur(20px)', border: '1px solid rgba(62,139,135,0.14)', borderRadius: 8, boxShadow: '0 8px 40px rgba(15,76,92,0.08)' }}
+          >
             <div className="max-w-3xl">
-              <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Become a Sponsor</h2>
-              <p className="text-gray-500 mb-10">Fill out the brief inquiry form below. Our secretariat will contact you with a formal proposal within 48 hours.</p>
+              <h2 style={{ fontSize: 28, fontWeight: 800, color: DARK, marginBottom: 8 }}>Become a Sponsor</h2>
+              <p style={{ color: MID, marginBottom: 36, fontSize: 14, lineHeight: 1.7 }}>
+                Fill out the brief inquiry form below. Our secretariat will contact you with a formal proposal within 48 hours.
+              </p>
               <ContactForm />
             </div>
           </motion.section>

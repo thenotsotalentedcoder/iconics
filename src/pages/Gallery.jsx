@@ -41,7 +41,7 @@ const ResourceBadge = ({ r }) => {
   return (
     <a href={r.href} target="_blank" rel="noopener noreferrer"
       className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold transition-all hover:bg-[#EEF6F5]"
-      style={{ color: TEAL, border: `1px solid ${TEAL}50`, borderRadius: 6, background: 'white' }}>
+      style={{ color: TEAL, border: `1px solid ${TEAL}50`, borderRadius: 4, background: 'white' }}>
       {icons[r.type]}{r.label}
     </a>
   );
@@ -74,12 +74,13 @@ const Gallery = () => {
             {/* Year tabs */}
             <div className="flex justify-center mb-10">
               <div className="inline-flex gap-1 p-1"
-                style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.85)', borderRadius: 10, boxShadow: '0 2px 14px rgba(62,139,135,0.08)' }}>
+                style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.85)', borderRadius: 6, boxShadow: '0 2px 14px rgba(62,139,135,0.08)' }}>
                 {editions.map(ed => (
                   <button key={ed.year} onClick={() => changeYear(ed.year)}
-                    className="relative px-5 py-2 text-xs font-bold transition-all duration-300"
+                    className="relative px-6 py-3 text-sm font-semibold transition-all duration-300"
                     style={{
-                      borderRadius: 7, letterSpacing: '0.1em',
+                      borderRadius: 4,
+                      letterSpacing: '0.1em',
                       color: activeYear === ed.year ? '#fff' : MID,
                       background: activeYear === ed.year
                         ? `linear-gradient(135deg, ${TEAL} 0%, ${DARK} 100%)`
@@ -94,13 +95,11 @@ const Gallery = () => {
             <AnimatePresence mode="wait">
               <motion.div key={activeYear} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.38 }}>
 
-                {/* ── Main layout: image (wider) + sidebar ── */}
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_290px] gap-5 items-start">
 
-                  {/* Slideshow — takes the lead */}
-                  <div style={{ background: 'white', borderRadius: 14, border: '1px solid rgba(255,255,255,0.95)', boxShadow: '0 2px 24px rgba(15,76,92,0.08)', overflow: 'hidden' }}>
+                  {/* Slideshow */}
+                  <div style={{ background: 'white', borderRadius: 6, border: '1px solid rgba(255,255,255,0.95)', boxShadow: '0 2px 24px rgba(15,76,92,0.08)', overflow: 'hidden' }}>
 
-                    {/* Image frame */}
                     <div className="relative" style={{ height: 460 }}>
                       <AnimatePresence mode="wait">
                         <motion.div
@@ -121,14 +120,13 @@ const Gallery = () => {
                         </motion.div>
                       </AnimatePresence>
 
-                      {/* Prev / Next */}
                       {[-1, 1].map(dir => (
                         <button key={dir}
                           onClick={() => setImgIdx(p => (p + dir + active.photoCount) % active.photoCount)}
                           className="absolute top-1/2 -translate-y-1/2 flex items-center justify-center transition-all hover:scale-105"
                           style={{
                             [dir === -1 ? 'left' : 'right']: 14,
-                            width: 34, height: 34, borderRadius: 8,
+                            width: 34, height: 34, borderRadius: 4,
                             background: 'rgba(255,255,255,0.88)', backdropFilter: 'blur(6px)',
                             border: `1px solid ${TEAL}28`, color: DARK,
                             boxShadow: '0 1px 6px rgba(0,0,0,0.07)',
@@ -139,7 +137,6 @@ const Gallery = () => {
                         </button>
                       ))}
 
-                      {/* Progress dots */}
                       <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5">
                         {Array.from({ length: active.photoCount }).map((_, i) => (
                           <div key={i} onClick={() => setImgIdx(i)} style={{
@@ -159,7 +156,7 @@ const Gallery = () => {
                         <button key={i} onClick={() => setImgIdx(i)}
                           className="shrink-0 transition-all duration-200"
                           style={{
-                            width: 78, height: 50, borderRadius: 6,
+                            width: 78, height: 50, borderRadius: 4,
                             border: i === imgIdx ? `2px solid ${TEAL}` : `1px solid ${TEAL}18`,
                             background: i === imgIdx ? `${TEAL}10` : 'rgba(255,255,255,0.6)',
                             opacity: i === imgIdx ? 1 : 0.52,
@@ -169,11 +166,11 @@ const Gallery = () => {
                     </div>
                   </div>
 
-                  {/* Sidebar — edition info */}
+                  {/* Sidebar */}
                   <div className="flex flex-col gap-4">
 
                     {/* Edition card */}
-                    <div style={{ background: 'rgba(255,255,255,0.78)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.92)', borderRadius: 14, padding: '1.4rem' }}>
+                    <div style={{ background: 'rgba(255,255,255,0.78)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.92)', borderRadius: 6, padding: '1.4rem' }}>
                       <span style={{ fontSize: 9, fontWeight: 800, color: TEAL, letterSpacing: '0.4em', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>
                         {active.edition}
                       </span>
@@ -192,7 +189,7 @@ const Gallery = () => {
                     </div>
 
                     {/* Highlights card */}
-                    <div style={{ background: 'rgba(255,255,255,0.78)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.92)', borderRadius: 14, padding: '1.4rem' }}>
+                    <div style={{ background: 'rgba(255,255,255,0.78)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.92)', borderRadius: 6, padding: '1.4rem' }}>
                       <span style={{ fontSize: 9, fontWeight: 800, color: TEAL, letterSpacing: '0.4em', textTransform: 'uppercase', display: 'block', marginBottom: 14 }}>
                         Highlights
                       </span>
@@ -209,13 +206,11 @@ const Gallery = () => {
                         ))}
                       </ul>
                     </div>
-
                   </div>
                 </div>
 
               </motion.div>
             </AnimatePresence>
-
           </div>
         </div>
       </div>

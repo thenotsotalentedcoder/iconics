@@ -13,20 +13,21 @@ const SpeakerCard = ({ speaker, onClick }) => {
 
   return (
     <motion.div
-      className="bg-bg-card rounded-xl overflow-hidden border border-border-subtle cursor-pointer transition-all duration-300 hover:border-accent hover:-translate-y-2 hover:shadow-medium active:border-accent group shadow-card"
+      className="h-full overflow-hidden border border-border-subtle cursor-pointer transition-all duration-300 hover:border-accent hover:-translate-y-1 hover:shadow-medium active:border-accent group shadow-card bg-bg-card"
+      style={{ borderRadius: 6 }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       onClick={() => onClick(speaker)}
       whileTap={{ scale: 0.98 }}
     >
-      {/* Photo */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-bg-secondary">
+      {/* Photo — fixed height for consistent card sizing */}
+      <div className="relative overflow-hidden bg-bg-secondary h-48">
         {!imageError ? (
           <img
             src={speaker.photo}
             alt={speaker.name}
-            className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-110"
+            className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
             onError={() => setImageError(true)}
           />
         ) : (
@@ -34,7 +35,6 @@ const SpeakerCard = ({ speaker, onClick }) => {
             <UserIcon />
           </div>
         )}
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-accent-dark/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 

@@ -6,13 +6,13 @@ const TEAL = '#3E8B87';
 const StatsSection = () => {
   return (
     /* Changed to bg-transparent and relative to ensure it layers correctly over the canvas */
-    <section className="relative py-12 sm:py-16 md:py-24 bg-transparent overflow-hidden">
+    <section className="relative py-10 sm:py-14 md:py-20 bg-transparent overflow-hidden">
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 md:gap-12 max-w-4xl mx-auto">
           {stats.map((stat, index) => (
             <div 
               key={index} 
-              className="relative p-6 rounded-2xl transition-all duration-500 hover:bg-white/50 backdrop-blur-[2px]"
+              className="relative p-5 rounded-2xl transition-all duration-500 hover:bg-white/50 backdrop-blur-[2px]"
             >
               <AnimatedCounter
                 end={stat.end}

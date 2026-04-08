@@ -103,7 +103,7 @@ export default function AdminLogin() {
                 disabled={loading || !secret}
                 whileHover={{ scale: loading ? 1 : 1.02 }}
                 whileTap={{ scale: loading ? 1 : 0.98 }}
-                className="w-full py-3 rounded-xl text-sm font-bold text-white transition-all duration-200 flex items-center justify-center gap-2"
+                className="w-full py-3 rounded text-base font-semibold text-white transition-all duration-200 flex items-center justify-center gap-2"
                 style={{
                   background: loading || !secret ? '#7A9AA6' : 'linear-gradient(135deg, #2D6E6A, #3E8B87)',
                   boxShadow: loading || !secret ? 'none' : '0 8px 24px rgba(62,139,135,0.3)',

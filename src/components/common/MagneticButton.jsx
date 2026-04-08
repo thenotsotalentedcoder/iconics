@@ -37,7 +37,7 @@ const MagneticButton = ({
     setPosition({ x: 0, y: 0 });
   };
 
-  const baseStyles = "relative px-8 py-4 font-semibold rounded-lg transition-all duration-300 inline-flex items-center gap-2 overflow-hidden group";
+  const baseStyles = "relative px-6 py-3 font-semibold rounded transition-all duration-300 inline-flex items-center justify-center overflow-hidden group";
 
   const variants = {
     primary: "bg-accent text-white hover:bg-accent-light",
@@ -53,19 +53,6 @@ const MagneticButton = ({
 
       {/* Content */}
       <span className="relative z-10">{children}</span>
-
-      {/* Arrow icon */}
-      <motion.svg
-        className="relative z-10 w-5 h-5"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-        initial={{ x: 0 }}
-        whileHover={{ x: 5 }}
-        transition={{ duration: 0.3 }}
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-      </motion.svg>
     </>
   );
 

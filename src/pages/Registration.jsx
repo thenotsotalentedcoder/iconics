@@ -68,12 +68,12 @@ const FORM_TYPES = [
 ];
 
 const FormTypeSelector = ({ active, onChange }) => (
-  <div className="flex gap-1 p-1 bg-bg-primary rounded-xl border border-border-subtle mb-6">
+  <div className="flex gap-1 p-1 bg-bg-primary rounded border border-border-subtle mb-6">
     {FORM_TYPES.map(t => (
       <button
         key={t.key}
         onClick={() => onChange(t.key)}
-        className={`flex-1 py-2.5 px-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+        className={`flex-1 py-2.5 px-3 rounded text-sm font-medium transition-all duration-200 ${
           active === t.key
             ? 'bg-accent text-white shadow-sm'
             : 'text-text-muted hover:text-text-primary'
@@ -427,7 +427,7 @@ const ParticipantForm = ({ onClose }) => {
               { value: 'student',      label: 'Students' },
             ].map(opt => (
               <button key={opt.value} type="button" onClick={() => set('registrationType', opt.value)}
-                className={`w-full flex items-center gap-3 p-4 rounded-lg border transition-all ${
+                className={`w-full flex items-center gap-3 p-4 rounded border transition-all ${
                   form.registrationType === opt.value
                     ? 'border-accent bg-accent/5'
                     : 'border-border-subtle hover:border-accent/40'
@@ -711,7 +711,7 @@ const PaperForm = ({ onClose }) => {
               { value: 'academia_industry', label: 'Authors from Academia / Industry' },
             ].map(opt => (
               <button key={opt.value} type="button" onClick={() => set('registrationType', opt.value)}
-                className={`w-full flex items-center gap-3 p-4 rounded-lg border transition-all ${
+                className={`w-full flex items-center gap-3 p-4 rounded border transition-all ${
                   form.registrationType === opt.value
                     ? 'border-accent bg-accent/5'
                     : 'border-border-subtle hover:border-accent/40'
@@ -1036,25 +1036,20 @@ const FormShell = ({ title, steps, step, onClose, onBack, onNext, onSubmit, subm
 
     <div className="px-6 sm:px-8 py-4 border-t border-border-subtle flex items-center justify-between shrink-0">
       <button onClick={onBack} disabled={step === 0}
-        className="px-5 py-2.5 border border-border-subtle text-text-muted rounded-lg text-sm font-medium hover:text-text-primary hover:border-border-dark transition-all disabled:opacity-30 disabled:cursor-not-allowed">
+        className="px-5 py-2.5 border border-border-subtle text-text-muted rounded text-sm font-medium hover:text-text-primary hover:border-border-dark transition-all disabled:opacity-30 disabled:cursor-not-allowed">
         Back
       </button>
       <div className="flex items-center gap-3">
         <span className="text-text-muted text-xs hidden sm:block">{step + 1} / {steps.length}</span>
         {step < steps.length - 1 ? (
           <button onClick={onNext}
-            className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded-lg text-sm font-semibold transition-all duration-200 hover:shadow-glow">
+            className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded text-sm font-semibold transition-all duration-200 hover:shadow-glow">
             Continue
           </button>
         ) : (
           <button onClick={onSubmit} disabled={submitting}
-            className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded-lg text-sm font-semibold transition-all duration-200 hover:shadow-glow flex items-center gap-2 disabled:opacity-50">
+            className="px-6 py-2.5 bg-accent hover:bg-accent-light text-white rounded text-sm font-semibold transition-all duration-200 hover:shadow-glow disabled:opacity-50">
             {submitting ? 'Submitting...' : 'Submit Registration'}
-            {!submitting && (
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-              </svg>
-            )}
           </button>
         )}
       </div>
@@ -1253,21 +1248,15 @@ const Registration = () => {
           >
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
               <button onClick={() => openModal('participant')}
-                className="inline-flex items-center gap-3 px-8 py-3.5 bg-accent hover:bg-accent-light text-white font-semibold rounded-xl text-sm transition-all duration-300 hover:shadow-glow">
+                className="inline-flex items-center justify-center px-6 py-3 bg-accent hover:bg-accent-light text-white font-semibold rounded text-base transition-all duration-300 hover:shadow-glow">
                 Register as Participant
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
               </button>
               <a href={EASYCHAIR_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-3.5 border border-accent text-accent hover:bg-accent hover:text-white font-semibold rounded-xl text-sm transition-all duration-300">
+                className="inline-flex items-center justify-center px-6 py-3 border border-accent text-accent hover:bg-accent hover:text-white font-semibold rounded text-base transition-all duration-300">
                 Register Paper
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
               </a>
               <button onClick={() => openModal('workshop')}
-                className="inline-flex items-center gap-3 px-8 py-3.5 border border-border-subtle text-text-muted hover:border-accent hover:text-accent font-semibold rounded-xl text-sm transition-all duration-300">
+                className="inline-flex items-center justify-center px-6 py-3 border border-border-subtle text-text-muted hover:border-accent hover:text-accent font-semibold rounded text-base transition-all duration-300">
                 Register for Workshop
               </button>
             </div>

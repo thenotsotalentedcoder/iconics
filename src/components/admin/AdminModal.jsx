@@ -145,7 +145,7 @@ export function SubmitButton({ loading, label = 'Save', disabled }) {
       disabled={loading || disabled}
       whileHover={{ scale: loading ? 1 : 1.02 }}
       whileTap={{ scale: loading ? 1 : 0.98 }}
-      className="flex items-center gap-2 px-6 py-2.5 rounded-xl text-sm font-bold text-white transition-all"
+      className="flex items-center gap-2 px-6 py-3 rounded text-base font-semibold text-white transition-all"
       style={{
         background: loading || disabled ? '#7A9AA6' : 'linear-gradient(135deg, #2D6E6A, #3E8B87)',
         boxShadow: loading || disabled ? 'none' : '0 4px 14px rgba(62,139,135,0.25)',

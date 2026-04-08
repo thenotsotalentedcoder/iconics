@@ -14,13 +14,14 @@ const glass = {
   background: 'rgba(255,255,255,0.65)',
   border: '1px solid rgba(62,139,135,0.14)',
   backdropFilter: 'blur(12px)',
+  borderRadius: 6,  // minimal radius
 };
 
 const inputStyle = {
   width: '100%',
   background: 'rgba(255,255,255,0.70)',
   border: '1px solid rgba(62,139,135,0.18)',
-  borderRadius: '10px',
+  borderRadius: 4,  // minimal radius
   padding: '12px 16px',
   fontSize: '14px',
   color: DARK,
@@ -30,8 +31,8 @@ const inputStyle = {
 
 const ContactInfoItem = ({ Icon, title, children }) => (
   <div className="flex items-start gap-4">
-    <div className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
-      style={{ background: `rgba(62,139,135,0.10)`, border: '1px solid rgba(62,139,135,0.18)' }}>
+    <div className="w-11 h-11 flex items-center justify-center flex-shrink-0"
+      style={{ background: `rgba(62,139,135,0.10)`, border: '1px solid rgba(62,139,135,0.18)', borderRadius: 6 }}>
       <Icon style={{ color: TEAL, fontSize: '17px' }} />
     </div>
     <div>
@@ -62,7 +63,7 @@ const Contact = () => (
           <div className="grid md:grid-cols-2 gap-8 mb-10">
 
             {/* Contact Info */}
-            <motion.div className="rounded-2xl p-7" style={glass}
+            <motion.div className="p-7" style={glass}
               initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
 
               <div className="flex items-center gap-2 mb-7">
@@ -109,8 +110,8 @@ const Contact = () => (
                   ].map(({ href, Icon, label }) => (
                     <motion.a key={label} href={href} target="_blank" rel="noopener noreferrer"
                       aria-label={label}
-                      className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200"
-                      style={{ background: 'rgba(62,139,135,0.08)', border: '1px solid rgba(62,139,135,0.18)', color: TEAL }}
+                      className="w-10 h-10 flex items-center justify-center transition-all duration-200"
+                      style={{ background: 'rgba(62,139,135,0.08)', border: '1px solid rgba(62,139,135,0.18)', color: TEAL, borderRadius: 6 }}
                       whileHover={{ scale: 1.1, y: -2 }}
                       onHoverStart={e => { e.target.style.background = TEAL; e.target.style.color = '#fff'; e.target.style.boxShadow = '0 4px 14px rgba(62,139,135,0.30)'; }}
                       onHoverEnd={e => { e.target.style.background = 'rgba(62,139,135,0.08)'; e.target.style.color = TEAL; e.target.style.boxShadow = 'none'; }}>
@@ -122,7 +123,7 @@ const Contact = () => (
             </motion.div>
 
             {/* Contact Form */}
-            <motion.div className="rounded-2xl p-7" style={glass}
+            <motion.div className="p-7" style={glass}
               initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
 
               <div className="flex items-center gap-2 mb-7">
@@ -132,9 +133,9 @@ const Contact = () => (
 
               <form className="space-y-4">
                 {[
-                  { label: 'Name',    type: 'text',  placeholder: 'Your name'           },
-                  { label: 'Email',   type: 'email', placeholder: 'your@email.com'      },
-                  { label: 'Subject', type: 'text',  placeholder: 'Subject'             },
+                  { label: 'Name',    type: 'text',  placeholder: 'Your name'      },
+                  { label: 'Email',   type: 'email', placeholder: 'your@email.com' },
+                  { label: 'Subject', type: 'text',  placeholder: 'Subject'        },
                 ].map(({ label, type, placeholder }) => (
                   <div key={label}>
                     <label className="block text-xs font-semibold tracking-wide uppercase mb-1.5" style={{ color: TEAL_L }}>{label}</label>
@@ -151,8 +152,8 @@ const Contact = () => (
                     onBlur={e => { e.target.style.borderColor = 'rgba(62,139,135,0.18)'; e.target.style.boxShadow = 'none'; }} />
                 </div>
                 <motion.button type="submit"
-                  className="w-full py-3 text-white text-sm font-semibold rounded-xl transition-all duration-200"
-                  style={{ background: `linear-gradient(135deg, ${TEAL} 0%, #2D6E6A 100%)`, boxShadow: '0 4px 14px rgba(62,139,135,0.28)' }}
+                  className="w-full py-3 text-base font-semibold transition-all duration-200"
+                  style={{ background: `linear-gradient(135deg, ${TEAL} 0%, #2D6E6A 100%)`, boxShadow: '0 4px 14px rgba(62,139,135,0.28)', borderRadius: 4, border: 'none', cursor: 'pointer' }}
                   whileHover={{ boxShadow: '0 6px 22px rgba(62,139,135,0.40)' }}
                   whileTap={{ scale: 0.98 }}>
                   Send Message
@@ -165,8 +166,8 @@ const Contact = () => (
           </div>
 
           {/* Map */}
-          <motion.div className="rounded-2xl overflow-hidden"
-            style={{ border: '1px solid rgba(62,139,135,0.14)', boxShadow: '0 4px 24px rgba(62,139,135,0.08)' }}
+          <motion.div
+            style={{ border: '1px solid rgba(62,139,135,0.14)', boxShadow: '0 4px 24px rgba(62,139,135,0.08)', borderRadius: 6, overflow: 'hidden' }}
             initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3620.3076303646874!2d67.02561931500283!3d24.866455584062657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06651d4bbf%3A0x9cf92f44555a0c23!2sNED%20University%20of%20Engineering%20and%20Technology!5e0!3m2!1sen!2s!4v1645000000000!5m2!1sen!2s"

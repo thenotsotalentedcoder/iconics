@@ -9,7 +9,7 @@ const ImportantDates = () => {
   const { data: importantDates } = useApiData(api.getDates, staticDates);
 
   return (
-    <section ref={ref} className="py-20 lg:py-28 bg-[#0D1F25]/90 relative overflow-hidden backdrop-blur-sm">
+    <section ref={ref} className="py-16 lg:py-24 bg-[#0D1F25]/90 relative overflow-hidden backdrop-blur-sm">
       
       {/* --- GEOMETRIC MATHEMATICAL BACKGROUND --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -34,8 +34,8 @@ const ImportantDates = () => {
         />
       </div>
 
-      <div className="container mx-auto px-6 lg:px-16 relative z-10">
-        <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-20 items-start">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+        <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-16 items-start">
           
           {/* Left — Scaled Down Header */}
           <div className="lg:sticky lg:top-32">
@@ -96,8 +96,8 @@ const ImportantDates = () => {
                 </div>
 
                 {/* Card — Teal Glassmorphism */}
-                <div className="bg-white/[0.03] backdrop-blur-md rounded-sm p-6 border border-white/5 hover:border-[#5AA8A3]/30 transition-all duration-300 relative overflow-hidden group-hover:bg-white/[0.05]">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div className="bg-white/[0.03] backdrop-blur-md rounded-sm p-5 border border-white/5 hover:border-[#5AA8A3]/30 transition-all duration-300 relative overflow-hidden group-hover:bg-white/[0.05]">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                       <h3 className="font-bold text-lg text-white group-hover:text-[#5AA8A3] transition-colors tracking-tight">
                         {item.title}

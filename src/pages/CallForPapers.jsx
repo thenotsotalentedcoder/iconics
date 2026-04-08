@@ -33,7 +33,6 @@ const glassStrong = {
   WebkitBackdropFilter: 'blur(18px)',
 };
 
-/* ─── Reveal wrapper ────────────────────────────────────── */
 const Reveal = ({ children, delay = 0, y = 28, style = {} }) => (
   <motion.div
     initial={{ opacity: 0, y }}
@@ -46,7 +45,6 @@ const Reveal = ({ children, delay = 0, y = 28, style = {} }) => (
   </motion.div>
 );
 
-/* ─── Floating Orbs ─────────────────────────────────────── */
 const FloatingOrbs = () => (
   <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
     {[
@@ -64,19 +62,16 @@ const FloatingOrbs = () => (
   </div>
 );
 
-/* ─── Accent bar ────────────────────────────────────────── */
 const AccentBar = () => (
   <span style={{ display: 'inline-block', width: 3, height: 20, borderRadius: 4, background: `linear-gradient(to bottom, ${TEAL_L}, ${TEAL})`, flexShrink: 0 }} />
 );
 
-/* ─── Section label ─────────────────────────────────────── */
 const SectionLabel = ({ children }) => (
   <div style={{ fontFamily: 'monospace', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.2em', color: TEAL, marginBottom: 12 }}>
     {children}
   </div>
 );
 
-/* ─── Icons ─────────────────────────────────────────────── */
 const ChevronIcon = ({ open }) => (
   <motion.svg
     animate={{ rotate: open ? 180 : 0 }}
@@ -97,20 +92,19 @@ const icons = {
 };
 
 const guidelines = [
-  { icon: icons.format,  label: 'Format',             value: 'IEEE Conference format (template provided)' },
-  { icon: icons.length,  label: 'Length',              value: 'Full papers (6–8 pages) · Short papers (4 pages)' },
-  { icon: icons.system,  label: 'Submission System',   value: 'EasyChair' },
-  { icon: icons.review,  label: 'Review Process',      value: 'Double-blind peer review by international experts' },
-  { icon: icons.notify,  label: 'Notification',        value: 'Authors notified via email upon decision' },
+  { icon: icons.format,  label: 'Format',           value: 'IEEE Conference format (template provided)' },
+  { icon: icons.length,  label: 'Length',            value: 'Full papers (6–8 pages) · Short papers (4 pages)' },
+  { icon: icons.system,  label: 'Submission System', value: 'EasyChair' },
+  { icon: icons.review,  label: 'Review Process',    value: 'Double-blind peer review by international experts' },
+  { icon: icons.notify,  label: 'Notification',      value: 'Authors notified via email upon decision' },
 ];
 
 const paperTypes = [
-  { type: 'Full Paper',   pages: '6–8 pages', desc: 'Complete research with results and analysis', color: TEAL },
-  { type: 'Short Paper',  pages: '4 pages',   desc: 'Work-in-progress or preliminary findings',    color: DARK },
-  { type: 'Poster',       pages: 'A1 format', desc: 'Visual presentation of research concept',     color: MID  },
+  { type: 'Full Paper',  pages: '6–8 pages', desc: 'Complete research with results and analysis', color: TEAL },
+  { type: 'Short Paper', pages: '4 pages',   desc: 'Work-in-progress or preliminary findings',    color: DARK },
+  { type: 'Poster',      pages: 'A1 format', desc: 'Visual presentation of research concept',     color: MID  },
 ];
 
-/* ══ MAIN COMPONENT ═════════════════════════════════════ */
 const CallForPapers = () => {
   const [openTrack, setOpenTrack] = useState(null);
   const [hoveredGuideline, setHoveredGuideline] = useState(null);
@@ -126,18 +120,14 @@ const CallForPapers = () => {
         <div style={{ position: 'relative', zIndex: 1, paddingTop: 96, paddingBottom: 80 }}>
           <div style={{ maxWidth: 1000, margin: '0 auto', padding: '0 24px' }}>
 
-            {/* ══ HERO ══ */}
+            {/* HERO */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               style={{ textAlign: 'center', paddingBottom: 64, paddingTop: 16 }}
             >
-              
-
               <SectionHeading title="Call for Papers" subtitle="Submit your research to ICONICS'26" />
-
-              {/* Divider dots */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 32 }}>
                 <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.5 }}
                   style={{ height: 1, width: 80, background: `linear-gradient(90deg, transparent, ${TEAL})`, transformOrigin: 'right' }} />
@@ -151,9 +141,10 @@ const CallForPapers = () => {
               </div>
             </motion.div>
 
-            {/* ══ OVERVIEW SPLIT ══ */}
+            {/* OVERVIEW SPLIT */}
             <Reveal style={{ marginBottom: 56 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderRadius: 11, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 48px rgba(15,76,92,0.08)' }}>
+              {/* radius: 8px to match workshop reference */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 48px rgba(15,76,92,0.08)' }}>
 
                 {/* Left dark */}
                 <motion.div whileHover={{ background: '#0D4255' }} transition={{ duration: 0.4 }}
@@ -178,7 +169,7 @@ const CallForPapers = () => {
                   </div>
                 </motion.div>
 
-                {/* Right — paper types */}
+                {/* Right — paper types — removed double-blind capsule */}
                 <div style={{ background:'rgba(247,252,252,0.95)', padding:'48px 40px', display:'flex', flexDirection:'column', gap:16 }}>
                   <div style={{ fontFamily:'monospace', fontSize:10, textTransform:'uppercase', letterSpacing:'0.12em', color:MUTED, marginBottom:6 }}>Paper Types Accepted</div>
                   {paperTypes.map((pt, i) => (
@@ -186,9 +177,9 @@ const CallForPapers = () => {
                       initial={{ opacity:0, x:20 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }}
                       transition={{ duration:0.5, delay:i*0.1+0.2 }}
                       whileHover={{ x:6 }}
-                      style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 16px', borderRadius:12, background:'rgba(62,139,135,0.05)', border:'1px solid rgba(62,139,135,0.12)' }}
+                      style={{ display:'flex', alignItems:'center', gap:14, padding:'14px 16px', borderRadius:6, background:'rgba(62,139,135,0.05)', border:'1px solid rgba(62,139,135,0.12)' }}
                     >
-                      <div style={{ width:40, height:40, borderRadius:10, background:pt.color, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                      <div style={{ width:40, height:40, borderRadius:6, background:pt.color, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
                         <span style={{ fontFamily:'monospace', fontSize:9, fontWeight:700, color:'white', textAlign:'center', lineHeight:1.2 }}>
                           {pt.pages}
                         </span>
@@ -199,17 +190,12 @@ const CallForPapers = () => {
                       </div>
                     </motion.div>
                   ))}
-                  <motion.div whileHover={{ scale:1.02 }}
-                    style={{ marginTop:4, display:'inline-flex', alignItems:'center', gap:8, background:'rgba(62,139,135,0.06)', border:'1px solid rgba(62,139,135,0.2)', borderRadius:10, padding:'10px 14px' }}>
-                    <motion.span animate={{ scale:[1,1.3,1], opacity:[1,0.5,1] }} transition={{ duration:2.5, repeat:Infinity }}
-                      style={{ width:7, height:7, borderRadius:'50%', background:TEAL, flexShrink:0 }} />
-                    <span style={{ fontSize:12, fontWeight:600, color:DARK }}>Double-blind peer review by international experts</span>
-                  </motion.div>
+                  {/* Double-blind capsule removed */}
                 </div>
               </div>
             </Reveal>
 
-            {/* ══ RESEARCH TRACKS ══ */}
+            {/* RESEARCH TRACKS */}
             <section style={{ marginBottom: 56 }}>
               <Reveal style={{ marginBottom: 32 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:12 }}>
@@ -229,11 +215,12 @@ const CallForPapers = () => {
                       <motion.div
                         whileHover={{ boxShadow: isOpen ? '0 12px 40px rgba(62,139,135,0.14)' : '0 6px 24px rgba(62,139,135,0.08)' }}
                         style={{
-                          ...glassStrong, borderRadius:16, overflow:'hidden',
+                          ...glassStrong,
+                          borderRadius: 6,
+                          overflow:'hidden',
                           ...(isOpen ? { border:'1px solid rgba(62,139,135,0.28)', boxShadow:'0 12px 40px rgba(62,139,135,0.12)' } : {}),
                         }}
                       >
-                        {/* Accent line when open */}
                         <motion.div
                           animate={{ scaleX: isOpen ? 1 : 0 }}
                           transition={{ duration:0.4, ease:[0.22,1,0.36,1] }}
@@ -245,11 +232,10 @@ const CallForPapers = () => {
                           style={{ width:'100%', padding:'20px 24px', display:'flex', alignItems:'center', justifyContent:'space-between', background:'transparent', border:'none', cursor:'pointer', textAlign:'left' }}
                         >
                           <div style={{ display:'flex', alignItems:'center', gap:14 }}>
-                            {/* Track number */}
                             <motion.div
                               animate={{ background: isOpen ? TEAL : 'rgba(62,139,135,0.08)' }}
                               transition={{ duration:0.3 }}
-                              style={{ width:36, height:36, borderRadius:10, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, border:'1px solid rgba(62,139,135,0.18)' }}
+                              style={{ width:36, height:36, borderRadius:4, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0, border:'1px solid rgba(62,139,135,0.18)' }}
                             >
                               <span style={{ fontFamily:'monospace', fontSize:11, fontWeight:700, color: isOpen ? 'white' : TEAL }}>
                                 {String(i+1).padStart(2,'0')}
@@ -286,7 +272,7 @@ const CallForPapers = () => {
                                       animate={{ opacity:1, scale:1 }}
                                       transition={{ duration:0.3, delay:j*0.04 }}
                                       whileHover={{ scale:1.05, background:'rgba(62,139,135,0.14)' }}
-                                      style={{ fontSize:12, fontFamily:'monospace', color:TEAL, background:'rgba(62,139,135,0.07)', border:'1px solid rgba(62,139,135,0.18)', borderRadius:8, padding:'5px 12px', letterSpacing:'0.04em', cursor:'default' }}
+                                      style={{ fontSize:12, fontFamily:'monospace', color:TEAL, background:'rgba(62,139,135,0.07)', border:'1px solid rgba(62,139,135,0.18)', borderRadius:4, padding:'5px 12px', letterSpacing:'0.04em', cursor:'default' }}
                                     >
                                       {typeof topic === 'object' ? topic.name : topic}
                                     </motion.span>
@@ -303,7 +289,7 @@ const CallForPapers = () => {
               </div>
             </section>
 
-            {/* ══ SUBMISSION GUIDELINES ══ */}
+            {/* SUBMISSION GUIDELINES */}
             <section style={{ marginBottom: 56 }}>
               <Reveal style={{ marginBottom: 32 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:12 }}>
@@ -322,12 +308,12 @@ const CallForPapers = () => {
                       onHoverStart={() => setHoveredGuideline(i)}
                       onHoverEnd={() => setHoveredGuideline(null)}
                       whileHover={{ y:-4, boxShadow:'0 16px 40px rgba(62,139,135,0.13)' }}
-                      style={{ ...glass, borderRadius:16, padding:'22px 22px', position:'relative', overflow:'hidden', cursor:'default' }}
+                      style={{ ...glass, borderRadius:6, padding:'22px 22px', position:'relative', overflow:'hidden', cursor:'default' }}
                     >
                       <motion.div
                         initial={{ scaleX:0 }} whileInView={{ scaleX:1 }} viewport={{ once:true }}
                         transition={{ duration:0.6, delay:i*0.1 }}
-                        style={{ position:'absolute', top:0, left:0, right:0, height:3, background:`linear-gradient(90deg, ${TEAL}, ${TEAL_L})`, transformOrigin:'left', borderRadius:'16px 16px 0 0' }}
+                        style={{ position:'absolute', top:0, left:0, right:0, height:3, background:`linear-gradient(90deg, ${TEAL}, ${TEAL_L})`, transformOrigin:'left', borderRadius:'6px 6px 0 0' }}
                       />
                       <motion.div
                         animate={{ opacity: hoveredGuideline === i ? 0.08 : 0.04, scale: hoveredGuideline === i ? 1.15 : 1 }}
@@ -335,7 +321,7 @@ const CallForPapers = () => {
                         style={{ position:'absolute', bottom:-20, right:-20, width:90, height:90, borderRadius:'50%', background:TEAL, pointerEvents:'none' }}
                       />
                       <div style={{ display:'flex', alignItems:'flex-start', gap:14 }}>
-                        <div style={{ width:40, height:40, borderRadius:11, background:'rgba(62,139,135,0.08)', border:'1px solid rgba(62,139,135,0.15)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                        <div style={{ width:40, height:40, borderRadius:6, background:'rgba(62,139,135,0.08)', border:'1px solid rgba(62,139,135,0.15)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
                           {g.icon}
                         </div>
                         <div>
@@ -349,7 +335,7 @@ const CallForPapers = () => {
               </div>
             </section>
 
-            {/* ══ IMPORTANT DATES ══ */}
+            {/* IMPORTANT DATES */}
             <section style={{ marginBottom: 56 }}>
               <Reveal style={{ marginBottom: 32 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:12 }}>
@@ -361,17 +347,17 @@ const CallForPapers = () => {
                 </div>
               </Reveal>
               <Reveal delay={0.1}>
-                <div style={{ ...glassStrong, borderRadius:14, padding:'32px 36px' }}>
+                <div style={{ ...glassStrong, borderRadius:6, padding:'32px 36px' }}>
                   <Timeline items={importantDates} />
                 </div>
               </Reveal>
             </section>
 
-            {/* ══ CTA ══ */}
+            {/* CTA */}
             <Reveal>
               <motion.div
                 whileHover={{ boxShadow:'0 32px 80px rgba(15,76,92,0.22)' }}
-                style={{ background:DARK, borderRadius:24, padding:'52px 48px', position:'relative', overflow:'hidden', textAlign:'center' }}
+                style={{ background:DARK, borderRadius:8, padding:'52px 48px', position:'relative', overflow:'hidden', textAlign:'center' }}
               >
                 {[{ w:280, h:280, top:-80, right:-60, o:0.08 }, { w:160, h:160, bottom:-30, left:50, o:0.06 }].map((c,i) => (
                   <motion.div key={i} animate={{ scale:[1,1.1,1], rotate:[0,10,0] }} transition={{ duration:14+i*5, repeat:Infinity }}
@@ -388,11 +374,16 @@ const CallForPapers = () => {
                   <p style={{ fontSize:14, color:'rgba(255,255,255,0.65)', maxWidth:480, margin:'0 auto 32px', lineHeight:1.7 }}>
                     All submissions are handled through EasyChair. Make sure your paper follows IEEE Conference format before uploading.
                   </p>
-                  <motion.div whileHover={{ scale:1.04 }} whileTap={{ scale:0.97 }} style={{ display:'inline-block' }}>
-                    <Button variant="primary" size="lg" href={EXTERNAL_LINKS.EASYCHAIR} external>
-                      Submit Your Paper via EasyChair
-                    </Button>
-                  </motion.div>
+                  <motion.a
+                    href={EXTERNAL_LINKS.EASYCHAIR}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.97 }}
+                    style={{ display: 'inline-block', padding: '14px 32px', background: TEAL, color: 'white', borderRadius: 4, fontSize: 13, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.05em' }}
+                  >
+                    Submit Your Paper via EasyChair
+                  </motion.a>
                 </div>
               </motion.div>
             </Reveal>

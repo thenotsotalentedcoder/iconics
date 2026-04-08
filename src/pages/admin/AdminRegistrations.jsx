@@ -27,7 +27,7 @@ function ExportButton({ href, label }) {
   return (
     <motion.button onClick={handleExport}
       whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-      className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white"
+      className="flex items-center gap-2 px-6 py-3 rounded text-base font-semibold text-white"
       style={{ background: 'linear-gradient(135deg, #2D6E6A, #3E8B87)', boxShadow: '0 4px 14px rgba(62,139,135,0.25)' }}>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" strokeLinecap="round" strokeLinejoin="round"/>

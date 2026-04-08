@@ -6,9 +6,9 @@ const nedImage = '/images/ned.jpg';
 
 const AboutSnippet = () => {
   return (
-    <section className="py-12 sm:py-16 md:py-24 bg-bg-secondary">
+    <section className="py-10 sm:py-14 md:py-20 bg-bg-secondary">
       <div className="container mx-auto px-4 sm:px-6 max-w-7xl">
-        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-6 md:gap-10 items-center">
           {/* Left: Text */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -32,7 +32,7 @@ const AboutSnippet = () => {
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 my-6 sm:my-8">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 my-5 sm:my-6">
               <div>
                 <div className="text-2xl sm:text-3xl font-bold text-accent font-accent">5th</div>
                 <div className="text-text-muted text-xs sm:text-sm">Edition</div>

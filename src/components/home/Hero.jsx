@@ -199,13 +199,14 @@ const CountUnit = ({ value, label, index }) => {
       transition={{ duration: 0.6, delay: 0.7 + index * 0.08, ease: [0.22, 1, 0.36, 1] }}
     >
       <div
-        className="relative overflow-hidden rounded-xl flex items-center justify-center"
+        className="relative overflow-hidden flex items-center justify-center"
         style={{
           width: 'clamp(48px, 11vw, 82px)',
           height: 'clamp(54px, 12vw, 90px)',
           background: 'rgba(255,255,255,0.07)',
           border: '1px solid rgba(90,168,163,0.22)',
           backdropFilter: 'blur(6px)',
+          borderRadius: '4px',
         }}
       >
         <div
@@ -380,12 +381,13 @@ const CardsStrip = () => {
           c.info ? (
             <div
               key={`info-${i}`}
-              className="flex-shrink-0 rounded-2xl flex flex-col justify-center"
+              className="flex-shrink-0 flex flex-col justify-center"
               style={{
                 width: w, height: h,
                 background: 'rgba(255,255,255,0.04)',
                 border: '1px solid rgba(90,168,163,0.2)',
                 backdropFilter: 'blur(12px)',
+                borderRadius: '6px',
                 padding: `${Math.round(h * 0.1)}px ${Math.round(w * 0.08)}px`,
               }}
             >
@@ -420,10 +422,11 @@ const CardsStrip = () => {
           ) : (
             <div
               key={`${c.name}-${i}`}
-              className="flex-shrink-0 rounded-2xl overflow-hidden relative cursor-pointer"
+              className="flex-shrink-0 overflow-hidden relative cursor-pointer"
               style={{
                 width: w, height: h,
                 border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: '6px',
                 transition: 'transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s',
               }}
               onMouseEnter={e => {
@@ -488,7 +491,6 @@ export default function Hero() {
       >
         <BgPhotos />
 
-        {/* Gradient overlay — readable text, fades to dark at bottom */}
         <div
           className="absolute inset-0"
           style={{
@@ -499,14 +501,14 @@ export default function Hero() {
 
         <ResearchNetwork />
 
-        {/* Hero content — vertically centered */}
+        {/* Hero content */}
         <div
           className="relative flex flex-col items-center justify-center text-center px-4 sm:px-8"
           style={{
             zIndex: 10,
             minHeight: '100svh',
-            paddingTop: 'clamp(80px, 12vh, 120px)',
-            paddingBottom: 'clamp(60px, 10vh, 100px)',
+            paddingTop: 'clamp(70px, 10vh, 100px)',
+            paddingBottom: 'clamp(50px, 8vh, 80px)',
           }}
         >
           {/* Eyebrow */}
@@ -546,15 +548,15 @@ export default function Hero() {
             International Conference on Innovations in Computer Science — connecting global researchers, practitioners and innovators.
           </motion.p>
 
-          {/* Countdown */}
+          {/* Countdown — label and timer grouped together, centered */}
           <motion.div
-            className="mt-5 sm:mt-7 flex flex-col items-center gap-2"
+            className="mt-4 sm:mt-6 flex flex-col items-center gap-2"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.82 }}
           >
             <p
-              className="font-bold tracking-[0.22em] uppercase"
+              className="font-bold tracking-[0.22em] uppercase text-center w-full"
               style={{ fontSize: 'clamp(7px, 1.8vw, 9px)', color: 'rgba(90,168,163,0.5)' }}
             >
               Conference Starts In
@@ -562,7 +564,7 @@ export default function Hero() {
             <Countdown target="2026-10-10T09:00:00" />
           </motion.div>
 
-          {/* CTAs */}
+          {/* CTAs — no arrows, minimal radius */}
           <motion.div
             className="flex flex-wrap gap-2 sm:gap-3 justify-center mt-6 sm:mt-8"
             initial={{ opacity: 0, y: 10 }}
@@ -571,30 +573,29 @@ export default function Hero() {
           >
             <Link
               to="/callforpapers"
-              className="group inline-flex items-center gap-2 font-semibold rounded-lg transition-all duration-200 text-white"
+              className="font-semibold text-white transition-all duration-200"
               style={{
                 padding: 'clamp(8px,1.5vh,12px) clamp(16px,3vw,24px)',
                 fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
                 background: '#3E8B87',
+                borderRadius: '4px',
                 boxShadow: '0 4px 16px rgba(62,139,135,0.28)',
               }}
               onMouseEnter={e => { e.currentTarget.style.background = '#2D6E6A'; e.currentTarget.style.boxShadow = '0 6px 22px rgba(62,139,135,0.42)'; }}
               onMouseLeave={e => { e.currentTarget.style.background = '#3E8B87'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(62,139,135,0.28)'; }}
             >
               Submit Paper
-              <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
             </Link>
             <Link
               to="/about"
-              className="inline-flex items-center gap-2 font-semibold rounded-lg transition-all duration-200"
+              className="font-semibold transition-all duration-200"
               style={{
                 padding: 'clamp(8px,1.5vh,12px) clamp(16px,3vw,24px)',
                 fontSize: 'clamp(0.75rem, 2vw, 0.875rem)',
                 border: '1px solid rgba(90,168,163,0.22)',
                 color: 'rgba(255,255,255,0.58)',
                 background: 'rgba(255,255,255,0.04)',
+                borderRadius: '4px',
               }}
               onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(90,168,163,0.48)'; e.currentTarget.style.color = '#fff'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(90,168,163,0.22)'; e.currentTarget.style.color = 'rgba(255,255,255,0.58)'; }}
@@ -624,9 +625,8 @@ export default function Hero() {
         </motion.div>
       </section>
 
-      {/* ══ CAROUSEL SECTION — fully separate, below hero ══ */}
-      <section style={{ background: '#0D1F26', paddingTop: 40, paddingBottom: 56 }}>
-        {/* Section label */}
+      {/* ══ CAROUSEL SECTION ══ */}
+      <section style={{ background: '#0D1F26', paddingTop: 32, paddingBottom: 48 }}>
         <motion.div
           className="flex items-center gap-3 px-4 sm:px-8 mb-4"
           initial={{ opacity: 0, y: 8 }}

@@ -61,13 +61,13 @@ export default function AboutStatsSection() {
     <section
       ref={ref}
       className="relative overflow-hidden bg-transparent" // BG set to transparent
-      style={{ padding: '3rem 0 4rem' }}
+      style={{ padding: '2.5rem 0 3rem' }}
     >
-      <div className="container mx-auto px-6 lg:px-16 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-20 lg:gap-32 items-start">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-start">
 
           {/* Left — sticky */}
-          <div className="lg:sticky lg:top-28 space-y-7">
+          <div className="lg:sticky lg:top-28 space-y-6">
             <motion.span
               className="inline-block text-[10px] font-bold tracking-[0.22em] uppercase"
               style={{ color: TEAL }}

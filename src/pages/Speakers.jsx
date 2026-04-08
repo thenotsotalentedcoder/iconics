@@ -73,9 +73,9 @@ const Speakers = () => {
             </div>
 
             {/* Speaker grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 place-items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 place-items-start">
               {filtered.map(speaker => (
-                <div key={speaker.id} className="w-full max-w-[200px]">
+                <div key={speaker.id} className="w-full max-w-[200px] h-80">
                   <SpeakerCard speaker={speaker} onClick={setSelected} />
                 </div>
               ))}

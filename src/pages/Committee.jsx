@@ -27,24 +27,26 @@ const Committee = () => {
 
             <SectionHeading title="Committee" subtitle="Meet the organizing team behind ICONICS'26" />
 
-            {/* Tab switcher */}
+            {/* Tab switcher — minimal radius */}
             <div className="flex justify-center mb-10">
-              <div className="inline-flex gap-1 p-1" style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.85)', borderRadius: 10, boxShadow: '0 2px 14px rgba(62,139,135,0.08)' }}>
+              <div className="inline-flex gap-1 p-1"
+                style={{ background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.85)', borderRadius: 6, boxShadow: '0 2px 14px rgba(62,139,135,0.08)' }}>
                 {tabs.map(tab => (
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className="flex items-center gap-2 px-5 py-2.5 text-xs font-bold transition-all duration-300"
+                    className="flex items-center gap-2 px-6 py-3 text-sm font-semibold transition-all duration-300"
                     style={{
-                      borderRadius: 7,
+                      borderRadius: 4,
                       letterSpacing: '0.08em',
                       color: activeTab === tab.id ? 'white' : MID,
                       background: activeTab === tab.id ? `linear-gradient(135deg, ${TEAL}, ${DARK})` : 'transparent',
                     }}
                   >
                     {tab.label}
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-black"
+                    <span className="px-1.5 py-0.5 text-[10px] font-black"
                       style={{
+                        borderRadius: 3,
                         background: activeTab === tab.id ? 'rgba(255,255,255,0.22)' : `${TEAL}18`,
                         color: activeTab === tab.id ? 'white' : TEAL,
                       }}>
@@ -69,16 +71,17 @@ const Committee = () => {
                     {organizingCommittee.map((member, i) => (
                       <motion.div
                         key={i}
-                        className="rounded-xl p-5 sm:p-6 transition-all duration-300"
-                        style={{ background: 'rgba(255,255,255,0.75)', border: `1px solid ${TEAL}18`, backdropFilter: 'blur(10px)', boxShadow: '0 1px 12px rgba(15,76,92,0.05)' }}
+                        className="p-5 sm:p-6 transition-all duration-300"
+                        style={{ background: 'rgba(255,255,255,0.75)', border: `1px solid ${TEAL}18`, backdropFilter: 'blur(10px)', boxShadow: '0 1px 12px rgba(15,76,92,0.05)', borderRadius: 6 }}
                         initial={{ opacity: 0, y: 16 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.04, duration: 0.4 }}
                         whileHover={{ y: -3, boxShadow: `0 8px 28px rgba(62,139,135,0.14)`, borderColor: `${TEAL}40` }}
                       >
-                        {/* Role badge */}
-                        <div className="inline-block px-2.5 py-1 rounded-md mb-3" style={{ background: `${TEAL}10`, border: `1px solid ${TEAL}25` }}>
+                        {/* Role badge — minimal radius */}
+                        <div className="inline-block px-2.5 py-1 mb-3"
+                          style={{ background: `${TEAL}10`, border: `1px solid ${TEAL}25`, borderRadius: 4 }}>
                           <span style={{ fontSize: 9, fontWeight: 800, color: TEAL_L, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
                             {member.role}
                           </span>
@@ -110,11 +113,11 @@ const Committee = () => {
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.35 }}
                 >
-                  {/* Country count summary */}
                   {(() => {
                     const countries = [...new Set(technicalCommittee.map(m => m.country).filter(Boolean))];
                     return countries.length > 0 ? (
-                      <div className="flex items-center gap-3 mb-6 p-4 rounded-xl" style={{ background: 'rgba(255,255,255,0.65)', border: `1px solid ${TEAL}18`, backdropFilter: 'blur(8px)' }}>
+                      <div className="flex items-center gap-3 mb-6 p-4"
+                        style={{ background: 'rgba(255,255,255,0.65)', border: `1px solid ${TEAL}18`, backdropFilter: 'blur(8px)', borderRadius: 6 }}>
                         <div style={{ width: 6, height: 6, borderRadius: '50%', background: TEAL, flexShrink: 0 }} />
                         <p style={{ fontSize: 13, color: MID }}>
                           <span style={{ fontWeight: 700, color: DARK }}>{technicalCommittee.length} members</span>
@@ -129,8 +132,8 @@ const Committee = () => {
                     {technicalCommittee.map((member, i) => (
                       <motion.div
                         key={i}
-                        className="px-5 py-4 rounded-xl transition-all duration-200"
-                        style={{ background: 'rgba(255,255,255,0.60)', border: `1px solid ${TEAL}12`, backdropFilter: 'blur(8px)' }}
+                        className="px-5 py-4 transition-all duration-200"
+                        style={{ background: 'rgba(255,255,255,0.60)', border: `1px solid ${TEAL}12`, backdropFilter: 'blur(8px)', borderRadius: 6 }}
                         initial={{ opacity: 0, y: 12 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}

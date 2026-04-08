@@ -48,7 +48,7 @@ export default function Navbar() {
               <span style={{ color: '#5AA8A3', fontSize: '1rem', fontWeight: 700, marginLeft: '3px' }}>'26</span>
             </Link>
 
-            {/* Desktop nav — hidden below lg */}
+            {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-0">
               {NAV_LINKS.map((link) => (
                 <Link
@@ -57,15 +57,19 @@ export default function Navbar() {
                   className="relative px-3 py-1.5 text-[13px] font-medium whitespace-nowrap transition-colors duration-200"
                   style={{ color: active(link.path) ? '#5AA8A3' : 'rgba(255,255,255,0.55)' }}
                 >
+                  <span className="relative z-10">{link.name}</span>
+                  {/* Glowing underline active indicator */}
                   {active(link.path) && (
                     <motion.span
-                      layoutId="nav-pill"
-                      className="absolute inset-0 rounded-full"
-                      style={{ background: 'rgba(90,168,163,0.12)', border: '1px solid rgba(90,168,163,0.2)' }}
+                      layoutId="nav-underline"
+                      className="absolute bottom-0 left-2 right-2 h-[2px] rounded-full"
+                      style={{
+                        background: 'linear-gradient(90deg, transparent, #5AA8A3, transparent)',
+                        boxShadow: '0 0 8px rgba(90,168,163,0.7)',
+                      }}
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                  <span className="relative z-10">{link.name}</span>
                 </Link>
               ))}
             </nav>
@@ -73,9 +77,10 @@ export default function Navbar() {
             {/* Desktop CTA */}
             <Link
               to="/registration"
-              className="hidden lg:inline-block px-5 py-2 text-[13px] font-bold text-white rounded-full flex-shrink-0 transition-all duration-200"
+              className="hidden lg:inline-block px-5 py-2 text-[13px] font-bold text-white flex-shrink-0 transition-all duration-200"
               style={{
                 background: '#3E8B87',
+                borderRadius: '4px',
                 boxShadow: '0 4px 14px rgba(62,139,135,0.3)',
               }}
               onMouseEnter={e => { e.currentTarget.style.background = '#2D6E6A'; }}
@@ -88,14 +93,14 @@ export default function Navbar() {
             <div className="lg:hidden flex items-center gap-2">
               <Link
                 to="/registration"
-                className="px-4 py-1.5 text-[12px] font-bold text-white rounded-full"
-                style={{ background: '#3E8B87' }}
+                className="px-6 py-3 text-sm font-semibold text-white"
+                style={{ background: '#3E8B87', borderRadius: '4px' }}
               >
                 Register
               </Link>
               <button
-                className="w-9 h-9 flex flex-col items-center justify-center gap-[5px] rounded-lg flex-shrink-0"
-                style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)' }}
+                className="w-9 h-9 flex flex-col items-center justify-center gap-[5px] flex-shrink-0"
+                style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '4px' }}
                 onClick={() => setOpen(!open)}
                 aria-label="Toggle menu"
               >
@@ -171,8 +176,8 @@ export default function Navbar() {
               >
                 <Link
                   to="/registration"
-                  className="w-full py-3.5 text-white text-base font-bold rounded-xl block text-center"
-                  style={{ background: '#3E8B87', boxShadow: '0 6px 20px rgba(62,139,135,0.3)' }}
+                  className="w-full py-3.5 text-white text-base font-bold block text-center"
+                  style={{ background: '#3E8B87', borderRadius: '6px', boxShadow: '0 6px 20px rgba(62,139,135,0.3)' }}
                 >
                   Register Now
                 </Link>

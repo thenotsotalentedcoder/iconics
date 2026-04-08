@@ -118,7 +118,6 @@ const Icon = ({ type, size = 22, color = TEAL }) => {
     global: <><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></>,
     innovation: <><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></>,
     community: <><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 00-3-3.87" /><path d="M16 3.13a4 4 0 010 7.75" /></>,
-    arrow: <><line x1="5" y1="12" x2="19" y2="12" /><polyline points="12 5 19 12 12 19" /></>,
     globe: <><circle cx="12" cy="12" r="10" /><line x1="2" y1="12" x2="22" y2="12" /><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" /></>,
     external: <><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" /><polyline points="15 3 21 3 21 9" /><line x1="10" y1="14" x2="21" y2="3" /></>,
   };
@@ -247,7 +246,7 @@ const TeamCard = ({ member, index }) => {
       <motion.div
         whileHover={{ y: -8, boxShadow: '0 24px 60px rgba(62,139,135,0.15)' }}
         transition={{ duration: 0.28 }}
-        style={{ ...glassStrong, borderRadius: 20, overflow: 'hidden', height: '100%', position: 'relative' }}
+        style={{ ...glassStrong, borderRadius: 8, overflow: 'hidden', height: '100%', position: 'relative' }}
       >
         <motion.div
           initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
@@ -284,7 +283,7 @@ const TeamCard = ({ member, index }) => {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {member.expertise.map((tag, i) => (
               <motion.span key={i} whileHover={{ scale: 1.05 }}
-                style={{ fontSize: 10, fontFamily: 'monospace', fontWeight: 500, color: TEAL, background: 'rgba(62,139,135,0.08)', border: '1px solid rgba(62,139,135,0.2)', borderRadius: 6, padding: '3px 9px', letterSpacing: '0.06em' }}>
+                style={{ fontSize: 10, fontFamily: 'monospace', fontWeight: 500, color: TEAL, background: 'rgba(62,139,135,0.08)', border: '1px solid rgba(62,139,135,0.2)', borderRadius: 4, padding: '3px 9px', letterSpacing: '0.06em' }}>
                 {tag}
               </motion.span>
             ))}
@@ -305,12 +304,12 @@ const ValueCard = ({ iconType, title, text, index }) => (
   <Reveal delay={index * 0.1}>
     <motion.div
       whileHover={{ y: -6, boxShadow: '0 20px 50px rgba(62,139,135,0.12)' }}
-      style={{ ...glass, borderRadius: 20, padding: '32px 28px', height: '100%', position: 'relative', overflow: 'hidden' }}
+      style={{ ...glass, borderRadius: 8, padding: '32px 28px', height: '100%', position: 'relative', overflow: 'hidden' }}
     >
       <motion.div
         initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
         transition={{ duration: 0.7, delay: index * 0.12 }}
-        style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${TEAL}, ${TEAL_L})`, transformOrigin: 'left', borderRadius: '20px 20px 0 0' }}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${TEAL}, ${TEAL_L})`, transformOrigin: 'left', borderRadius: '8px 8px 0 0' }}
       />
       <motion.div
         animate={{ opacity: [0.04, 0.09, 0.04] }}
@@ -319,7 +318,7 @@ const ValueCard = ({ iconType, title, text, index }) => (
       />
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
         <motion.div whileHover={{ rotate: 12, scale: 1.1 }}
-          style={{ width: 44, height: 44, borderRadius: 12, background: 'rgba(62,139,135,0.08)', border: '1px solid rgba(62,139,135,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          style={{ width: 44, height: 44, borderRadius: 8, background: 'rgba(62,139,135,0.08)', border: '1px solid rgba(62,139,135,0.16)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <Icon type={iconType} />
         </motion.div>
         <AccentBar />
@@ -355,17 +354,6 @@ const AboutUs = () => {
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 style={{ textAlign: 'center', paddingBottom: 64, paddingTop: 16 }}
               >
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 0.1 }}
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: 8, border: '1px solid rgba(62,139,135,0.28)', borderRadius: 20, padding: '6px 18px', marginBottom: 28, background: 'rgba(255,255,255,0.55)', backdropFilter: 'blur(8px)' }}
-                >
-                  <motion.span animate={{ scale: [1, 1.35, 1] }} transition={{ duration: 2.4, repeat: Infinity }}
-                    style={{ width: 7, height: 7, borderRadius: '50%', background: TEAL, display: 'inline-block' }} />
-                  <span style={{ fontFamily: 'monospace', fontSize: 11, letterSpacing: '0.12em', textTransform: 'uppercase', color: TEAL }}>
-                    The Team Behind ICONICS'26
-                  </span>
-                </motion.div>
 
                 <SectionHeading title="About Us" subtitle="The people and principles driving ICONICS forward" />
 
@@ -385,7 +373,7 @@ const AboutUs = () => {
 
             {/* ══ EDITORIAL SPLIT ══ */}
             <Reveal delay={0.05} style={{ marginBottom: 56 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderRadius: 24, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 48px rgba(15,76,92,0.08)' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 48px rgba(15,76,92,0.08)' }}>
 
                 {/* Left — dark */}
                 <motion.div whileHover={{ background: '#0D4255' }} transition={{ duration: 0.4 }}
@@ -418,7 +406,7 @@ const AboutUs = () => {
                   <div>
                     <div style={{ fontFamily: 'monospace', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.12em', color: MUTED, marginBottom: 14 }}>Our Role at ICONICS</div>
                     <motion.div whileHover={{ scale: 1.02 }}
-                      style={{ display: 'flex', alignItems: 'flex-start', gap: 10, background: 'rgba(62,139,135,0.06)', border: '1px solid rgba(62,139,135,0.22)', borderRadius: 12, padding: '14px 18px' }}>
+                      style={{ display: 'flex', alignItems: 'flex-start', gap: 10, background: 'rgba(62,139,135,0.06)', border: '1px solid rgba(62,139,135,0.22)', borderRadius: 6, padding: '14px 18px' }}>
                       <span style={{ fontSize: 28, lineHeight: 1, color: 'rgba(62,139,135,0.3)', fontFamily: 'Georgia, serif', flexShrink: 0 }}>"</span>
                       <span style={{ fontSize: 13, fontWeight: 600, color: DARK, lineHeight: 1.5 }}>
                         Advancing the frontiers of computer science through international collaboration and open scholarly exchange.
@@ -445,7 +433,7 @@ const AboutUs = () => {
               ].map((s, i) => (
                 <Reveal key={i} delay={i * 0.08}>
                   <motion.div whileHover={{ y: -6, boxShadow: '0 16px 40px rgba(62,139,135,0.14)' }} transition={{ duration: 0.25 }}
-                    style={{ ...glass, borderRadius: 18, padding: '28px 20px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+                    style={{ ...glass, borderRadius: 8, padding: '28px 20px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
                     <motion.div animate={{ opacity: [0.4, 0.8, 0.4], scale: [1, 1.2, 1] }} transition={{ duration: 4 + i, repeat: Infinity }}
                       style={{ position: 'absolute', bottom: -20, right: -20, width: 90, height: 90, borderRadius: '50%', background: 'rgba(62,139,135,0.06)', pointerEvents: 'none' }} />
                     <div style={{ fontFamily: 'monospace', fontSize: 42, fontWeight: 800, color: TEAL, lineHeight: 1, marginBottom: 8 }}>
@@ -486,7 +474,7 @@ const AboutUs = () => {
               </div>
             </section>
 
-            {/* ══ TIMELINE ══ */}
+            {/* ══ TIMELINE — "Current" badge removed ══ */}
             <section style={{ marginBottom: 64 }}>
               <Reveal style={{ textAlign: 'center', marginBottom: 52 }}>
                 <div style={{ fontFamily: 'monospace', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.2em', color: TEAL, marginBottom: 12 }}>A Decade in the Making</div>
@@ -534,18 +522,13 @@ const AboutUs = () => {
                         )}
                       </motion.div>
 
-                      {/* Card */}
+                      {/* Card — no "Current" badge */}
                       <motion.div whileHover={{ y: -4, boxShadow: '0 16px 40px rgba(62,139,135,0.12)' }}
-                        style={{ ...glass, borderRadius: 14, padding: '16px 14px', textAlign: 'center', width: '88%', ...(item.active ? { border: '1px solid rgba(62,139,135,0.3)', background: 'rgba(255,255,255,0.82)' } : {}) }}>
+                        style={{ ...glass, borderRadius: 8, padding: '16px 14px', textAlign: 'center', width: '88%', ...(item.active ? { border: '1px solid rgba(62,139,135,0.3)', background: 'rgba(255,255,255,0.82)' } : {}) }}>
                         <div style={{ fontFamily: 'monospace', fontSize: 15, fontWeight: 800, color: item.active ? TEAL : DARK, marginBottom: 4 }}>{item.year}</div>
                         <div style={{ fontSize: 11, fontWeight: 700, color: DARK, marginBottom: 6 }}>{item.label}</div>
                         <div style={{ fontSize: 11, color: MUTED, lineHeight: 1.6 }}>{item.desc}</div>
-                        {item.active && (
-                          <motion.div animate={{ opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity }}
-                            style={{ marginTop: 8, fontFamily: 'monospace', fontSize: 9, textTransform: 'uppercase', letterSpacing: '0.1em', color: TEAL, background: 'rgba(62,139,135,0.08)', border: '1px solid rgba(62,139,135,0.25)', borderRadius: 6, padding: '2px 8px', display: 'inline-block' }}>
-                            Current
-                          </motion.div>
-                        )}
+                        {/* "Current" badge removed — the teal node and highlighted card already communicate this */}
                       </motion.div>
                     </motion.div>
                   ))}
@@ -553,11 +536,11 @@ const AboutUs = () => {
               </div>
             </section>
 
-            {/* ══ CTA BANNER ══ */}
+            {/* ══ CTA BANNER — no arrows on buttons ══ */}
             <Reveal>
               <motion.div
                 whileHover={{ boxShadow: '0 32px 80px rgba(15,76,92,0.22)' }}
-                style={{ background: DARK, borderRadius: 24, padding: '56px 52px', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 32 }}
+                style={{ background: DARK, borderRadius: 8, padding: '56px 52px', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 32 }}
               >
                 {[{ w: 320, h: 320, top: -100, right: -80, o: 0.08 }, { w: 180, h: 180, bottom: -40, left: 60, o: 0.06 }].map((c, i) => (
                   <motion.div key={i} animate={{ scale: [1, 1.12, 1], rotate: [0, 12, 0] }}
@@ -577,12 +560,12 @@ const AboutUs = () => {
                   </p>
                 </div>
 
+                {/* Buttons — no arrows, minimal radius */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flexShrink: 0, position: 'relative', zIndex: 1 }}>
                   {[{ label: 'Submit a Paper', primary: true }, { label: 'Register Now', primary: false }].map(({ label, primary }, i) => (
                     <motion.button key={i} whileHover={{ scale: 1.04, x: 4 }} whileTap={{ scale: 0.97 }}
-                      style={{ padding: '13px 28px', borderRadius: 12, fontSize: 13, fontWeight: 700, cursor: 'pointer', border: 'none', display: 'flex', alignItems: 'center', gap: 8, background: primary ? TEAL : 'transparent', color: primary ? 'white' : 'rgba(255,255,255,0.7)', outline: primary ? 'none' : '1px solid rgba(255,255,255,0.2)' }}>
+                      style={{ padding: '12px 24px', borderRadius: 4, fontSize: 14, fontWeight: 600, cursor: 'pointer', border: 'none', background: primary ? TEAL : 'transparent', color: primary ? 'white' : 'rgba(255,255,255,0.7)', outline: primary ? 'none' : '1px solid rgba(255,255,255,0.2)' }}>
                       {label}
-                      <Icon type="arrow" size={14} color={primary ? 'white' : 'rgba(255,255,255,0.7)'} />
                     </motion.button>
                   ))}
                 </div>

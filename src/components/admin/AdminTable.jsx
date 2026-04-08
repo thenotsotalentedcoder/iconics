@@ -29,7 +29,7 @@ export function AddButton({ onClick, label = 'Add New' }) {
     <motion.button
       onClick={onClick}
       whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
-      className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold text-white flex-shrink-0"
+      className="flex items-center gap-2 px-6 py-3 rounded text-base font-semibold text-white flex-shrink-0"
       style={{ background: 'linear-gradient(135deg, #2D6E6A, #3E8B87)', boxShadow: '0 4px 14px rgba(62,139,135,0.25)' }}>
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
         <path d="M12 5v14M5 12h14" strokeLinecap="round"/>
@@ -42,7 +42,7 @@ export function AddButton({ onClick, label = 'Add New' }) {
 export function DeleteButton({ onClick }) {
   return (
     <button onClick={onClick}
-      className="p-1.5 rounded-lg transition-all duration-200 hover:bg-red-50"
+      className="p-1.5 rounded transition-all duration-200 hover:bg-red-50"
       style={{ color: '#ef4444' }}>
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
