@@ -1,4 +1,4 @@
-const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const BASE = import.meta.env.VITE_API_URL || 'http://192.16.9.240:5000';
 
 function getToken() {
   return localStorage.getItem('admin_token');

@@ -8,7 +8,7 @@ import { FaCheck } from 'react-icons/fa';
 
 // ─── constants ───────────────────────────────────────────────────────────────
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || 'http://172.16.9.240:5000';
 const EASYCHAIR_URL = 'https://easychair.org/';
 
 
