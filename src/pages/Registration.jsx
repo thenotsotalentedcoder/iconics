@@ -5,10 +5,11 @@ import PageTransition from '../components/layout/PageTransition';
 import SectionHeading from '../components/common/SectionHeading';
 import { registrationTypes, ieeeDiscount, paymentInfo } from '../data/registration';
 import { FaCheck } from 'react-icons/fa';
+import { BASE as API_BASE } from '../utils/api';
 
 // ─── constants ───────────────────────────────────────────────────────────────
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://172.16.9.240:5000';
+// const API_BASE = import.meta.env.VITE_API_URL || 'http://172.16.9.240:5000';
 const EASYCHAIR_URL = 'https://easychair.org/';
 
 
