@@ -10,7 +10,7 @@ import { BASE as API_BASE } from '../utils/api';
 // ─── constants ───────────────────────────────────────────────────────────────
 
 // const API_BASE = import.meta.env.VITE_API_URL || 'http://172.16.9.240:5000';
-const EASYCHAIR_URL = 'https://easychair.org/';
+const EASYCHAIR_URL = 'https://paperdesk.neduet.edu.pk/';
 
 
 // ─── small field components ──────────────────────────────────────────────────

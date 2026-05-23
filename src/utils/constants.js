@@ -1,7 +1,7 @@
 // External Links
 export const EXTERNAL_LINKS = {
   // Submission
-  EASYCHAIR: 'https://easychair.org/',
+  EASYCHAIR: 'https://paperdesk.neduet.edu.pk/',
 
   // Registration
   GOOGLE_FORM: 'https://forms.google.com/',

@@ -68,7 +68,7 @@ export default function CTASection() {
           {/* Right — buttons */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12, flexShrink: 0, position: 'relative', zIndex: 1 }}>
             <motion.a
-              href="https://easychair.org/"
+              href="https://paperdesk.neduet.edu.pk/"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.04, x: 4 }}

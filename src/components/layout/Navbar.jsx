@@ -8,6 +8,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const active = (p) => location.pathname === p;
+  const visibleLinks = NAV_LINKS;
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 24);
@@ -50,7 +51,7 @@ export default function Navbar() {
 
             {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-0">
-              {NAV_LINKS.map((link) => (
+              {visibleLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
@@ -143,7 +144,7 @@ export default function Navbar() {
             }}
           >
             <nav className="flex flex-col px-6 py-6 gap-1">
-              {NAV_LINKS.map((link, i) => (
+              {visibleLinks.map((link, i) => (
                 <motion.div
                   key={link.path}
                   initial={{ opacity: 0, x: -16 }}
@@ -171,7 +172,7 @@ export default function Navbar() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                transition={{ delay: NAV_LINKS.length * 0.04 + 0.06 }}
+                transition={{ delay: visibleLinks.length * 0.04 + 0.06 }}
                 className="pt-6"
               >
                 <Link

@@ -24,6 +24,7 @@ import GlobalCanvasLayers from './pages/GlobalCanvasLayers';
 
 // Admin
 import { AdminProvider } from './contexts/AdminContext';
+import { SiteSettingsProvider } from './contexts/SiteSettingsContext';
 import AdminGuard from './pages/admin/AdminGuard';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminLayout from './pages/admin/AdminLayout';
@@ -33,6 +34,7 @@ import AdminWorkshops from './pages/admin/AdminWorkshops';
 import AdminDates from './pages/admin/AdminDates';
 import AdminTracks from './pages/admin/AdminTracks';
 import AdminRegistrations from './pages/admin/AdminRegistrations';
+import AdminCommittee from './pages/admin/AdminCommittee';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -68,6 +70,7 @@ function App() {
             <Route path="dates" element={<AdminDates />} />
             <Route path="tracks" element={<AdminTracks />} />
             <Route path="registrations" element={<AdminRegistrations />} />
+            <Route path="committee" element={<AdminCommittee />} />
           </Route>
 
           {/* ── Public site routes ──────────────────────────────────────── */}
@@ -81,7 +84,7 @@ function App() {
 function PublicSite() {
   useSmoothScroll();
   return (
-    <>
+    <SiteSettingsProvider>
       {/* Global fixed canvases (particles, ribbons) - render once */}
       <GlobalCanvasLayers />
 
@@ -109,7 +112,7 @@ function PublicSite() {
 
         <Footer />
       </div>
-    </>
+    </SiteSettingsProvider>
   );
 }
 

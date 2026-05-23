@@ -7,6 +7,8 @@ import PageBackground from '../components/animations/PageBackground';
 import { speakers as staticSpeakers } from '../data/speakers';
 import { useApiData } from '../hooks/useApiData';
 import { api } from '../utils/api';
+import ComingSoon from '../components/common/ComingSoon';
+import { useSiteSettings } from '../contexts/SiteSettingsContext';
 
 const TEAL   = '#3E8B87';
 const TEAL_L = '#5AA8A3';
@@ -33,8 +35,23 @@ const Speakers = () => {
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState('all');
   const { data: speakers } = useApiData(api.getSpeakers, staticSpeakers);
+  const { settings, loading: settingsLoading } = useSiteSettings();
 
   const filtered = filter === 'all' ? speakers : speakers.filter(s => s.type === filter);
+
+  if (settingsLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(160deg, #EEF6F5 0%, #F4FAFA 40%, #E8F3F2 100%)' }}>
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
+          style={{ borderColor: '#3E8B87', borderTopColor: 'transparent' }} />
+      </div>
+    );
+  }
+
+  if (settings.speakers_active === 'false') {
+    return <ComingSoon title="Speakers" message="Speaker announcements are coming soon. Stay tuned!" />;
+  }
 
   return (
     <PageTransition>

@@ -4,6 +4,10 @@ import SectionHeading from '../components/common/SectionHeading';
 import PageBackground from '../components/animations/PageBackground';
 import { day1Schedule, day2Schedule } from '../data/schedule';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useApiData } from '../hooks/useApiData';
+import { api } from '../utils/api';
+import ComingSoon from '../components/common/ComingSoon';
+import { useSiteSettings } from '../contexts/SiteSettingsContext';
 
 const TEAL   = '#3E8B87';
 const TEAL_L = '#5AA8A3';
@@ -23,6 +27,21 @@ const typeStyle = (type) => {
 const Schedule = () => {
   const [activeDay, setActiveDay] = useState(1);
   const schedule = activeDay === 1 ? day1Schedule : day2Schedule;
+  const { settings, loading: settingsLoading } = useSiteSettings();
+
+  if (settingsLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center"
+        style={{ background: 'linear-gradient(160deg, #EEF6F5 0%, #F4FAFA 40%, #E8F3F2 100%)' }}>
+        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin"
+          style={{ borderColor: '#3E8B87', borderTopColor: 'transparent' }} />
+      </div>
+    );
+  }
+
+  if (settings.schedule_active === 'false') {
+    return <ComingSoon title="Schedule" message="The conference schedule will be published soon. Check back later!" />;
+  }
 
   return (
     <PageTransition>

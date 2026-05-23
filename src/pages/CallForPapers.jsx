@@ -94,7 +94,7 @@ const icons = {
 const guidelines = [
   { icon: icons.format,  label: 'Format',           value: 'IEEE Conference format (template provided)' },
   { icon: icons.length,  label: 'Length',            value: 'Full papers (6–8 pages) · Short papers (4 pages)' },
-  { icon: icons.system,  label: 'Submission System', value: 'EasyChair' },
+  { icon: icons.system,  label: 'Submission System', value: 'PaperDesk' },
   { icon: icons.review,  label: 'Review Process',    value: 'Double-blind peer review by international experts' },
   { icon: icons.notify,  label: 'Notification',      value: 'Authors notified via email upon decision' },
 ];
@@ -370,9 +370,9 @@ const CallForPapers = () => {
 
                 <div style={{ position:'relative', zIndex:1 }}>
                   <div style={{ fontFamily:'monospace', fontSize:10, textTransform:'uppercase', letterSpacing:'0.16em', color:TEAL_LL, marginBottom:14 }}>Ready to Submit?</div>
-                  <h3 style={{ fontSize:28, fontWeight:700, color:'white', lineHeight:1.3, marginBottom:12 }}>Submit via EasyChair</h3>
+                  <h3 style={{ fontSize:28, fontWeight:700, color:'white', lineHeight:1.3, marginBottom:12 }}>Submit via PaperDesk</h3>
                   <p style={{ fontSize:14, color:'rgba(255,255,255,0.65)', maxWidth:480, margin:'0 auto 32px', lineHeight:1.7 }}>
-                    All submissions are handled through EasyChair. Make sure your paper follows IEEE Conference format before uploading.
+                    All submissions are handled through PaperDesk. Make sure your paper follows IEEE Conference format before uploading.
                   </p>
                   <motion.a
                     href={EXTERNAL_LINKS.EASYCHAIR}
@@ -382,7 +382,7 @@ const CallForPapers = () => {
                     whileTap={{ scale: 0.97 }}
                     style={{ display: 'inline-block', padding: '14px 32px', background: TEAL, color: 'white', borderRadius: 4, fontSize: 13, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.05em' }}
                   >
-                    Submit Your Paper via EasyChair
+                    Submit Your Paper via PaperDesk
                   </motion.a>
                 </div>
               </motion.div>

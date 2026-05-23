@@ -480,6 +480,96 @@ const CardsStrip = () => {
   );
 };
 
+/* ─── Logos Strip ──────────────────────────────────────────────── */
+const LOGOS = [
+  { src: '/images/ned.png',  alt: 'NED University of Engineering & Technology' },
+  { src: '/images/hec.png',  alt: 'Higher Education Commission' },
+  { src: '/images/ieee.png', alt: 'IEEE' },
+  { src: '/images/oric.png', alt: 'Office of Research, Innovation & Commercialization' },
+];
+
+// Enough copies so the strip always overflows the widest viewport (6 × 4 = 24)
+const ALL_LOGOS = [...LOGOS, ...LOGOS, ...LOGOS, ...LOGOS, ...LOGOS, ...LOGOS];
+const LOGO_GAP = 12; // matches CardsStrip gap
+
+const LogosStrip = () => {
+  const [paused, setPaused] = useState(false);
+  const { w, h } = useCardSize(); // same responsive dimensions as CardsStrip
+  const setPx = LOGOS.length * (w + LOGO_GAP);
+
+  return (
+    <div
+      className="relative overflow-hidden w-full"
+      style={{
+        maskImage: 'linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent)',
+        WebkitMaskImage: 'linear-gradient(to right, transparent, black 48px, black calc(100% - 48px), transparent)',
+      }}
+    >
+      <div
+        className="flex items-center"
+        style={{
+          gap: LOGO_GAP,
+          padding: '8px 0 12px',
+          width: 'max-content',
+          willChange: 'transform',
+          animation: `slideLogos ${LOGOS.length * 5}s linear infinite`,
+          animationPlayState: paused ? 'paused' : 'running',
+        }}
+        onMouseEnter={() => setPaused(true)}
+        onMouseLeave={() => setPaused(false)}
+      >
+        {ALL_LOGOS.map((logo, i) => (
+          <div
+            key={`logo-${i}`}
+            className="flex-shrink-0 flex flex-col items-center justify-center"
+            style={{
+              width: w,
+              height: h,
+              background: 'linear-gradient(135deg,#1a4a52,#0d2630)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: 6,
+              padding: '16px 20px',
+              transition: 'transform 0.35s cubic-bezier(.22,1,.36,1), box-shadow 0.35s',
+            }}
+            onMouseEnter={e => {
+              e.currentTarget.style.transform = 'translateY(-5px) scale(1.02)';
+              e.currentTarget.style.boxShadow = '0 20px 48px rgba(0,0,0,0.4), 0 0 0 1px rgba(90,168,163,0.2)';
+            }}
+            onMouseLeave={e => {
+              e.currentTarget.style.transform = '';
+              e.currentTarget.style.boxShadow = '';
+            }}
+          >
+            {/* White rounded container for logo so colors show on dark bg */}
+            <div style={{
+              width: '100%',
+              height: '100%',
+              background: 'rgba(255,255,255,0.93)',
+              borderRadius: 4,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '10px 14px',
+            }}>
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                style={{ width: '100%', height: '100%', objectFit: 'contain', objectPosition: 'center' }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <style>{`
+        @keyframes slideLogos {
+          0%   { transform: translateX(0); }
+          100% { transform: translateX(-${setPx}px); }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 /* ─── Hero ─────────────────────────────────────────────────────── */
 export default function Hero() {
   return (
@@ -623,6 +713,27 @@ export default function Hero() {
             transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
           />
         </motion.div>
+      </section>
+
+      {/* ══ LOGOS SECTION ══ */}
+      <section style={{ background: '#0D1F26', paddingTop: 28, paddingBottom: 28, borderTop: '1px solid rgba(90,168,163,0.08)' }}>
+        <motion.div
+          className="flex items-center gap-3 px-4 sm:px-8 mb-5"
+          initial={{ opacity: 0, y: 8 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <div className="h-px flex-1" style={{ background: 'rgba(90,168,163,0.12)' }} />
+          <span
+            className="font-bold tracking-[0.22em] uppercase flex-shrink-0"
+            style={{ fontSize: 'clamp(8px, 1.8vw, 10px)', color: 'rgba(90,168,163,0.4)' }}
+          >
+            Organized &amp; Supported By
+          </span>
+          <div className="h-px flex-1" style={{ background: 'rgba(90,168,163,0.12)' }} />
+        </motion.div>
+        <LogosStrip />
       </section>
 
       {/* ══ CAROUSEL SECTION ══ */}

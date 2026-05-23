@@ -24,6 +24,8 @@ export const api = {
   getWorkshops: () => request('/api/public/workshops'),
   getDates: () => request('/api/public/dates'),
   getTracks: () => request('/api/public/tracks'),
+  getCommittee: () => request('/api/public/committee'),
+  getSettings: () => request('/api/public/settings'),
 
   // ── Admin auth ──────────────────────────────────────────────────────────────
   adminLogin: (secret) =>
@@ -78,6 +80,20 @@ export const api = {
     request(`/api/admin/tracks/${trackId}/topics/${topicId}`, { method: 'PUT', body: JSON.stringify(body) }),
   adminDeleteTopic: (trackId, topicId) =>
     request(`/api/admin/tracks/${trackId}/topics/${topicId}`, { method: 'DELETE' }),
+
+  // ── Admin committee ─────────────────────────────────────────────────────────
+  adminGetCommittee: () => request('/api/admin/committee'),
+  adminCreateCommitteeMember: (body) =>
+    request('/api/admin/committee', { method: 'POST', body: JSON.stringify(body) }),
+  adminUpdateCommitteeMember: (id, body) =>
+    request(`/api/admin/committee/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
+  adminDeleteCommitteeMember: (id) =>
+    request(`/api/admin/committee/${id}`, { method: 'DELETE' }),
+
+  // ── Admin settings ──────────────────────────────────────────────────────────
+  adminGetSettings: () => request('/api/admin/settings'),
+  adminUpdateSetting: (key, value) =>
+    request('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key, value }) }),
 
   // ── Admin registrations ─────────────────────────────────────────────────────
   adminGetWorkshopRegs: () => request('/api/admin/registrations/workshop'),

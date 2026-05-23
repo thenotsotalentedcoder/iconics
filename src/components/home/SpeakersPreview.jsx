@@ -5,6 +5,7 @@ import { speakers as staticSpeakers } from '../../data/speakers';
 import SpeakerModal from '../speakers/SpeakerModal';
 import { useApiData } from '../../hooks/useApiData';
 import { api } from '../../utils/api';
+import { useSiteSettings } from '../../contexts/SiteSettingsContext';
 
 const TEAL = '#3E8B87';
 const TEAL_L = '#5AA8A3';
@@ -78,8 +79,10 @@ export default function SpeakersPreview() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
   const { data: speakers } = useApiData(api.getSpeakers, staticSpeakers);
+  const { settings } = useSiteSettings();
 
   const featured = speakers.slice(0, 4);
+  const isInactive = settings.speakers_active === 'false';
 
   return (
     <section ref={ref} className="relative py-20 bg-transparent overflow-hidden">
@@ -110,41 +113,69 @@ export default function SpeakersPreview() {
             </motion.h2>
           </div>
 
-          {/* Meet All Speakers — no arrow, minimal radius */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            transition={{ delay: 0.3 }}
-          >
-            <Link
-              to="/speakers"
-              className="flex items-center gap-2 px-6 py-3 border border-teal-600/20 hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all duration-300 font-bold text-xs tracking-widest uppercase"
-              style={{ borderRadius: '4px', color: TEAL }}
+          {/* Meet All Speakers — hidden when inactive */}
+          {!isInactive && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ delay: 0.3 }}
             >
-              Meet All Speakers
-            </Link>
-          </motion.div>
+              <Link
+                to="/speakers"
+                className="flex items-center gap-2 px-6 py-3 border border-teal-600/20 hover:bg-teal-600 hover:text-white hover:border-teal-600 transition-all duration-300 font-bold text-xs tracking-widest uppercase"
+                style={{ borderRadius: '4px', color: TEAL }}
+              >
+                Meet All Speakers
+              </Link>
+            </motion.div>
+          )}
         </div>
 
-        {/* Grid — items-stretch so all cards fill equal height */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
-          {featured.map((speaker, i) => (
-            <div key={speaker.id} onClick={() => setSelected(speaker)} className="flex">
-              <div className="w-full">
-                <SpeakerCard speaker={speaker} index={i} />
-              </div>
+        {/* Grid or Coming Soon */}
+        {isInactive ? (
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="flex flex-col items-center justify-center py-16 px-4"
+            style={{
+              border: `1px dashed rgba(62,139,135,0.25)`,
+              borderRadius: 8,
+              background: 'rgba(62,139,135,0.03)',
+            }}
+          >
+            <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-4"
+              style={{ background: 'rgba(62,139,135,0.08)' }}>
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={TEAL} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+              </svg>
             </div>
-          ))}
-        </div>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 0.5 } : {}}
-          className="text-center mt-12 text-xs font-medium tracking-widest uppercase"
-          style={{ color: DARK }}
-        >
-          &bull; Join 50+ Global Experts &bull;
-        </motion.p>
+            <p className="text-lg font-bold mb-1" style={{ color: DARK }}>Speaker Announcements Coming Soon</p>
+            <p className="text-sm text-center max-w-xs" style={{ color: TEAL_L }}>
+              We're finalizing our lineup of world-class speakers. Stay tuned!
+            </p>
+          </motion.div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+              {featured.map((speaker, i) => (
+                <div key={speaker.id} onClick={() => setSelected(speaker)} className="flex">
+                  <div className="w-full">
+                    <SpeakerCard speaker={speaker} index={i} />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 0.5 } : {}}
+              className="text-center mt-12 text-xs font-medium tracking-widest uppercase"
+              style={{ color: DARK }}
+            >
+              &bull; Join 50+ Global Experts &bull;
+            </motion.p>
+          </>
+        )}
       </div>
 
       <SpeakerModal speaker={selected} isOpen={!!selected} onClose={() => setSelected(null)} />

@@ -2,7 +2,7 @@ export const importantDates = [
   {
     date: 'June 30, 2026',
     title: 'Paper Submission Deadline',
-    description: 'Final date for paper submissions via EasyChair'
+    description: 'Final date for paper submissions via PaperDesk'
   },
   {
     date: 'August 15, 2026',

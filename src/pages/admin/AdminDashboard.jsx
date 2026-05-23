@@ -49,8 +49,32 @@ const QuickAction = ({ to, label, icon, delay }) => (
   </motion.div>
 );
 
+function ToggleRow({ label, description, active, onChange, saving }) {
+  return (
+    <div className="flex items-center justify-between py-4 border-b last:border-0" style={{ borderColor: 'rgba(62,139,135,0.08)' }}>
+      <div>
+        <div className="text-sm font-semibold" style={{ color: '#1A2E38' }}>{label}</div>
+        <div className="text-xs mt-0.5" style={{ color: '#7A9AA6' }}>{description}</div>
+      </div>
+      <button
+        onClick={() => onChange(!active)}
+        disabled={saving}
+        className="relative w-12 h-6 rounded-full transition-all duration-300 flex-shrink-0 disabled:opacity-60"
+        style={{ background: active ? 'linear-gradient(135deg, #2D6E6A, #3E8B87)' : 'rgba(200,210,215,1)' }}
+      >
+        <span
+          className="absolute top-1 w-4 h-4 bg-white rounded-full shadow-sm transition-all duration-300"
+          style={{ left: active ? '1.75rem' : '0.25rem' }}
+        />
+      </button>
+    </div>
+  );
+}
+
 export default function AdminDashboard() {
   const [counts, setCounts] = useState({});
+  const [settings, setSettings] = useState({ speakers_active: 'true', schedule_active: 'true' });
+  const [savingKey, setSavingKey] = useState(null);
 
   useEffect(() => {
     Promise.allSettled([
@@ -72,7 +96,17 @@ export default function AdminDashboard() {
         paperRegs: par.status === 'fulfilled' ? par.value.data.length : '—',
       });
     });
+    api.adminGetSettings().then(r => setSettings(r.data)).catch(() => {});
   }, []);
+
+  const toggleSetting = async (key, value) => {
+    setSavingKey(key);
+    try {
+      await api.adminUpdateSetting(key, String(value));
+      setSettings(s => ({ ...s, [key]: String(value) }));
+    } catch {}
+    setSavingKey(null);
+  };
 
   const totalRegs =
     typeof counts.workshopRegs === 'number' &&
@@ -106,6 +140,35 @@ export default function AdminDashboard() {
         <StatCard label="Total Registrations" value={totalRegs} path="/admin/registrations" color="#3E8B87" delay={0.2}
           icon={<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3E8B87" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>} />
       </div>
+
+      {/* Site Visibility */}
+      <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.22, duration: 0.4 }}
+        className="bg-white rounded-2xl p-6 border mb-6"
+        style={{ borderColor: 'rgba(62,139,135,0.12)', boxShadow: '0 2px 12px rgba(30,58,68,0.06)' }}>
+        <div className="flex items-center gap-2 mb-1">
+          <h2 className="text-base font-bold" style={{ color: '#1A2E38' }}>Site Visibility</h2>
+          <span className="text-xs px-2 py-0.5 rounded-full font-semibold" style={{ background: 'rgba(62,139,135,0.1)', color: '#3E8B87' }}>
+            Live Controls
+          </span>
+        </div>
+        <p className="text-xs mb-4" style={{ color: '#7A9AA6' }}>
+          Toggle sections off to show a "Coming Soon" message and hide them from navigation.
+        </p>
+        <ToggleRow
+          label="Speakers"
+          description="Show keynote & workshop speakers on the public site"
+          active={settings.speakers_active === 'true'}
+          onChange={v => toggleSetting('speakers_active', v)}
+          saving={savingKey === 'speakers_active'}
+        />
+        <ToggleRow
+          label="Schedule"
+          description="Show conference schedule on the public site"
+          active={settings.schedule_active === 'true'}
+          onChange={v => toggleSetting('schedule_active', v)}
+          saving={savingKey === 'schedule_active'}
+        />
+      </motion.div>
 
       {/* Two col layout */}
       <div className="grid lg:grid-cols-2 gap-6">
