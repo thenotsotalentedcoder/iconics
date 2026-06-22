@@ -1,103 +1,85 @@
 export const tracks = [
   {
     id: 1,
-    name: "Artificial Intelligence & Machine Learning",
+    order: 1,
+    name: "Artificial Intelligence and Machine Learning",
     icon: "🤖",
     topics: [
-      "Deep Learning",
-      "Neural Networks",
-      "Reinforcement Learning",
-      "Computer Vision",
-      "Natural Language Processing",
-      "Explainable AI"
+      "Artificial Intelligence",
+      "Neural Networks & Deep Learning",
+      "Large Language Models & Generative AI",
+      "Agentic AI & Autonomous Systems",
+      "Explainable & Trustworthy AI",
+      "AI Ethics & Governance",
+      "Computer Vision & Pattern Recognition",
+      "Speech & Natural Language Processing"
     ]
   },
   {
     id: 2,
-    name: "Quantum Computing & Technologies",
-    icon: "⚛️",
+    order: 2,
+    name: "Data, Cloud & Computing",
+    icon: "☁️",
     topics: [
-      "Quantum Algorithms",
-      "Quantum Cryptography",
-      "Quantum Machine Learning",
-      "Quantum Communication",
-      "Quantum Error Correction"
+      "Big Data Analytics",
+      "Cloud Computing",
+      "Edge AI & TinyML",
+      "Green & Sustainable Computing",
+      "High Performance Computing",
+      "Digital Twins"
     ]
   },
   {
     id: 3,
-    name: "Cybersecurity & Privacy",
+    order: 3,
+    name: "Security & Cryptography",
     icon: "🔒",
     topics: [
+      "Cyber Security",
       "Network Security",
-      "Cryptography",
-      "Blockchain",
-      "Privacy-Preserving Computing",
-      "Threat Detection",
-      "Security Analytics"
+      "Blockchain Technologies",
+      "Quantum Cryptography",
+      "Post-Quantum Cryptography",
+      "AI Security & Adversarial ML"
     ]
   },
   {
     id: 4,
-    name: "Internet of Things (IoT)",
-    icon: "📡",
+    order: 4,
+    name: "Quantum & Emerging Technologies",
+    icon: "⚛️",
     topics: [
-      "IoT Architectures",
-      "Edge Computing",
-      "Smart Cities",
-      "Industrial IoT",
-      "IoT Security",
-      "Sensor Networks"
+      "Quantum Computing",
+      "Quantum AI for Decision Making",
+      "Quantum Simulators",
+      "Neuromorphic Computing",
+      "Evolutionary Computation"
     ]
   },
   {
     id: 5,
-    name: "Software Engineering",
-    icon: "💻",
+    order: 5,
+    name: "Networks, IoT & Smart Systems",
+    icon: "📡",
     topics: [
-      "Software Architecture",
-      "DevOps",
-      "Agile Methodologies",
-      "Software Testing",
-      "Requirements Engineering",
-      "Software Maintenance"
+      "Internet of Things (IoT)",
+      "Computer Networks",
+      "6G & Next-Gen Networks",
+      "Wireless Sensor Networks (WSN)",
+      "Smart City Architecture"
     ]
   },
   {
     id: 6,
-    name: "Data Science & Big Data",
-    icon: "📊",
+    order: 6,
+    name: "Software, Web & Applications",
+    icon: "💻",
     topics: [
+      "Software Engineering",
+      "Web Technologies",
       "Data Mining",
-      "Big Data Analytics",
-      "Data Visualization",
-      "Business Intelligence",
-      "Predictive Analytics",
-      "Data Engineering"
-    ]
-  },
-  {
-    id: 7,
-    name: "Human-Computer Interaction",
-    icon: "👤",
-    topics: [
-      "User Experience Design",
-      "Accessibility",
-      "Virtual & Augmented Reality",
-      "Interactive Systems",
-      "Usability Engineering"
-    ]
-  },
-  {
-    id: 8,
-    name: "Cloud & Distributed Computing",
-    icon: "☁️",
-    topics: [
-      "Cloud Architecture",
-      "Distributed Systems",
-      "Serverless Computing",
-      "Container Orchestration",
-      "Microservices"
+      "Multimodal AI Systems",
+      "AI in Healthcare & Bioinformatics"
     ]
   }
 ];

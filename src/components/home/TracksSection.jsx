@@ -143,7 +143,7 @@ export default function TracksSection() {
                 onMouseLeave={e => { e.currentTarget.style.boxShadow = '0 14px 40px rgba(0,0,0,0.08)'; }}
               >
                 <span className="text-[10px] font-black tracking-[0.2em] uppercase opacity-30" style={{ color: TEAL }}>
-                  Track {String(track.id).padStart(2, '0')}
+                  Track {String(track.order ?? idx + 1).padStart(2, '0')}
                 </span>
 
                 <h3 className="text-xl font-bold mt-3 mb-4 leading-snug" style={{ color: DARK }}>

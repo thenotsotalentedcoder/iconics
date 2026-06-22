@@ -154,7 +154,7 @@ const WorkshopBlock = ({ workshop, index, onRegister }) => (
             {/* Workshop label */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12 }}>
               <span style={{ fontFamily: 'monospace', fontSize: 9, fontWeight: 800, color: TEAL, letterSpacing: '0.3em', textTransform: 'uppercase' }}>
-                Workshop {String(workshop.id).padStart(2, '0')}
+                Workshop {String(workshop.order ?? index + 1).padStart(2, '0')}
               </span>
               <span style={{ height: 1, width: 32, background: 'rgba(62,139,135,0.25)', display: 'inline-block' }} />
             </div>
@@ -302,7 +302,7 @@ const Workshops = () => {
                       whileHover={{ background: isActive ? undefined : 'rgba(62,139,135,0.08)' }}
                       style={{ flexShrink: 0, padding: '8px 16px', borderRadius: 4, border: 'none', cursor: 'pointer', background: isActive ? `linear-gradient(135deg, ${TEAL}, ${DARK})` : 'transparent', color: isActive ? 'white' : MID, fontSize: 11, fontWeight: 700, fontFamily: 'monospace', letterSpacing: '0.08em', whiteSpace: 'nowrap', transition: 'color 0.2s' }}
                     >
-                      WS{String(w.id).padStart(2, '0')} · {w.title.split(':')[0].slice(0, 22)}
+                      WS{String(w.order ?? (workshops.indexOf(w) + 1)).padStart(2, '0')} · {w.title.split(':')[0].slice(0, 22)}
                     </motion.button>
                   );
                 })}

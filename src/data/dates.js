@@ -1,16 +1,16 @@
 export const importantDates = [
   {
-    date: 'June 30, 2026',
+    date: 'July 30, 2026',
     title: 'Paper Submission Deadline',
     description: 'Final date for paper submissions via PaperDesk'
   },
   {
-    date: 'August 15, 2026',
+    date: 'August 30, 2026',
     title: 'Notification of Acceptance',
     description: 'Authors will be notified via email'
   },
   {
-    date: 'September 10, 2026',
+    date: 'September 15, 2026',
     title: 'Camera-Ready Submission',
     description: 'Submit final version of accepted papers'
   },
