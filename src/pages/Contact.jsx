@@ -94,7 +94,7 @@ const Contact = () => (
                     style={{ color: TEAL }}
                     onMouseEnter={e => { e.currentTarget.style.textDecoration = 'underline'; }}
                     onMouseLeave={e => { e.currentTarget.style.textDecoration = 'none'; }}>
-                    secretary@nediconics.com
+                    secretaryiconics@neduet.edu.pk
                   </a>
                 </ContactInfoItem>
               </div>
@@ -159,7 +159,7 @@ const Contact = () => (
                   Send Message
                 </motion.button>
                 <p className="text-xs" style={{ color: '#5AA8A3' }}>
-                  Note: This form is for display purposes. Please email us directly at <a href={EXTERNAL_LINKS.EMAIL} style={{ color: TEAL }}>secretary@nediconics.com</a>.
+                  Note: This form is for display purposes. Please email us directly at <a href={EXTERNAL_LINKS.EMAIL} style={{ color: TEAL }}>secretaryiconics@neduet.edu.pk</a>.
                 </p>
               </form>
             </motion.div>

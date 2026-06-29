@@ -35,6 +35,7 @@ import AdminDates from './pages/admin/AdminDates';
 import AdminTracks from './pages/admin/AdminTracks';
 import AdminRegistrations from './pages/admin/AdminRegistrations';
 import AdminCommittee from './pages/admin/AdminCommittee';
+import AdminCallForPapers from './pages/admin/AdminCallForPapers';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -71,6 +72,7 @@ function App() {
             <Route path="tracks" element={<AdminTracks />} />
             <Route path="registrations" element={<AdminRegistrations />} />
             <Route path="committee" element={<AdminCommittee />} />
+            <Route path="callforpapers" element={<AdminCallForPapers />} />
           </Route>
 
           {/* ── Public site routes ──────────────────────────────────────── */}

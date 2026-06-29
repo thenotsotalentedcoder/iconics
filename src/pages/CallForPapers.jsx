@@ -10,6 +10,8 @@ import { useApiData } from '../hooks/useApiData';
 import { api } from '../utils/api';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { EXTERNAL_LINKS } from '../utils/constants';
+import { useSiteSettings } from '../contexts/SiteSettingsContext';
+import { BASE } from '../utils/api';
 
 /* ─── Brand tokens ─────────────────────────────────────── */
 const TEAL    = '#3E8B87';
@@ -105,11 +107,54 @@ const paperTypes = [
   { type: 'Poster',      pages: 'A1 format', desc: 'Visual presentation of research concept',     color: MID  },
 ];
 
+const PdfDocCard = ({ label, url }) => (
+  <motion.a
+    href={url || undefined}
+    target={url ? '_blank' : undefined}
+    rel="noopener noreferrer"
+    whileHover={url ? { scale: 1.04 } : {}}
+    style={{
+      display: 'flex', alignItems: 'center', gap: 10,
+      padding: '12px 20px', borderRadius: 6,
+      background: url ? 'rgba(90,168,163,0.15)' : 'rgba(255,255,255,0.08)',
+      border: `1px solid ${url ? 'rgba(90,168,163,0.35)' : 'rgba(255,255,255,0.12)'}`,
+      textDecoration: 'none', cursor: url ? 'pointer' : 'default',
+      minWidth: 200,
+    }}
+  >
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+      stroke={url ? TEAL_LL : 'rgba(255,255,255,0.3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="16" y1="13" x2="8" y2="13"/>
+      <line x1="16" y1="17" x2="8" y2="17"/>
+    </svg>
+    <div style={{ textAlign: 'left' }}>
+      <div style={{ fontSize: 10, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', color: url ? TEAL_LL : 'rgba(255,255,255,0.3)', marginBottom: 2 }}>PDF</div>
+      <div style={{ fontSize: 13, fontWeight: 600, color: url ? 'white' : 'rgba(255,255,255,0.35)' }}>{label}</div>
+    </div>
+    {url && (
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={TEAL_LL} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: 'auto' }}>
+        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+    )}
+  </motion.a>
+);
+
+const resolveUrl = (url) => url?.startsWith('/') ? `${BASE}${url}` : url;
+
 const CallForPapers = () => {
   const [openTrack, setOpenTrack] = useState(null);
   const [hoveredGuideline, setHoveredGuideline] = useState(null);
   const { data: tracks } = useApiData(api.getTracks, staticTracks);
   const { data: importantDates } = useApiData(api.getDates, staticDates);
+  const { settings } = useSiteSettings();
+
+  const posterUrl = resolveUrl(settings?.cfp_poster_url);
+  const authorUrl = resolveUrl(settings?.cfp_author_guidelines_url);
+  const reviewerUrl = resolveUrl(settings?.cfp_reviewer_guidelines_url);
 
   return (
     <PageTransition>
@@ -128,6 +173,20 @@ const CallForPapers = () => {
               style={{ textAlign: 'center', paddingBottom: 64, paddingTop: 16 }}
             >
               <SectionHeading title="Call for Papers" subtitle="Submit your research to ICONICS'26" />
+
+              {/* CFP POSTER */}
+              {posterUrl && (
+                <div style={{ marginTop: 40, display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ width: '65%', borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 40px rgba(15,76,92,0.1)' }}>
+                    <img
+                      src={posterUrl}
+                      alt="Call for Papers Poster"
+                      style={{ width: '100%', display: 'block', objectFit: 'contain' }}
+                    />
+                  </div>
+                </div>
+              )}
+
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 32 }}>
                 <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.5 }}
                   style={{ height: 1, width: 80, background: `linear-gradient(90deg, transparent, ${TEAL})`, transformOrigin: 'right' }} />
@@ -384,6 +443,17 @@ const CallForPapers = () => {
                   >
                     Submit Your Paper via PaperDesk
                   </motion.a>
+
+                  {/* Guideline PDFs */}
+                  <div style={{ marginTop: 32, paddingTop: 28, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+                    <div style={{ fontFamily: 'monospace', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'rgba(255,255,255,0.4)', marginBottom: 14 }}>
+                      Guideline Documents
+                    </div>
+                    <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                      <PdfDocCard label="Author Guidelines" url={authorUrl} />
+                      <PdfDocCard label="Reviewer Guidelines" url={reviewerUrl} />
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             </Reveal>

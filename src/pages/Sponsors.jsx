@@ -64,7 +64,7 @@ const ContactForm = () => {
     const body = encodeURIComponent(
       `Organization: ${form.org}\nContact Name: ${form.name}\nEmail: ${form.email}\nTier of Interest: ${form.tier}\n\nMessage:\n${form.message}`
     );
-    window.open(`mailto:secretary@nediconics.com?subject=${subject}&body=${body}`, '_blank');
+    window.open(`mailto:secretaryiconics@neduet.edu.pk?subject=${subject}&body=${body}`, '_blank');
     setSubmitted(true);
   };
 

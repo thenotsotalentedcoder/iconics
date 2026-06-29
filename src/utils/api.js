@@ -95,6 +95,10 @@ export const api = {
   adminUpdateSetting: (key, value) =>
     request('/api/admin/settings', { method: 'PUT', body: JSON.stringify({ key, value }) }),
 
+  // ── Admin CFP assets ────────────────────────────────────────────────────────
+  adminUploadCfpAssets: (formData) =>
+    request('/api/admin/cfp-assets', { method: 'PUT', body: formData }),
+
   // ── Admin registrations ─────────────────────────────────────────────────────
   adminGetWorkshopRegs: () => request('/api/admin/registrations/workshop'),
   adminGetParticipantRegs: () => request('/api/admin/registrations/participant'),

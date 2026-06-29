@@ -28,7 +28,7 @@ export const EXTERNAL_LINKS = {
   LINKEDIN: '#',
 
   // Contact
-  EMAIL: 'mailto:secretary@nediconics.com',
+  EMAIL: 'mailto:secretaryiconics@neduet.edu.pk',
   PHONE: 'tel:+922199261261'
 };
 
