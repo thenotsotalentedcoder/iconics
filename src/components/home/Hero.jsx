@@ -322,14 +322,14 @@ const Title = () => (
 
 /* ─── Cards Strip ──────────────────────────────────────────────── */
 const CARD_DATA = [
-  { tag: "iCONICS '24", name: 'Conference Hall',   src: '/images/gallery1.jpg', grad: 'linear-gradient(135deg,#1a4a52,#0d2630)' },
-  { tag: "iCONICS '24", name: 'Keynote Speaker',   src: '/images/gallery2.jpg', grad: 'linear-gradient(135deg,#1e5754,#0d2a30)' },
+  { tag: "iCONICS '24", src: '/images/archive/2024/1.jpg', grad: 'linear-gradient(135deg,#1a4a52,#0d2630)' },
+  { tag: "iCONICS '22", src: '/images/archive/2022/1.jpg', grad: 'linear-gradient(135deg,#1e5754,#0d2a30)' },
   { info: true },
-  { tag: "iCONICS '24", name: 'Networking',        src: '/images/gallery3.jpg', grad: 'linear-gradient(135deg,#163a42,#0f2228)' },
-  { tag: "iCONICS '24", name: 'Awards Ceremony',   src: '/images/gallery4.jpg', grad: 'linear-gradient(135deg,#1a4448,#112025)' },
-  { tag: "iCONICS '24", name: 'Research Posters',  src: '/images/gallery5.jpg', grad: 'linear-gradient(135deg,#204e55,#142c32)' },
-  { tag: "iCONICS '23", name: 'Panel Discussion',  src: '/images/gallery1.jpg', grad: 'linear-gradient(135deg,#1c3d45,#0e2228)' },
-  { tag: "iCONICS '23", name: 'Workshop Sessions', src: '/images/gallery2.jpg', grad: 'linear-gradient(135deg,#1a4a52,#0d2630)' },
+  { tag: "iCONICS '18", src: '/images/archive/2018/1.jpg', grad: 'linear-gradient(135deg,#163a42,#0f2228)' },
+  { tag: "iCONICS '24", src: '/images/archive/2024/2.jpg', grad: 'linear-gradient(135deg,#1a4448,#112025)' },
+  { tag: "iCONICS '16", src: '/images/archive/2016/1.jpg', grad: 'linear-gradient(135deg,#204e55,#142c32)' },
+  { tag: "iCONICS '22", src: '/images/archive/2022/2.jpg', grad: 'linear-gradient(135deg,#1c3d45,#0e2228)' },
+  { tag: "iCONICS '18", src: '/images/archive/2018/2.jpg', grad: 'linear-gradient(135deg,#1a4a52,#0d2630)' },
 ];
 
 const ALL_CARDS = [...CARD_DATA, ...CARD_DATA];
@@ -456,14 +456,10 @@ const CardsStrip = () => {
                 style={{ padding: `${Math.round(h * 0.07)}px ${Math.round(w * 0.055)}px` }}
               >
                 <p style={{
-                  fontSize: `clamp(6px, ${w * 0.026}px, 9px)`,
-                  fontWeight: 700, letterSpacing: '0.16em', textTransform: 'uppercase',
-                  color: 'rgba(90,168,163,0.9)',
+                  fontSize: `clamp(7px, ${w * 0.032}px, 11px)`,
+                  fontWeight: 700, letterSpacing: '0.18em', textTransform: 'uppercase',
+                  color: 'rgba(90,168,163,0.95)',
                 }}>{c.tag}</p>
-                <p style={{
-                  fontSize: `clamp(9px, ${w * 0.038}px, 13px)`,
-                  color: 'rgba(255,255,255,0.88)', marginTop: 2, fontWeight: 500,
-                }}>{c.name}</p>
               </div>
             </div>
           )
@@ -472,8 +468,8 @@ const CardsStrip = () => {
 
       <style>{`
         @keyframes slideCards {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          0%   { transform: translateX(-50%); }
+          100% { transform: translateX(0); }
         }
       `}</style>
     </div>

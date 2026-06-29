@@ -30,7 +30,7 @@ export default function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         style={{
-          background: scrolled ? 'rgba(13,31,38,0.82)' : 'rgba(13,31,38,0.35)',
+          background: scrolled ? 'rgba(13,31,38,0.92)' : 'rgba(13,31,38,0.82)',
           backdropFilter: 'blur(20px) saturate(160%)',
           WebkitBackdropFilter: 'blur(20px) saturate(160%)',
           borderBottom: scrolled
