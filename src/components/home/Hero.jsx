@@ -647,7 +647,7 @@ export default function Hero() {
             >
               Conference Starts In
             </p>
-            <Countdown target="2026-10-10T09:00:00" />
+            <Countdown target="2026-10-20T09:00:00" />
           </motion.div>
 
           {/* CTAs — no arrows, minimal radius */}

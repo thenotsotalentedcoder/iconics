@@ -97,14 +97,12 @@ const guidelines = [
   { icon: icons.format,  label: 'Format',           value: 'IEEE Conference format (template provided)' },
   { icon: icons.length,  label: 'Length',            value: 'Full papers (6–8 pages) · Short papers (4 pages)' },
   { icon: icons.system,  label: 'Submission System', value: 'PaperDesk' },
-  { icon: icons.review,  label: 'Review Process',    value: 'Double-blind peer review by international experts' },
+  { icon: icons.review,  label: 'Review Process',    value: 'Single-blind peer review by international experts' },
   { icon: icons.notify,  label: 'Notification',      value: 'Authors notified via email upon decision' },
 ];
 
 const paperTypes = [
   { type: 'Full Paper',  pages: '6–8 pages', desc: 'Complete research with results and analysis', color: TEAL },
-  { type: 'Short Paper', pages: '4 pages',   desc: 'Work-in-progress or preliminary findings',    color: DARK },
-  { type: 'Poster',      pages: 'A1 format', desc: 'Visual presentation of research concept',     color: MID  },
 ];
 
 const PdfDocCard = ({ label, url }) => (
@@ -145,6 +143,7 @@ const PdfDocCard = ({ label, url }) => (
 
 const resolveUrl = (url) => url?.startsWith('/') ? `${BASE}${url}` : url;
 
+
 const CallForPapers = () => {
   const [openTrack, setOpenTrack] = useState(null);
   const [hoveredGuideline, setHoveredGuideline] = useState(null);
@@ -155,6 +154,7 @@ const CallForPapers = () => {
   const posterUrl = resolveUrl(settings?.cfp_poster_url);
   const authorUrl = resolveUrl(settings?.cfp_author_guidelines_url);
   const reviewerUrl = resolveUrl(settings?.cfp_reviewer_guidelines_url);
+
 
   return (
     <PageTransition>
@@ -187,7 +187,7 @@ const CallForPapers = () => {
                 </div>
               )}
 
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 32 }}>
+<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12, marginTop: 32 }}>
                 <motion.div initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: 0.8, delay: 0.5 }}
                   style={{ height: 1, width: 80, background: `linear-gradient(90deg, transparent, ${TEAL})`, transformOrigin: 'right' }} />
                 {[0, 1, 2].map(i => (
