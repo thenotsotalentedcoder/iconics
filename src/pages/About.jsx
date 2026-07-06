@@ -373,7 +373,7 @@ const AboutUs = () => {
 
             {/* ══ EDITORIAL SPLIT ══ */}
             <Reveal delay={0.05} style={{ marginBottom: 56 }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 48px rgba(15,76,92,0.08)' }}>
+              <div className="grid-split-2" style={{ borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 48px rgba(15,76,92,0.08)' }}>
 
                 {/* Left — dark */}
                 <motion.div whileHover={{ background: '#0D4255' }} transition={{ duration: 0.4 }}
@@ -424,7 +424,7 @@ const AboutUs = () => {
             </Reveal>
 
             {/* ══ STATS ══ */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 14, marginBottom: 56 }}>
+            <div className="grid-stats-4" style={{ gap: 14, marginBottom: 56 }}>
               {[
                 { num: '100+', label: 'Faculty Members' },
                 { num: '7000', label: 'Active Students' },
@@ -451,7 +451,7 @@ const AboutUs = () => {
                 <div style={{ fontFamily: 'monospace', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.2em', color: TEAL, marginBottom: 12 }}>What We Stand For</div>
                 <h3 style={{ fontSize: 28, fontWeight: 700, color: DARK }}>Our Core Values</h3>
               </Reveal>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 16 }}>
+              <div className="grid-cards-2" style={{ gap: 16 }}>
                 {values.map((v, i) => <ValueCard key={i} {...v} index={i} />)}
               </div>
             </section>
@@ -469,7 +469,7 @@ const AboutUs = () => {
                     style={{ height: 1, width: 50, background: `linear-gradient(90deg, ${TEAL_L}, transparent)`, transformOrigin: 'left' }} />
                 </div>
               </Reveal>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+              <div className="grid-team-3" style={{ gap: 16 }}>
                 {teamMembers.map((m, i) => <TeamCard key={i} member={m} index={i} />)}
               </div>
             </section>
@@ -489,7 +489,7 @@ const AboutUs = () => {
                   style={{ position: 'absolute', top: 22, left: '8%', right: '8%', height: 2, background: `linear-gradient(90deg, transparent, rgba(62,139,135,0.3) 10%, rgba(90,168,163,0.5) 50%, rgba(62,139,135,0.3) 90%, transparent)`, transformOrigin: 'left' }}
                 />
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(6, 1fr)', alignItems: 'start' }}>
+                <div className="grid-timeline-6" style={{ alignItems: 'start' }}>
                   {timeline.map((item, i) => (
                     <motion.div key={i}
                       initial={{ opacity: 0, y: i % 2 === 0 ? 30 : -30 }}

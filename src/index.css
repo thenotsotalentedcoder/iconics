@@ -121,6 +121,72 @@ img {
   image-rendering: -webkit-optimize-contrast;
 }
 
+/* Responsive grid utilities for pages using inline grid styles
+   (About.jsx, CallForPapers.jsx, Workshops.jsx) — collapse fixed
+   multi-column layouts on small screens. */
+.grid-split-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+@media (max-width: 768px) {
+  .grid-split-2 { grid-template-columns: 1fr; }
+}
+
+.grid-cards-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+@media (max-width: 640px) {
+  .grid-cards-2 { grid-template-columns: 1fr; }
+}
+
+.grid-stats-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 768px) {
+  .grid-stats-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+.grid-team-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+@media (max-width: 768px) {
+  .grid-team-3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .grid-team-3 { grid-template-columns: 1fr; }
+}
+
+.grid-timeline-6 {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+}
+@media (max-width: 768px) {
+  .grid-timeline-6 { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 480px) {
+  .grid-timeline-6 { grid-template-columns: repeat(2, 1fr); }
+}
+
+.workshop-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+@media (max-width: 640px) {
+  .workshop-header-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .workshop-header-row button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* Mobile touch optimization */
 @media (max-width: 768px) {
   * {

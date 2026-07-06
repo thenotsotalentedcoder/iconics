@@ -116,7 +116,7 @@ const SessionCard = ({ session, index }) => {
 
               {/* Topics */}
               <MonoLabel style={{ marginBottom: 10 }}>Topics Covered</MonoLabel>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px 16px' }}>
+              <div className="grid-cards-2" style={{ gap: '8px 16px' }}>
                 {(session.topics || []).map((topic, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 8, fontSize: 12, color: MID, lineHeight: 1.5 }}>
                     <span style={{ marginTop: 5, width: 4, height: 4, borderRadius: '50%', background: TEAL, flexShrink: 0, display: 'block' }} />
@@ -148,7 +148,7 @@ const WorkshopBlock = ({ workshop, index, onRegister }) => (
       <div style={{ height: 3, background: `linear-gradient(90deg, ${TEAL}, ${DARK})` }} />
 
       <div style={{ padding: '28px 32px' }}>
-        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 24 }}>
+        <div className="workshop-header-row">
 
           <div style={{ flex: 1, minWidth: 0 }}>
             {/* Workshop label */}
@@ -196,7 +196,7 @@ const WorkshopBlock = ({ workshop, index, onRegister }) => (
     {workshop.learningOutcomes && (
       <div style={{ marginBottom: 12 }}>
         <MonoLabel style={{ marginBottom: 10 }}>Learning Outcomes</MonoLabel>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 8 }}>
+        <div className="grid-cards-2" style={{ gap: 8 }}>
           {workshop.learningOutcomes.map((outcome, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10, padding: '12px 16px', borderRadius: 8, background: 'rgba(255,255,255,0.62)', border: '1px solid rgba(62,139,135,0.12)', backdropFilter: 'blur(6px)' }}>
               <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 20, height: 20, borderRadius: '50%', background: 'rgba(62,139,135,0.12)', color: TEAL, fontSize: 10, fontWeight: 800, fontFamily: 'monospace', flexShrink: 0, marginTop: 1 }}>
@@ -267,52 +267,79 @@ const Workshops = () => {
               </div>
             </motion.div>
 
-            {/* ── Info bar ── */}
-            <Reveal style={{ marginBottom: 24 }}>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(62,139,135,0.16)', borderRadius: 10, backdropFilter: 'blur(10px)', overflow: 'hidden' }}>
-                {[
-                  { path: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', label: 'Date', val: 'October 20-21, 2026' },
-                  { path: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z', label: 'Venue', val: 'NED University, Karachi' },
-                  { path: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253', label: 'Workshops', val: `${workshops.length} Available` },
-                ].map(({ path, label, val }, i) => (
-                  <div key={label} style={{ flex: '1 1 180px', display: 'flex', alignItems: 'center', gap: 12, padding: '16px 24px', borderRight: i < 2 ? '1px solid rgba(62,139,135,0.1)' : 'none' }}>
-                    <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(62,139,135,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke={TEAL} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={path} /></svg>
-                    </div>
-                    <div>
-                      <MonoLabel style={{ marginBottom: 2 }}>{label}</MonoLabel>
-                      <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>{val}</div>
-                    </div>
+            {workshops.length === 0 ? (
+              /* ── Empty state ── */
+              <Reveal>
+                <div style={{
+                  textAlign: 'center', padding: '64px 24px', background: 'rgba(255,255,255,0.75)',
+                  border: '1px solid rgba(62,139,135,0.16)', borderRadius: 10, backdropFilter: 'blur(10px)',
+                }}>
+                  <div style={{ width: 56, height: 56, borderRadius: '50%', background: 'rgba(62,139,135,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                    <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke={TEAL} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
                   </div>
+                  <div style={{ fontFamily: 'monospace', fontSize: 11, textTransform: 'uppercase', letterSpacing: '0.2em', color: TEAL, marginBottom: 10 }}>
+                    Workshops
+                  </div>
+                  <h3 style={{ fontSize: 'clamp(20px, 4vw, 26px)', fontWeight: 800, color: DARK, marginBottom: 10 }}>
+                    Coming Soon
+                  </h3>
+                  <p style={{ fontSize: 14, color: MID, maxWidth: 420, margin: '0 auto', lineHeight: 1.6 }}>
+                    Workshop details for ICONICS'26 are being finalized and will be published here shortly. Check back soon!
+                  </p>
+                </div>
+              </Reveal>
+            ) : (
+              <>
+                {/* ── Info bar ── */}
+                <Reveal style={{ marginBottom: 24 }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 0, background: 'rgba(255,255,255,0.75)', border: '1px solid rgba(62,139,135,0.16)', borderRadius: 10, backdropFilter: 'blur(10px)', overflow: 'hidden' }}>
+                    {[
+                      { path: 'M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', label: 'Date', val: 'October 20-21, 2026' },
+                      { path: 'M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z', label: 'Venue', val: 'NED University, Karachi' },
+                      { path: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253', label: 'Workshops', val: `${workshops.length} Available` },
+                    ].map(({ path, label, val }, i) => (
+                      <div key={label} style={{ flex: '1 1 180px', display: 'flex', alignItems: 'center', gap: 12, padding: '16px 24px', borderRight: i < 2 ? '1px solid rgba(62,139,135,0.1)' : 'none' }}>
+                        <div style={{ width: 32, height: 32, borderRadius: 8, background: 'rgba(62,139,135,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke={TEAL} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={path} /></svg>
+                        </div>
+                        <div>
+                          <MonoLabel style={{ marginBottom: 2 }}>{label}</MonoLabel>
+                          <div style={{ fontSize: 13, fontWeight: 700, color: DARK }}>{val}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Reveal>
+
+                {/* ── Sticky nav ── */}
+                <div style={{ position: 'sticky', top: 76, zIndex: 30, marginBottom: 32 }}>
+                  <motion.div
+                    initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                    style={{ display: 'flex', gap: 4, overflowX: 'auto', padding: '6px', scrollbarWidth: 'none', background: 'rgba(238,246,245,0.9)', backdropFilter: 'blur(16px)', borderRadius: 6, border: '1px solid rgba(62,139,135,0.18)', boxShadow: '0 2px 16px rgba(15,76,92,0.08)' }}
+                  >
+                    {workshops.map((w) => {
+                      const isActive = activeId === w.id;
+                      return (
+                        <motion.button key={w.id} onClick={() => scrollTo(w.id)}
+                          whileHover={{ background: isActive ? undefined : 'rgba(62,139,135,0.08)' }}
+                          style={{ flexShrink: 0, padding: '8px 16px', borderRadius: 4, border: 'none', cursor: 'pointer', background: isActive ? `linear-gradient(135deg, ${TEAL}, ${DARK})` : 'transparent', color: isActive ? 'white' : MID, fontSize: 11, fontWeight: 700, fontFamily: 'monospace', letterSpacing: '0.08em', whiteSpace: 'nowrap', transition: 'color 0.2s' }}
+                        >
+                          WS{String(w.order ?? (workshops.indexOf(w) + 1)).padStart(2, '0')} · {w.title.split(':')[0].slice(0, 22)}
+                        </motion.button>
+                      );
+                    })}
+                  </motion.div>
+                </div>
+
+                {/* ── Workshop listings ── */}
+                {workshops.map((workshop, index) => (
+                  <WorkshopBlock key={workshop.id} workshop={workshop} index={index} onRegister={handleRegister} />
                 ))}
-              </div>
-            </Reveal>
-
-            {/* ── Sticky nav ── */}
-            <div style={{ position: 'sticky', top: 76, zIndex: 30, marginBottom: 32 }}>
-              <motion.div
-                initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                style={{ display: 'flex', gap: 4, overflowX: 'auto', padding: '6px', scrollbarWidth: 'none', background: 'rgba(238,246,245,0.9)', backdropFilter: 'blur(16px)', borderRadius: 6, border: '1px solid rgba(62,139,135,0.18)', boxShadow: '0 2px 16px rgba(15,76,92,0.08)' }}
-              >
-                {workshops.map((w) => {
-                  const isActive = activeId === w.id;
-                  return (
-                    <motion.button key={w.id} onClick={() => scrollTo(w.id)}
-                      whileHover={{ background: isActive ? undefined : 'rgba(62,139,135,0.08)' }}
-                      style={{ flexShrink: 0, padding: '8px 16px', borderRadius: 4, border: 'none', cursor: 'pointer', background: isActive ? `linear-gradient(135deg, ${TEAL}, ${DARK})` : 'transparent', color: isActive ? 'white' : MID, fontSize: 11, fontWeight: 700, fontFamily: 'monospace', letterSpacing: '0.08em', whiteSpace: 'nowrap', transition: 'color 0.2s' }}
-                    >
-                      WS{String(w.order ?? (workshops.indexOf(w) + 1)).padStart(2, '0')} · {w.title.split(':')[0].slice(0, 22)}
-                    </motion.button>
-                  );
-                })}
-              </motion.div>
-            </div>
-
-            {/* ── Workshop listings ── */}
-            {workshops.map((workshop, index) => (
-              <WorkshopBlock key={workshop.id} workshop={workshop} index={index} onRegister={handleRegister} />
-            ))}
+              </>
+            )}
 
           </div>
         </div>

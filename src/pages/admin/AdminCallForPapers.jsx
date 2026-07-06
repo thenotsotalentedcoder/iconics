@@ -193,7 +193,7 @@ export default function AdminCallForPapers() {
           <UploadCard
             label="Author Guidelines"
             description="PDF document with author guidelines for paper submissions."
-            accept="application/pdf"
+            accept="application/pdf,.pdf"
             fieldName="authorGuidelines"
             currentUrl={settings.cfp_author_guidelines_url}
             isImage={false}
@@ -205,7 +205,7 @@ export default function AdminCallForPapers() {
           <UploadCard
             label="Reviewer Guidelines"
             description="PDF document with reviewer guidelines for the review process."
-            accept="application/pdf"
+            accept="application/pdf,.pdf"
             fieldName="reviewerGuidelines"
             currentUrl={settings.cfp_reviewer_guidelines_url}
             isImage={false}

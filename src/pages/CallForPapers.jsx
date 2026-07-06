@@ -203,7 +203,7 @@ const CallForPapers = () => {
             {/* OVERVIEW SPLIT */}
             <Reveal style={{ marginBottom: 56 }}>
               {/* radius: 8px to match workshop reference */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 48px rgba(15,76,92,0.08)' }}>
+              <div className="grid-split-2" style={{ borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(62,139,135,0.15)', boxShadow: '0 8px 48px rgba(15,76,92,0.08)' }}>
 
                 {/* Left dark */}
                 <motion.div whileHover={{ background: '#0D4255' }} transition={{ duration: 0.4 }}
@@ -360,7 +360,7 @@ const CallForPapers = () => {
                 </div>
               </Reveal>
 
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(2, 1fr)', gap:12 }}>
+              <div className="grid-cards-2" style={{ gap:12 }}>
                 {guidelines.map((g, i) => (
                   <Reveal key={i} delay={i * 0.07}>
                     <motion.div
