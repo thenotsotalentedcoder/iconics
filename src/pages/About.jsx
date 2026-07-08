@@ -4,6 +4,8 @@ import SectionHeading from '../components/common/SectionHeading';
 import PageBackground from '../components/animations/PageBackground';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 
+import { useIsMobile } from '../hooks/useIsMobile';
+
 /* ─── Brand tokens ─────────────────────────────────────── */
 const TEAL    = '#3E8B87';
 const TEAL_L  = '#5AA8A3';
@@ -126,11 +128,13 @@ const Icon = ({ type, size = 22, color = TEAL }) => {
 
 /* ─── Particle Canvas ───────────────────────────────────── */
 const ParticleCanvas = () => {
-  const canvasRef = useRef(null);
+ const canvasRef = useRef(null);
   const animRef = useRef(null);
   const mouseRef = useRef({ x: -9999, y: -9999 });
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -181,7 +185,7 @@ const ParticleCanvas = () => {
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('touchmove', onMove);
     };
-  }, []);
+  }, [isMobile]);
 
   return <canvas ref={canvasRef} style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none', opacity: 0.9 }} />;
 };

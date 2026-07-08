@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { NAV_LINKS } from '../../utils/constants';
 import { EXTERNAL_LINKS } from '../../utils/constants';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const TEAL   = '#3E8B87';
 const TEAL_L = '#5AA8A3';
@@ -18,7 +19,9 @@ const Phone = () => (
 /* ── Animated canvas backdrop ───────────────────────────────────── */
 const FooterCanvas = () => {
   const ref = useRef(null);
+  const isMobile = useIsMobile();
   useEffect(() => {
+    if (isMobile) return;
     const c = ref.current; if (!c) return;
     const ctx = c.getContext('2d');
     let raf, t = 0;
@@ -46,7 +49,7 @@ const FooterCanvas = () => {
     };
     loop();
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
-  }, []);
+  }, [isMobile]);
   return <canvas ref={ref} className="absolute inset-0 w-full h-full pointer-events-none" />;
 };
 

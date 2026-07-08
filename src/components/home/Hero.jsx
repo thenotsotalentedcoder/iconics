@@ -1,12 +1,14 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-
+import { useIsMobile } from '../../hooks/useIsMobile';
 /* ─── Research Network Canvas ──────────────────────────────────── */
 const ResearchNetwork = () => {
   const canvasRef = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -126,7 +128,7 @@ const ResearchNetwork = () => {
       window.removeEventListener('resize', resize);
       canvas.parentElement?.removeEventListener('mousemove', onMouseMove);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <canvas

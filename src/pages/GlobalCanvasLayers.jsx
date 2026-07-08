@@ -1,15 +1,18 @@
 import { useEffect, useRef } from 'react';
-
+import { useIsMobile } from "../hooks/useIsMobile";
 /* ══════════════════════════════════════════════════════════════════
    PARTICLE NETWORK  —  much more visible, interactive, dramatic
 ══════════════════════════════════════════════════════════════════ */
 export function ParticleNetwork() {
   const ref = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const canvas = ref.current;
+    if (!canvas) return;
     const ctx    = canvas.getContext('2d');
-    let   raf;
+    let   raf
 
     const DPR      = Math.min(window.devicePixelRatio, 2);
     const mouse    = { x: -9999, y: -9999, lx: -9999, ly: -9999, clicked: false };
@@ -151,7 +154,7 @@ export function ParticleNetwork() {
       window.removeEventListener('mousemove',  onMove);
       window.removeEventListener('click',      onClick);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <canvas ref={ref} style={{
@@ -166,9 +169,12 @@ export function ParticleNetwork() {
 ══════════════════════════════════════════════════════════════════ */
 export function WaveRibbon() {
   const ref = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const canvas = ref.current;
+    if (!canvas) return;
     const ctx    = canvas.getContext('2d');
     let   raf, t = 0;
 
@@ -284,7 +290,7 @@ export function WaveRibbon() {
     loop();
 
     return () => { cancelAnimationFrame(raf); window.removeEventListener('resize', resize); };
-  }, []);
+  }, [isMobile]);
 
   return (
     <canvas ref={ref} style={{

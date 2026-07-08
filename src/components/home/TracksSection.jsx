@@ -4,15 +4,20 @@ import { Link } from 'react-router-dom';
 import { tracks as staticTracks } from '../../data/tracks';
 import { useApiData } from '../../hooks/useApiData';
 import { api } from '../../utils/api';
+import { useIsMobile } from '../../hooks/useIsMobile';
+
 
 const TEAL = '#3E8B87';
 const DARK = '#1A2E38';
 
 const NeuralBg = () => {
   const canvasRef = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx = canvas.getContext('2d');
     let particles = [];
     let animationFrameId;
@@ -74,7 +79,7 @@ const NeuralBg = () => {
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <canvas
@@ -124,7 +129,7 @@ export default function TracksSection() {
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: 35,
+                duration: 15,
                 ease: "linear"
               }
             }}

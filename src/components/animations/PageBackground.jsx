@@ -1,26 +1,17 @@
 import { useEffect, useRef } from 'react';
-
-/**
- * PageBackground
- * Drop-in for every inner page. Renders:
- *   - Interactive neural-network canvas (same as Workshops/Sponsors)
- *   - Soft teal radial gradients for depth
- *
- * Usage:
- *   <div className="relative min-h-screen bg-bg-primary">
- *     <PageBackground />
- *     <div className="relative z-10"> ...page content... </div>
- *   </div>
- */
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const TEAL   = '62,139,135';
 const TEAL_L = '90,168,163';
 
 export default function PageBackground({ variant = 'light' }) {
   const canvasRef = useRef(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
+    if (isMobile) return;
     const canvas = canvasRef.current;
+    if (!canvas) return;
     const ctx    = canvas.getContext('2d');
     let   pts    = [];
     let   raf;
@@ -103,7 +94,7 @@ export default function PageBackground({ variant = 'light' }) {
       window.removeEventListener('resize',    resize);
       window.removeEventListener('mousemove', onMove);
     };
-  }, []);
+   }, [isMobile]);
 
   return (
     <>
