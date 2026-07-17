@@ -105,7 +105,7 @@ const paperTypes = [
   { type: 'Full Paper',  pages: '6–8 pages', desc: 'Complete research with results and analysis', color: TEAL },
 ];
 
-const PdfDocCard = ({ label, url }) => (
+const DocCard = ({ label, kind, url }) => (
   <motion.a
     href={url || undefined}
     target={url ? '_blank' : undefined}
@@ -122,13 +122,23 @@ const PdfDocCard = ({ label, url }) => (
   >
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
       stroke={url ? TEAL_LL : 'rgba(255,255,255,0.3)'} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-      <polyline points="14 2 14 8 20 8"/>
-      <line x1="16" y1="13" x2="8" y2="13"/>
-      <line x1="16" y1="17" x2="8" y2="17"/>
+      {kind === 'LINK' ? (
+        <>
+          <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </>
+      ) : (
+        <>
+          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+        </>
+      )}
     </svg>
     <div style={{ textAlign: 'left' }}>
-      <div style={{ fontSize: 10, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', color: url ? TEAL_LL : 'rgba(255,255,255,0.3)', marginBottom: 2 }}>PDF</div>
+      <div style={{ fontSize: 10, fontFamily: 'monospace', textTransform: 'uppercase', letterSpacing: '0.1em', color: url ? TEAL_LL : 'rgba(255,255,255,0.3)', marginBottom: 2 }}>{kind}</div>
       <div style={{ fontSize: 13, fontWeight: 600, color: url ? 'white' : 'rgba(255,255,255,0.35)' }}>{label}</div>
     </div>
     {url && (
@@ -152,8 +162,8 @@ const CallForPapers = () => {
   const { settings } = useSiteSettings();
 
   const posterUrl = resolveUrl(settings?.cfp_poster_url);
-  const authorUrl = resolveUrl(settings?.cfp_author_guidelines_url);
-  const reviewerUrl = resolveUrl(settings?.cfp_reviewer_guidelines_url);
+  const latexTemplateUrl = resolveUrl(settings?.cfp_latex_template_url);
+  const overleafTemplateUrl = resolveUrl(settings?.cfp_overleaf_template_url);
 
 
   return (
@@ -450,8 +460,8 @@ const CallForPapers = () => {
                       Guideline Documents
                     </div>
                     <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
-                      <PdfDocCard label="Author Guidelines" url={authorUrl} />
-                      <PdfDocCard label="Reviewer Guidelines" url={reviewerUrl} />
+                      <DocCard label="LaTeX Templates" kind="ZIP" url={latexTemplateUrl} />
+                      <DocCard label="Overleaf Templates" kind="LINK" url={overleafTemplateUrl} />
                     </div>
                   </div>
                 </div>
