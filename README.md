@@ -119,7 +119,7 @@ All images are stored in `public/images/` and accessed via absolute paths:
 
 ## 🌐 Conference Details
 
-**Date:** October 10-11, 2026
+**Date:** December 23-24, 2026
 **Venue:** NED University of Engineering & Technology, Karachi, Pakistan
 **Email:** secretary@nediconics.com
 **Website:** www.nediconics.com

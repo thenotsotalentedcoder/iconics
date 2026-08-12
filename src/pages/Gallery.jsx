@@ -91,7 +91,6 @@ const editions = [
     // Drop 5-6 images as /images/archive/2018/1.jpg, 2.jpg, etc.
     photos: [
       '/images/archive/2018/1.jpg',
-      '/images/archive/2018/2.jpg',
       '/images/archive/2018/3.jpg',
       '/images/archive/2018/4.jpg',
       '/images/archive/2018/5.jpg',

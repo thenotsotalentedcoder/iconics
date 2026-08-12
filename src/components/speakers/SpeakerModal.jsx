@@ -34,6 +34,13 @@ const SpeakerModal = ({ speaker, isOpen, onClose }) => {
 
   if (!speaker) return null;
 
+  const links = speaker.links || {
+    website: speaker.website || '#',
+    linkedin: speaker.linkedin || '#',
+    scholar: speaker.scholar || '#',
+  };
+  const topics = speaker.topics || [];
+
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <div className="grid md:grid-cols-2 gap-6 sm:gap-8 p-4 sm:p-6 md:p-8">
@@ -74,7 +81,7 @@ const SpeakerModal = ({ speaker, isOpen, onClose }) => {
           <div className="mb-4 sm:mb-6">
             <h3 className="text-lg sm:text-xl font-semibold text-text-primary mb-2 sm:mb-3">Research Areas</h3>
             <div className="flex flex-wrap gap-2">
-              {speaker.topics.map((topic, index) => (
+              {topics.map((topic, index) => (
                 <span
                   key={index}
                   className="px-2.5 sm:px-3 py-1 bg-accent/10 text-accent rounded-full text-xs sm:text-sm border border-accent/20"
@@ -87,20 +94,20 @@ const SpeakerModal = ({ speaker, isOpen, onClose }) => {
 
           {/* Links */}
           <div className="flex gap-3 sm:gap-4">
-            {speaker.links.website !== '#' && (
-              <a href={speaker.links.website} target="_blank" rel="noopener noreferrer"
+            {links.website !== '#' && (
+              <a href={links.website} target="_blank" rel="noopener noreferrer"
                 className="text-text-secondary hover:text-accent transition-colors" aria-label="Website">
                 <GlobeIcon />
               </a>
             )}
-            {speaker.links.linkedin !== '#' && (
-              <a href={speaker.links.linkedin} target="_blank" rel="noopener noreferrer"
+            {links.linkedin !== '#' && (
+              <a href={links.linkedin} target="_blank" rel="noopener noreferrer"
                 className="text-text-secondary hover:text-accent transition-colors" aria-label="LinkedIn">
                 <LinkedInIcon />
               </a>
             )}
-            {speaker.links.scholar !== '#' && (
-              <a href={speaker.links.scholar} target="_blank" rel="noopener noreferrer"
+            {links.scholar !== '#' && (
+              <a href={links.scholar} target="_blank" rel="noopener noreferrer"
                 className="text-text-secondary hover:text-accent transition-colors" aria-label="Google Scholar">
                 <ScholarIcon />
               </a>

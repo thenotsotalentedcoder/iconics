@@ -54,7 +54,7 @@ const Schedule = () => {
         <div className="relative z-10 pt-24 sm:pt-28 md:pt-32 pb-16 px-4 sm:px-6">
           <div className="container mx-auto max-w-5xl">
 
-            <SectionHeading title="Conference Schedule" subtitle="October 20-21, 2026" />
+            <SectionHeading title="Conference Schedule" subtitle="December 23-24, 2026" />
 
             <div className="flex justify-center mb-10">
               <div className="h-px w-24 rounded-full"
@@ -75,7 +75,7 @@ const Schedule = () => {
                     backdropFilter: 'blur(8px)',
                     boxShadow: activeDay === d ? '0 4px 16px rgba(62,139,135,0.28)' : 'none',
                   }}>
-                  Day {d} — October {19 + d}
+                  Day {d} — December {19 + d}
                 </button>
               ))}
             </div>

@@ -331,7 +331,7 @@ const CARD_DATA = [
   { tag: "iCONICS '24", src: '/images/archive/2024/2.jpg', grad: 'linear-gradient(135deg,#1a4448,#112025)' },
   { tag: "iCONICS '16", src: '/images/archive/2016/1.jpg', grad: 'linear-gradient(135deg,#204e55,#142c32)' },
   { tag: "iCONICS '22", src: '/images/archive/2022/2.jpg', grad: 'linear-gradient(135deg,#1c3d45,#0e2228)' },
-  { tag: "iCONICS '18", src: '/images/archive/2018/2.jpg', grad: 'linear-gradient(135deg,#1a4a52,#0d2630)' },
+  { tag: "iCONICS '18", src: '/images/archive/2018/3.jpg', grad: 'linear-gradient(135deg,#1a4a52,#0d2630)' },
 ];
 
 const ALL_CARDS = [...CARD_DATA, ...CARD_DATA];
@@ -616,7 +616,7 @@ export default function Hero() {
               className="font-bold tracking-[0.2em] uppercase"
               style={{ fontSize: 'clamp(8px, 2vw, 10px)', color: 'rgba(90,168,163,0.75)' }}
             >
-              October 20-21, 2026 · NED University, Karachi
+              December 23-24, 2026 · NED University, Karachi
             </span>
           </motion.div>
 
@@ -649,7 +649,7 @@ export default function Hero() {
             >
               Conference Starts In
             </p>
-            <Countdown target="2026-10-20T09:00:00" />
+            <Countdown target="2026-12-23T09:00:00" />
           </motion.div>
 
           {/* CTAs — no arrows, minimal radius */}

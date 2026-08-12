@@ -6,11 +6,14 @@ const Modal = ({ isOpen, onClose, children }) => {
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      window.lenis?.stop();
     } else {
       document.body.style.overflow = 'unset';
+      window.lenis?.start();
     }
     return () => {
       document.body.style.overflow = 'unset';
+      window.lenis?.start();
     };
   }, [isOpen]);
 
@@ -30,6 +33,7 @@ const Modal = ({ isOpen, onClose, children }) => {
           {/* Modal */}
           <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4">
             <motion.div
+              data-lenis-prevent
               className="bg-bg-card border border-border-subtle rounded-lg sm:rounded-xl max-w-4xl w-full max-h-[95vh] sm:max-h-[90vh] overflow-y-auto relative"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}

@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
-import { speakers as staticSpeakers } from '../../data/speakers';
 import SpeakerModal from '../speakers/SpeakerModal';
 import { useApiData } from '../../hooks/useApiData';
 import { api } from '../../utils/api';
@@ -36,7 +35,7 @@ const SpeakerCard = ({ speaker, index }) => {
             alt={speaker.name}
             animate={{ scale: hover ? 1.06 : 1 }}
             transition={{ duration: 0.6 }}
-            className="w-full h-full object-cover object-top grayscale-[0.3] group-hover:grayscale-0 transition-all duration-500"
+            className="w-full h-full object-contain object-center transition-all duration-500"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         </div>
@@ -78,11 +77,11 @@ export default function SpeakersPreview() {
   const [selected, setSelected] = useState(null);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
-  const { data: speakers } = useApiData(api.getSpeakers, staticSpeakers);
+  const { data: speakers } = useApiData(api.getSpeakers, []);
   const { settings } = useSiteSettings();
 
   const featured = speakers.slice(0, 4);
-  const isInactive = settings.speakers_active === 'false';
+  const isInactive = settings.speakers_active === 'false' || speakers.length === 0;
 
   return (
     <section ref={ref} className="relative py-20 bg-transparent overflow-hidden">

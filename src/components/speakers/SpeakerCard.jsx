@@ -27,7 +27,7 @@ const SpeakerCard = ({ speaker, onClick }) => {
           <img
             src={speaker.photo}
             alt={speaker.name}
-            className="w-full h-full object-cover object-top grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+            className="w-full h-full object-contain object-center transition-all duration-500 group-hover:scale-105"
             onError={() => setImageError(true)}
           />
         ) : (
