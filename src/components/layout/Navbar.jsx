@@ -51,7 +51,22 @@ export default function Navbar() {
 
             {/* Desktop nav */}
             <nav className="hidden lg:flex items-center gap-0">
-              {visibleLinks.map((link) => (
+              {visibleLinks.map((link) => link.path === '/about' ? (
+                <div key={link.path} className="relative group">
+                  <Link
+                    to={link.path}
+                    className="relative flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium whitespace-nowrap transition-colors duration-200"
+                    style={{ color: active('/about') || active('/gallery') ? '#5AA8A3' : 'rgba(255,255,255,0.55)' }}
+                  >
+                    <span>{link.name}</span><span className="text-[10px] opacity-70">⌄</span>
+                  </Link>
+                  <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150">
+                    <Link to="/gallery" className="block w-44 px-4 py-3 text-xs font-semibold rounded-md whitespace-nowrap" style={{ background: '#17343b', color: active('/gallery') ? '#5AA8A3' : 'rgba(255,255,255,0.76)', border: '1px solid rgba(90,168,163,0.18)' }}>
+                      Previous Conferences
+                    </Link>
+                  </div>
+                </div>
+              ) : (
                 <Link
                   key={link.path}
                   to={link.path}
@@ -165,6 +180,11 @@ export default function Navbar() {
                       <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#5AA8A3' }} />
                     )}
                   </Link>
+                  {link.path === '/about' && (
+                    <Link to="/gallery" className="flex items-center py-3 pl-5 border-b text-sm font-semibold" style={{ borderColor: 'rgba(90,168,163,0.1)', color: active('/gallery') ? '#5AA8A3' : 'rgba(255,255,255,0.58)' }}>
+                      Previous Conferences
+                    </Link>
+                  )}
                 </motion.div>
               ))}
 

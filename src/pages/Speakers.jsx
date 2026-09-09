@@ -33,7 +33,7 @@ const FilterPill = ({ active, onClick, children }) => (
 const Speakers = () => {
   const [selected, setSelected] = useState(null);
   const [filter, setFilter] = useState('all');
-  const { data: speakers } = useApiData(api.getSpeakers, []);
+  const { data: speakers, loading } = useApiData(api.getSpeakers, []);
   const { settings, loading: settingsLoading } = useSiteSettings();
 
   const filtered = filter === 'all' ? speakers : speakers.filter(s => s.type === filter);
@@ -48,7 +48,7 @@ const Speakers = () => {
     );
   }
 
-  if (settings.speakers_active === 'false') {
+  if (!loading && settings.speakers_active === 'false') {
     return <ComingSoon title="Speakers" message="Speaker announcements are coming soon. Stay tuned!" />;
   }
 
@@ -89,13 +89,14 @@ const Speakers = () => {
             </div>
 
             {/* Speaker grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 place-items-start">
+            {loading && <div className="py-16 text-center text-sm text-text-muted">Loading speakers…</div>}
+            {!loading && <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 place-items-start">
               {filtered.map(speaker => (
                 <div key={speaker.id} className="w-full max-w-[200px] h-80">
                   <SpeakerCard speaker={speaker} onClick={setSelected} />
                 </div>
               ))}
-            </div>
+            </div>}
           </div>
         </div>
 

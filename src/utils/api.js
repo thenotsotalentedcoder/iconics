@@ -26,6 +26,7 @@ export const api = {
   getTracks: () => request('/api/public/tracks'),
   getCommittee: () => request('/api/public/committee'),
   getPreviousConferencePublications: () => request('/api/public/previous-conference-publications'),
+  getReviewers: () => request('/api/public/reviewers'),
   getSettings: () => request('/api/public/settings'),
 
   // ── Admin auth ──────────────────────────────────────────────────────────────
@@ -95,6 +96,11 @@ export const api = {
   adminGetPreviousConferencePublications: () => request('/api/admin/previous-conference-publications'),
   adminUpdatePreviousConferencePublication: (year, body) =>
     request(`/api/admin/previous-conference-publications/${year}`, { method: 'PUT', body: JSON.stringify(body) }),
+
+  adminGetReviewers: () => request('/api/admin/reviewers'),
+  adminCreateReviewer: (formData) => request('/api/admin/reviewers', { method: 'POST', body: formData }),
+  adminUpdateReviewer: (id, formData) => request(`/api/admin/reviewers/${id}`, { method: 'PUT', body: formData }),
+  adminDeleteReviewer: (id) => request(`/api/admin/reviewers/${id}`, { method: 'DELETE' }),
 
   // ── Admin settings ──────────────────────────────────────────────────────────
   adminGetSettings: () => request('/api/admin/settings'),

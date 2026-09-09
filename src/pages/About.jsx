@@ -5,6 +5,7 @@ import PageBackground from '../components/animations/PageBackground';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 
 import { useIsMobile } from '../hooks/useIsMobile';
+import { organizingCommittee } from '../data/committee';
 
 /* ─── Brand tokens ─────────────────────────────────────── */
 const TEAL    = '#3E8B87';
@@ -29,56 +30,12 @@ const glassStrong = {
 };
 
 /* ─── Data ──────────────────────────────────────────────── */
-const teamMembers = [
-  {
-    name: 'Prof. Dr. Nazar Abbas Saqib',
-    role: 'General Chair',
-    department: 'Department of Computer Science & IT',
-    affiliation: 'NED University of Engineering & Technology',
-    expertise: ['AI Research', 'Machine Learning', 'Data Science'],
-    initial: 'NS',
-  },
-  {
-    name: 'Dr. Sana Ansari',
-    role: 'Program Chair',
-    department: 'Department of Computer Science & IT',
-    affiliation: 'NED University of Engineering & Technology',
-    expertise: ['Cybersecurity', 'Network Systems', 'Cryptography'],
-    initial: 'SA',
-  },
-  {
-    name: 'Dr. Asif Mahesar',
-    role: 'Technical Program Committee',
-    department: 'Department of Computer Science & IT',
-    affiliation: 'NED University of Engineering & Technology',
-    expertise: ['Quantum Computing', 'Algorithms', 'HPC'],
-    initial: 'AM',
-  },
-  {
-    name: 'Dr. Rabeea Jaffari',
-    role: 'Publicity Chair',
-    department: 'Department of Computer Science & IT',
-    affiliation: 'NED University of Engineering & Technology',
-    expertise: ['NLP', 'Computer Vision', 'Deep Learning'],
-    initial: 'RJ',
-  },
-  {
-    name: 'Dr. Shafaq Moten',
-    role: 'Publication Chair',
-    department: 'Department of Computer Science & IT',
-    affiliation: 'NED University of Engineering & Technology',
-    expertise: ['IoT', 'Embedded Systems', 'Edge Computing'],
-    initial: 'SM',
-  },
-  {
-    name: 'Dr. Ayesha Siddiqua',
-    role: 'Local Arrangements Chair',
-    department: 'Department of Computer Science & IT',
-    affiliation: 'NED University of Engineering & Technology',
-    expertise: ['Blockchain', 'Distributed Systems', 'Cloud'],
-    initial: 'AS',
-  },
-];
+const teamMembers = organizingCommittee.slice(0, 6).map(member => ({
+  ...member,
+  department: member.institution,
+  expertise: [],
+  initial: member.name.split(' ').filter(Boolean).slice(-2).map(part => part[0]).join(''),
+}));
 
 const values = [
   {
@@ -284,14 +241,14 @@ const TeamCard = ({ member, index }) => {
           <div style={{ fontSize: 12, color: MUTED, lineHeight: 1.6, marginBottom: 16, paddingLeft: 2 }}>
             {member.department}
           </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          {member.expertise.length > 0 && <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
             {member.expertise.map((tag, i) => (
               <motion.span key={i} whileHover={{ scale: 1.05 }}
                 style={{ fontSize: 10, fontFamily: 'monospace', fontWeight: 500, color: TEAL, background: 'rgba(62,139,135,0.08)', border: '1px solid rgba(62,139,135,0.2)', borderRadius: 4, padding: '3px 9px', letterSpacing: '0.06em' }}>
                 {tag}
               </motion.span>
             ))}
-          </div>
+          </div>}
         </div>
         <motion.div
           animate={{ opacity: [0.3, 0.7, 0.3], scale: [1, 1.15, 1] }}

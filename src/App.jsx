@@ -37,6 +37,8 @@ import AdminRegistrations from './pages/admin/AdminRegistrations';
 import AdminCommittee from './pages/admin/AdminCommittee';
 import AdminCallForPapers from './pages/admin/AdminCallForPapers';
 import AdminPreviousConferences from './pages/admin/AdminPreviousConferences';
+import AdminReviewers from './pages/admin/AdminReviewers';
+import Reviewers from './pages/Reviewers';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -75,6 +77,7 @@ function App() {
             <Route path="committee" element={<AdminCommittee />} />
             <Route path="callforpapers" element={<AdminCallForPapers />} />
             <Route path="previous-conferences" element={<AdminPreviousConferences />} />
+            <Route path="reviewers" element={<AdminReviewers />} />
           </Route>
 
           {/* ── Public site routes ──────────────────────────────────────── */}
@@ -110,6 +113,7 @@ function PublicSite() {
             <Route path="/workshops" element={<Workshops />} />
             <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/gallery" element={<Gallery />} />
+            <Route path="/reviewers" element={<Reviewers />} />
             <Route path="/contact" element={<Contact />} />
           </Routes>
         </AnimatePresence>

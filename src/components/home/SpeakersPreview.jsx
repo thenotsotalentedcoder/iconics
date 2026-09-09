@@ -77,11 +77,11 @@ export default function SpeakersPreview() {
   const [selected, setSelected] = useState(null);
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
-  const { data: speakers } = useApiData(api.getSpeakers, []);
+  const { data: speakers, loading } = useApiData(api.getSpeakers, []);
   const { settings } = useSiteSettings();
 
   const featured = speakers.slice(0, 4);
-  const isInactive = settings.speakers_active === 'false' || speakers.length === 0;
+  const isInactive = !loading && (settings.speakers_active === 'false' || speakers.length === 0);
 
   return (
     <section ref={ref} className="relative py-20 bg-transparent overflow-hidden">

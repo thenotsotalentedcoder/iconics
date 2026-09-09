@@ -40,9 +40,8 @@ export const NAV_LINKS = [
   { name: 'Call for Papers', path: '/callforpapers' },
   { name: 'Schedule', path: '/schedule' },
   { name: 'Workshops', path: '/workshops' },
-  { name: 'Registration', path: '/registration' },
   { name: 'Committee', path: '/committee' },
   { name: 'Sponsors', path: '/sponsors' },
-  { name: 'Previous Conferences', path: '/gallery' },
+  { name: 'Reviewers', path: '/reviewers' },
   { name: 'Contact', path: '/contact' }
 ];
