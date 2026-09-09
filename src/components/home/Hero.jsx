@@ -623,6 +623,16 @@ export default function Hero() {
           <Title />
 
           <motion.p
+            className="font-bold uppercase tracking-[0.22em] mt-3 px-2"
+            style={{ fontSize: 'clamp(0.65rem, 1.7vw, 0.8rem)', color: 'rgba(90,168,163,0.78)' }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.68 }}
+          >
+            Fifth International Conference
+          </motion.p>
+
+          <motion.p
             className="font-light leading-relaxed mt-3 sm:mt-4 px-2"
             style={{
               fontSize: 'clamp(0.8rem, 2.2vw, 1rem)',

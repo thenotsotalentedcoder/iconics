@@ -3,7 +3,8 @@ import PageTransition from '../components/layout/PageTransition';
 import SectionHeading from '../components/common/SectionHeading';
 import PageBackground from '../components/animations/PageBackground';
 import { motion, AnimatePresence } from 'framer-motion';
-import { EXTERNAL_LINKS } from '../utils/constants';
+import { useApiData } from '../hooks/useApiData';
+import { api } from '../utils/api';
 
 // ---------------------------------------------------------------------------
 // Data
@@ -39,10 +40,6 @@ const editions = [
       'Chief Guest: Mr. Jam Mehtab Dahar, Minister of Education Sindh',
       'Published in NED Journal of Research (Special Issue)',
       'Sponsored by HEC Pakistan, USEFP, and Pak Suzuki',
-    ],
-    resources: [
-      { label: 'Proceedings (PDF)', href: EXTERNAL_LINKS.PROCEEDINGS_2016, type: 'pdf' },
-      { label: 'NED Journal Archives', href: EXTERNAL_LINKS.NED_JOURNAL, type: 'link' },
     ],
     // Drop 5-6 images as /images/archive/2016/1.jpg, 2.jpg, etc.
     photos: [
@@ -85,9 +82,6 @@ const editions = [
       'Patron: Dr. Sarosh Hashmat Lodi, VC NED University',
       'Dedicated proceedings volume published',
     ],
-    resources: [
-      { label: 'Proceedings (PDF)', href: EXTERNAL_LINKS.PROCEEDINGS_2018, type: 'pdf' },
-    ],
     // Drop 5-6 images as /images/archive/2018/1.jpg, 2.jpg, etc.
     photos: [
       '/images/archive/2018/1.jpg',
@@ -126,9 +120,6 @@ const editions = [
       'Dedicated Quantum Computing and Cybersecurity tracks',
       'Chief Guest: Mr. Asif Ikram, Secretary IT Govt of Sindh',
       'Guest of Honour: Ms. Jehan Ara, CEO Katalyst Labs',
-    ],
-    resources: [
-      { label: 'IEEE Xplore Proceedings', href: EXTERNAL_LINKS.IEEE_ICONICS_22, type: 'ieee' },
     ],
     // Drop 5-6 images as /images/archive/2022/1.jpg, 2.jpg, etc.
     photos: [
@@ -176,9 +167,6 @@ const editions = [
       'NLP & Contrastive Learning tutorial workshop',
       'Focus on Generative AI and Edge Computing',
       'Conference website: nediconics.com',
-    ],
-    resources: [
-      { label: 'Conference Website', href: 'https://www.nediconics.com', type: 'link' },
     ],
     photos: [
       '/images/archive/2024/1.jpg',
@@ -312,8 +300,10 @@ const SpeakerCard = ({ speaker }) => (
 const Gallery = () => {
   const [activeYear, setActiveYear] = useState('2024');
   const [activePhoto, setActivePhoto] = useState(0);
+  const { data: publications } = useApiData(api.getPreviousConferencePublications, []);
 
   const active = editions.find(e => e.year === activeYear);
+  const publication = publications.find(record => record.year === activeYear);
 
   const changeYear = (year) => {
     setActiveYear(year);
@@ -329,7 +319,7 @@ const Gallery = () => {
           <div className="container mx-auto max-w-[1200px]">
 
             <SectionHeading
-              title="Past Editions"
+              title="Previous Conferences"
               subtitle="A decade of innovation in computer science at NED University"
             />
 
@@ -380,9 +370,11 @@ const Gallery = () => {
                             {active.date} &middot; {active.venue}
                           </p>
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                          {active.resources.map((r, i) => <ResourceBadge key={i} r={r} />)}
-                        </div>
+                        {publication?.journalUrl && (
+                          <a href={publication.journalUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded border border-border-subtle text-accent bg-bg-card hover:bg-bg-secondary hover:border-accent/30 transition-all duration-200">
+                            {typeIcon.link} Journal
+                          </a>
+                        )}
                       </div>
 
                       <div className="mt-4 pt-4 border-t border-border-subtle">
@@ -391,6 +383,13 @@ const Gallery = () => {
                       </div>
 
                       <p className="mt-4 text-sm text-text-muted leading-relaxed">{active.summary}</p>
+
+                      {(publication?.isbn || publication?.issn) && (
+                        <div className="mt-4 pt-4 border-t border-border-subtle flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                          {publication.isbn && <span className="text-text-secondary"><strong className="text-accent">ISBN:</strong> {publication.isbn}</span>}
+                          {publication.issn && <span className="text-text-secondary"><strong className="text-accent">ISSN:</strong> {publication.issn}</span>}
+                        </div>
+                      )}
                     </div>
 
                     {/* Stats */}

@@ -43,6 +43,6 @@ export const NAV_LINKS = [
   { name: 'Registration', path: '/registration' },
   { name: 'Committee', path: '/committee' },
   { name: 'Sponsors', path: '/sponsors' },
-  { name: 'Archive', path: '/gallery' },
+  { name: 'Previous Conferences', path: '/gallery' },
   { name: 'Contact', path: '/contact' }
 ];

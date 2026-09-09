@@ -25,6 +25,7 @@ export const api = {
   getDates: () => request('/api/public/dates'),
   getTracks: () => request('/api/public/tracks'),
   getCommittee: () => request('/api/public/committee'),
+  getPreviousConferencePublications: () => request('/api/public/previous-conference-publications'),
   getSettings: () => request('/api/public/settings'),
 
   // ── Admin auth ──────────────────────────────────────────────────────────────
@@ -89,6 +90,11 @@ export const api = {
     request(`/api/admin/committee/${id}`, { method: 'PUT', body: JSON.stringify(body) }),
   adminDeleteCommitteeMember: (id) =>
     request(`/api/admin/committee/${id}`, { method: 'DELETE' }),
+
+  // ─── Previous conference publications ────────────────────────────────────
+  adminGetPreviousConferencePublications: () => request('/api/admin/previous-conference-publications'),
+  adminUpdatePreviousConferencePublication: (year, body) =>
+    request(`/api/admin/previous-conference-publications/${year}`, { method: 'PUT', body: JSON.stringify(body) }),
 
   // ── Admin settings ──────────────────────────────────────────────────────────
   adminGetSettings: () => request('/api/admin/settings'),

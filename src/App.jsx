@@ -36,6 +36,7 @@ import AdminTracks from './pages/admin/AdminTracks';
 import AdminRegistrations from './pages/admin/AdminRegistrations';
 import AdminCommittee from './pages/admin/AdminCommittee';
 import AdminCallForPapers from './pages/admin/AdminCallForPapers';
+import AdminPreviousConferences from './pages/admin/AdminPreviousConferences';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -73,6 +74,7 @@ function App() {
             <Route path="registrations" element={<AdminRegistrations />} />
             <Route path="committee" element={<AdminCommittee />} />
             <Route path="callforpapers" element={<AdminCallForPapers />} />
+            <Route path="previous-conferences" element={<AdminPreviousConferences />} />
           </Route>
 
           {/* ── Public site routes ──────────────────────────────────────── */}
