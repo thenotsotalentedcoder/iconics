@@ -97,7 +97,7 @@ const guidelines = [
   { icon: icons.format,  label: 'Format',           value: 'IEEE Conference format (template provided)' },
   { icon: icons.length,  label: 'Length',            value: 'Full papers (6–8 pages) · Short papers (4 pages)' },
   { icon: icons.system,  label: 'Submission System', value: 'PaperDesk' },
-  { icon: icons.review,  label: 'Review Process',    value: 'Single-blind peer review by international experts' },
+  { icon: icons.review,  label: 'Review Process',    value: 'Double-blind peer review by international experts' },
   { icon: icons.notify,  label: 'Notification',      value: 'Authors notified via email upon decision' },
 ];
 

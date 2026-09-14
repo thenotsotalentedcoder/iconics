@@ -484,6 +484,7 @@ const LOGOS = [
   { src: '/images/hec.png',  alt: 'Higher Education Commission' },
   { src: '/images/ieee.png', alt: 'IEEE' },
   { src: '/images/oric.png', alt: 'Office of Research, Innovation & Commercialization' },
+  { src: '/images/ignite1.png', alt: 'National Technology Fund' },
 ];
 
 // Enough copies so the strip always overflows the widest viewport (6 × 4 = 24)
