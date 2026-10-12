@@ -38,29 +38,67 @@ function ExportButton({ href, label }) {
   );
 }
 
+// Documents live in a private bucket; each click fetches a 5-minute signed URL.
+function DocLinks({ kind, row, docs }) {
+  const [busy, setBusy] = useState('');
+  const available = docs.filter(d => row[d.field]);
+  if (available.length === 0) return '—';
+
+  const open = async (field) => {
+    // Open the tab synchronously so popup blockers allow it, then point it at the file.
+    const win = window.open('', '_blank');
+    if (win) win.opener = null;
+    setBusy(field);
+    try {
+      const { url } = await api.adminGetDocumentUrl(kind, row.id, field);
+      if (win) win.location.href = url; else window.location.assign(url);
+    } catch (e) {
+      win?.close();
+      alert(e.message);
+    } finally { setBusy(''); }
+  };
+
+  return (
+    <span className="flex gap-2">
+      {available.map(d => (
+        <button key={d.field} onClick={() => open(d.field)} disabled={busy === d.field}
+          className="underline font-semibold" style={{ color: '#2D6E6A' }}>
+          {busy === d.field ? '…' : d.label}
+        </button>
+      ))}
+    </span>
+  );
+}
+
 function WorkshopTable({ rows }) {
   const cols = ['fullName', 'email', 'mobileNumber', 'institutionOrg', 'semesterDesignation', 'highestDegree', 'status', 'createdAt'];
   const labels = { fullName: 'Name', email: 'Email', mobileNumber: 'Mobile', institutionOrg: 'Institution', semesterDesignation: 'Designation', highestDegree: 'Degree', status: 'Status', createdAt: 'Submitted' };
-  return <RegistrationTable rows={rows} cols={cols} labels={labels} />;
+  const docs = [{ field: 'resumeUrl', label: 'Resume' }];
+  return <RegistrationTable rows={rows} cols={cols} labels={labels} kind="workshop" docs={docs} />;
 }
 
+const PAYMENT_DOCS = [
+  { field: 'transactionReceipt', label: 'Receipt' },
+  { field: 'studentCard', label: 'Student card' },
+];
+
 function ParticipantTable({ rows }) {
-  const cols = ['fullName', 'email', 'registrationType', 'institute', 'department', 'contactNo', 'totalAmountPaid', 'createdAt'];
-  const labels = { fullName: 'Name', email: 'Email', registrationType: 'Type', institute: 'Institute', department: 'Dept', contactNo: 'Contact', totalAmountPaid: 'Amount', createdAt: 'Submitted' };
-  return <RegistrationTable rows={rows} cols={cols} labels={labels} />;
+  const cols = ['fullName', 'email', 'registrationType', 'institute', 'department', 'contactNo', 'ieeeNumber', 'stanTransactionId', 'totalAmountPaid', 'createdAt'];
+  const labels = { fullName: 'Name', email: 'Email', registrationType: 'Type', institute: 'Institute', department: 'Dept', contactNo: 'Contact', ieeeNumber: 'IEEE No.', stanTransactionId: 'Txn ID', totalAmountPaid: 'Amount', createdAt: 'Submitted' };
+  return <RegistrationTable rows={rows} cols={cols} labels={labels} kind="participant" docs={PAYMENT_DOCS} />;
 }
 
 function PaperTable({ rows }) {
-  const cols = ['authorName', 'email', 'paperId', 'paperTitle', 'registrationType', 'institution', 'totalAmountPaid', 'createdAt'];
-  const labels = { authorName: 'Author', email: 'Email', paperId: 'Paper ID', paperTitle: 'Title', registrationType: 'Type', institution: 'Institution', totalAmountPaid: 'Amount', createdAt: 'Submitted' };
-  return <RegistrationTable rows={rows} cols={cols} labels={labels} />;
+  const cols = ['authorName', 'email', 'paperId', 'paperTitle', 'registrationType', 'institution', 'stanTransactionId', 'totalAmountPaid', 'createdAt'];
+  const labels = { authorName: 'Author', email: 'Email', paperId: 'Paper ID', paperTitle: 'Title', registrationType: 'Type', institution: 'Institution', stanTransactionId: 'Txn ID', totalAmountPaid: 'Amount', createdAt: 'Submitted' };
+  return <RegistrationTable rows={rows} cols={cols} labels={labels} kind="paper" docs={PAYMENT_DOCS} />;
 }
 
-function RegistrationTable({ rows, cols, labels }) {
+function RegistrationTable({ rows, cols, labels, kind, docs }) {
   const fmt = (v) => {
     if (v == null) return '—';
     if (typeof v === 'boolean') return v ? 'Yes' : 'No';
-    if (v instanceof Date || (typeof v === 'string' && v.includes('T'))) {
+    if (v instanceof Date || (typeof v === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(v))) {
       try { return new Date(v).toLocaleDateString(); } catch { return v; }
     }
     if (typeof v === 'string' && v.length > 40) return v.slice(0, 40) + '…';
@@ -93,6 +131,10 @@ function RegistrationTable({ rows, cols, labels }) {
                 {labels[c] || c}
               </th>
             ))}
+            <th className="text-left px-4 py-3 text-xs font-semibold uppercase tracking-wider whitespace-nowrap"
+              style={{ color: '#7A9AA6' }}>
+              Documents
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -114,6 +156,9 @@ function RegistrationTable({ rows, cols, labels }) {
                   ) : fmt(row[c])}
                 </td>
               ))}
+              <td className="px-4 py-3 text-xs whitespace-nowrap" style={{ color: '#4A6472' }}>
+                <DocLinks kind={kind} row={row} docs={docs} />
+              </td>
             </motion.tr>
           ))}
         </tbody>

@@ -12,6 +12,12 @@ import { BASE as API_BASE } from '../utils/api';
 // const API_BASE = import.meta.env.VITE_API_URL || 'http://172.16.9.240:5000';
 const EASYCHAIR_URL = 'https://paperdesk.neduet.edu.pk/';
 
+// Prefer the server's per-field messages over the generic "Validation failed".
+const apiErrorMessage = (data) =>
+  data?.errors?.length ? data.errors.map(e => e.message).join('. ') : (data?.message || 'Registration failed');
+
+const PHONE_RE = /^\+?[0-9][0-9\s()-]{6,19}$/;
+
 
 // ─── small field components ──────────────────────────────────────────────────
 
@@ -146,6 +152,7 @@ const WorkshopForm = ({ onClose }) => {
       if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = 'Valid email required.';
       if (!form.fullName.trim()) e.fullName = 'Required.';
       if (!form.mobileNumber.trim()) e.mobileNumber = 'Required.';
+      else if (!PHONE_RE.test(form.mobileNumber.trim())) e.mobileNumber = 'Enter a valid phone number.';
       if (!form.cnicNumber.trim()) e.cnicNumber = 'Required.';
       if (!form.institutionOrg.trim()) e.institutionOrg = 'Required.';
       if (!form.semesterDesignation.trim()) e.semesterDesignation = 'Required.';
@@ -181,7 +188,7 @@ const WorkshopForm = ({ onClose }) => {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.message || data.errors?.map(e => e.message).join(', ') || 'Registration failed');
+        throw new Error(apiErrorMessage(data));
       }
       setDone(true);
     } catch (err) {
@@ -352,6 +359,7 @@ const ParticipantForm = ({ onClose }) => {
       if (!form.department.trim()) e.department = 'Required.';
       if (!form.institute.trim()) e.institute = 'Required.';
       if (!form.contactNo.trim()) e.contactNo = 'Required.';
+      else if (!PHONE_RE.test(form.contactNo.trim())) e.contactNo = 'Enter a valid phone number.';
       if (form.registrationType === 'student' && !form.rollNo.trim()) e.rollNo = 'Roll number is required for students.';
       if (form.isIeeeMember) {
         if (!form.ieeeNumber.trim()) e.ieeeNumber = 'IEEE membership number is required.';
@@ -403,7 +411,7 @@ const ParticipantForm = ({ onClose }) => {
         body: formData,
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Registration failed');
+      if (!res.ok) throw new Error(apiErrorMessage(data));
       setDone(true);
     } catch (err) {
       setApiError(err.message);
@@ -553,7 +561,7 @@ const ParticipantForm = ({ onClose }) => {
           <FileInput
             label="Scanned Copy of Transaction Receipt"
             accept=".pdf,.png,.jpg,.jpeg"
-            note="If paid via internet banking, you can share a screenshot. Max 100MB."
+            note="If paid via internet banking, you can share a screenshot. Max 10MB."
             onChange={e => setReceipt(e.target.files[0])}
             fileName={receipt?.name}
           />
@@ -561,7 +569,7 @@ const ParticipantForm = ({ onClose }) => {
             <FileInput
               label="Scanned Copy of Student Card"
               accept=".pdf,.png,.jpg,.jpeg"
-              note="Upload 1 file: PDF or image. Max 100MB."
+              note="Upload 1 file: PDF or image. Max 10MB."
               onChange={e => setStudentCard(e.target.files[0])}
               fileName={studentCard?.name}
             />
@@ -651,6 +659,7 @@ const PaperForm = ({ onClose }) => {
       if (!form.department.trim()) e.department = 'Required.';
       if (!form.institution.trim()) e.institution = 'Required.';
       if (!form.contactNo.trim()) e.contactNo = 'Required.';
+      else if (!PHONE_RE.test(form.contactNo.trim())) e.contactNo = 'Enter a valid phone number.';
       if (form.registrationType === 'student' && !form.rollNo.trim()) e.rollNo = 'Required for students.';
     }
     if (s === 2) {
@@ -659,6 +668,15 @@ const PaperForm = ({ onClose }) => {
       if (!form.bankDetails.trim()) e.bankDetails = 'Required.';
       if (!form.totalAmountPaid.trim()) e.totalAmountPaid = 'Required.';
       if (!form.certified) e.certified = 'You must certify the information is correct.';
+      const caRequired = ['email', 'authorName', 'department', 'institution', 'contactNo', 'stanTransactionId', 'transactionDate', 'bankDetails', 'totalAmountPaid'];
+      const badCoAuthor = coAuthors.findIndex(ca =>
+        caRequired.some(f => !String(ca[f] ?? '').trim()) ||
+        !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(ca.email) ||
+        !PHONE_RE.test(ca.contactNo.trim()) ||
+        !ca.certified);
+      if (badCoAuthor !== -1) {
+        e.coAuthors = `Co-Author ${badCoAuthor + 1}: fill in every required field with valid values and tick the certification box.`;
+      }
     }
     return e;
   };
@@ -687,7 +705,7 @@ const PaperForm = ({ onClose }) => {
         body: formData,
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || 'Registration failed');
+      if (!res.ok) throw new Error(apiErrorMessage(data));
       setDone(true);
     } catch (err) {
       setApiError(err.message);
@@ -810,7 +828,7 @@ const PaperForm = ({ onClose }) => {
           <FileInput
             label="Scanned Copy of Transaction Receipt"
             accept=".pdf,.png,.jpg,.jpeg"
-            note="If paid via internet banking, share a screenshot. Max 100MB."
+            note="If paid via internet banking, share a screenshot. Max 10MB."
             onChange={e => setReceipt(e.target.files[0])}
             fileName={receipt?.name}
           />
@@ -818,7 +836,7 @@ const PaperForm = ({ onClose }) => {
             <FileInput
               label="Scanned Copy of Student Card"
               accept=".pdf,.png,.jpg,.jpeg"
-              note="Upload 1 file: PDF or image. Max 100MB."
+              note="Upload 1 file: PDF or image. Max 10MB."
               onChange={e => setStudentCard(e.target.files[0])}
               fileName={studentCard?.name}
             />
@@ -898,6 +916,7 @@ const PaperForm = ({ onClose }) => {
                 </div>
               </div>
             ))}
+            <FieldError msg={errors.coAuthors} />
           </div>
         </div>
       )}

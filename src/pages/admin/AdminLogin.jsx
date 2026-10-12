@@ -6,19 +6,21 @@ import { useAdmin } from '../../contexts/AdminContext';
 export default function AdminLogin() {
   const { login } = useAdmin();
   const navigate = useNavigate();
-  const [secret, setSecret] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const canSubmit = email && password;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setLoading(true);
     try {
-      await login(secret);
+      await login(email, password);
       navigate('/admin');
-    } catch {
-      setError('Invalid credentials. Please try again.');
+    } catch (err) {
+      setError(err.message?.startsWith('Too many') ? err.message : 'Invalid email or password.');
     } finally {
       setLoading(false);
     }
@@ -65,18 +67,40 @@ export default function AdminLogin() {
             </div>
 
             <h1 className="text-2xl font-bold mb-1" style={{ color: '#1A2E38' }}>Welcome back</h1>
-            <p className="text-sm mb-8" style={{ color: '#7A9AA6' }}>Enter your admin secret to continue.</p>
+            <p className="text-sm mb-8" style={{ color: '#7A9AA6' }}>Sign in with your admin account.</p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="block text-sm font-medium mb-2" style={{ color: '#4A6472' }}>
-                  Admin Secret
+                  Email
+                </label>
+                <input
+                  type="email"
+                  autoComplete="username"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@neduet.edu.pk"
+                  required
+                  className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all duration-200"
+                  style={{
+                    border: error ? '1.5px solid #ef4444' : '1.5px solid rgba(62,139,135,0.2)',
+                    background: '#FAFBFB',
+                    color: '#1A2E38',
+                  }}
+                  onFocus={(e) => { if (!error) e.target.style.borderColor = '#3E8B87'; }}
+                  onBlur={(e) => { if (!error) e.target.style.borderColor = 'rgba(62,139,135,0.2)'; }}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2" style={{ color: '#4A6472' }}>
+                  Password
                 </label>
                 <input
                   type="password"
-                  value={secret}
-                  onChange={(e) => setSecret(e.target.value)}
-                  placeholder="Enter your secret key"
+                  autoComplete="current-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
                   required
                   className="w-full px-4 py-3 rounded-xl text-sm outline-none transition-all duration-200"
                   style={{
@@ -100,14 +124,14 @@ export default function AdminLogin() {
 
               <motion.button
                 type="submit"
-                disabled={loading || !secret}
+                disabled={loading || !canSubmit}
                 whileHover={{ scale: loading ? 1 : 1.02 }}
                 whileTap={{ scale: loading ? 1 : 0.98 }}
                 className="w-full py-3 rounded text-base font-semibold text-white transition-all duration-200 flex items-center justify-center gap-2"
                 style={{
-                  background: loading || !secret ? '#7A9AA6' : 'linear-gradient(135deg, #2D6E6A, #3E8B87)',
-                  boxShadow: loading || !secret ? 'none' : '0 8px 24px rgba(62,139,135,0.3)',
-                  cursor: loading || !secret ? 'not-allowed' : 'pointer',
+                  background: loading || !canSubmit ? '#7A9AA6' : 'linear-gradient(135deg, #2D6E6A, #3E8B87)',
+                  boxShadow: loading || !canSubmit ? 'none' : '0 8px 24px rgba(62,139,135,0.3)',
+                  cursor: loading || !canSubmit ? 'not-allowed' : 'pointer',
                 }}
               >
                 {loading ? (

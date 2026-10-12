@@ -14,9 +14,14 @@ async function request(path, options = {}) {
 
   const res = await fetch(`${BASE}${path}`, { ...options, headers });
   const data = await res.json();
+  if (res.status === 401 && token && path.startsWith('/api/admin/')) {
+    window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+  }
   if (!res.ok) throw new Error(data.message || 'Request failed');
   return data;
 }
+
+export const AUTH_EXPIRED_EVENT = 'admin-auth-expired';
 
 // ── Public endpoints ──────────────────────────────────────────────────────────
 export const api = {
@@ -30,8 +35,9 @@ export const api = {
   getSettings: () => request('/api/public/settings'),
 
   // ── Admin auth ──────────────────────────────────────────────────────────────
-  adminLogin: (secret) =>
-    request('/api/admin/login', { method: 'POST', body: JSON.stringify({ secret }) }),
+  adminLogin: (email, password) =>
+    request('/api/admin/login', { method: 'POST', body: JSON.stringify({ email, password }) }),
+  adminLogoutAll: () => request('/api/admin/logout-all', { method: 'POST' }),
 
   // ── Admin speakers ──────────────────────────────────────────────────────────
   adminGetSpeakers: () => request('/api/admin/speakers'),
@@ -115,6 +121,10 @@ export const api = {
   adminGetWorkshopRegs: () => request('/api/admin/registrations/workshop'),
   adminGetParticipantRegs: () => request('/api/admin/registrations/participant'),
   adminGetPaperRegs: () => request('/api/admin/registrations/paper'),
+
+  // kind: workshop | participant | paper | coauthor; field: resumeUrl | transactionReceipt | studentCard
+  adminGetDocumentUrl: (kind, id, field) =>
+    request(`/api/admin/registrations/${kind}/${id}/file/${field}`),
 
   adminExportWorkshopRegs: () => `${BASE}/api/admin/registrations/workshop/export`,
   adminExportParticipantRegs: () => `${BASE}/api/admin/registrations/participant/export`,
