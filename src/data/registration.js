@@ -23,10 +23,13 @@ export const registrationTypes = [
     type: "Regular",
     deadline: "October 5, 2026",
     prices: {
-      national_paper: "PKR 8,000",
+      national_paper: "PKR 10,000",
       international_paper: "USD 50",
       professional: "PKR 3,000",
       student: "PKR 1,500",
+      ieee_student_paper: "PKR 2,000",
+      ieee_member_paper: "PKR 5,000",
+      ieee_student_attendee: "Free",
       international_delegate: "USD 100",
     },
     benefits: [
@@ -36,22 +39,6 @@ export const registrationTypes = [
       "Workshop access",
       "Presentation certificate",
       "Conference proceedings (digital)"
-    ]
-  },
-  {
-    type: "On-site",
-    deadline: "December 23-24, 2026",
-    prices: {
-      national_paper: "PKR 9,000",
-      international_paper: "USD 60",
-      professional: "PKR 3,500",
-      student: "PKR 2,000",
-      international_delegate: "USD 120",
-    },
-    benefits: [
-      "Access to all sessions",
-      "Lunch & hi-tea (both days)",
-      "Certificate",
     ]
   },
   {
@@ -93,7 +80,6 @@ export const paymentInfo = {
   rules: [
     "One registration form per participant",
     "Paper withdrawal prohibited after registration",
-    "At least one author must present; no-show papers excluded from proceedings",
-    "On-site payment available based on capacity"
+    "At least one author must present; no-show papers excluded from proceedings"
   ]
 };

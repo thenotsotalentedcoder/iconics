@@ -1215,7 +1215,7 @@ const Registration = () => {
           </motion.div>
 
           {/* Pricing Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 mb-12">
             {registrationTypes.map((regType, index) => (
               <motion.div
                 key={index}
@@ -1240,6 +1240,9 @@ const Registration = () => {
                   {regType.prices.professional          && <PriceRow label="Professional / Co-Author" value={regType.prices.professional} />}
                   {regType.prices.student               && <PriceRow label="Student / Co-Author"      value={regType.prices.student} />}
                   {regType.prices.international_delegate && <PriceRow label="International Delegate"  value={regType.prices.international_delegate} />}
+                  {regType.prices.ieee_student_paper    && <PriceRow label="Paper (IEEE Student)"     value={regType.prices.ieee_student_paper} />}
+                  {regType.prices.ieee_member_paper     && <PriceRow label="Paper (IEEE Member)"      value={regType.prices.ieee_member_paper} />}
+                  {regType.prices.ieee_student_attendee && <PriceRow label="Attendee (IEEE Student)"  value={regType.prices.ieee_student_attendee} />}
                   {regType.prices.all && (
                     <div className="py-2">
                       <span className="text-accent font-bold text-2xl">{regType.prices.all}</span>
