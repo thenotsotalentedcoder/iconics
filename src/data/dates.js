@@ -15,7 +15,7 @@ export const importantDates = [
     description: 'Submit final version of accepted papers'
   },
   {
-    date: 'September 20, 2026',
+    date: 'November 10, 2026',
     title: 'Early Bird Registration',
     description: 'Last day for discounted registration fees'
   },

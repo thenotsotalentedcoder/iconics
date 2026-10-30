@@ -10,7 +10,9 @@ import { BASE as API_BASE } from '../utils/api';
 // ─── constants ───────────────────────────────────────────────────────────────
 
 // const API_BASE = import.meta.env.VITE_API_URL || 'http://172.16.9.240:5000';
-const EASYCHAIR_URL = 'https://paperdesk.neduet.edu.pk/';
+const PAPER_FORM_URL = 'https://forms.gle/oiEXYLzr6oXRunX36';
+const COAUTHOR_FORM_URL = 'https://forms.gle/HVpmzg1m6CRqsD5F7';
+const ATTENDEE_FORM_URL = 'https://forms.gle/nmH9FKHjnoVR8zki8';
 
 // Prefer the server's per-field messages over the generic "Validation failed".
 const apiErrorMessage = (data) =>
@@ -1170,17 +1172,11 @@ const Registration = () => {
   useEffect(() => {
     const type = searchParams.get('type');
     if (type === 'paper') {
-      window.open(EASYCHAIR_URL, '_blank', 'noopener,noreferrer');
-    } else if (type && ['participant', 'workshop'].includes(type)) {
-      setDefaultType(type);
-      setModalOpen(true);
+      window.open(PAPER_FORM_URL, '_blank', 'noopener,noreferrer');
+    } else if (type === 'participant') {
+      window.open(ATTENDEE_FORM_URL, '_blank', 'noopener,noreferrer');
     }
   }, [searchParams]);
-
-  const openModal = (type = 'participant') => {
-    setDefaultType(type);
-    setModalOpen(true);
-  };
 
   return (
     <PageTransition>
@@ -1233,7 +1229,7 @@ const Registration = () => {
                   </div>
                 )}
                 <h3 className="text-xl font-bold text-text-primary mb-1">{regType.type}</h3>
-                <p className="text-text-muted text-xs mb-5">Until {regType.deadline}</p>
+                <p className="text-text-muted text-xs mb-5">{regType.comingSoon ? 'Coming Soon' : `Until ${regType.deadline}`}</p>
                 <div className="mb-5">
                   {regType.prices.national_paper        && <PriceRow label="National (Paper)"        value={regType.prices.national_paper} />}
                   {regType.prices.international_paper   && <PriceRow label="International (Paper)"   value={regType.prices.international_paper} />}
@@ -1243,6 +1239,11 @@ const Registration = () => {
                   {regType.prices.ieee_student_paper    && <PriceRow label="Paper (IEEE Student)"     value={regType.prices.ieee_student_paper} />}
                   {regType.prices.ieee_member_paper     && <PriceRow label="Paper (IEEE Member)"      value={regType.prices.ieee_member_paper} />}
                   {regType.prices.ieee_student_attendee && <PriceRow label="Attendee (IEEE Student)"  value={regType.prices.ieee_student_attendee} />}
+                  {regType.comingSoon && (
+                    <div className="py-2">
+                      <span className="text-accent font-bold text-2xl">Coming Soon</span>
+                    </div>
+                  )}
                   {regType.prices.all && (
                     <div className="py-2">
                       <span className="text-accent font-bold text-2xl">{regType.prices.all}</span>
@@ -1270,23 +1271,27 @@ const Registration = () => {
             viewport={{ once: true }}
           >
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4">
-              <button onClick={() => openModal('participant')}
+              <a href={PAPER_FORM_URL} target="_blank" rel="noopener noreferrer"
                 className="inline-flex items-center justify-center px-6 py-3 bg-accent hover:bg-accent-light text-white font-semibold rounded text-base transition-all duration-300 hover:shadow-glow">
-                Register as Participant
-              </button>
-              <a href={EASYCHAIR_URL} target="_blank" rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-6 py-3 border border-accent text-accent hover:bg-accent hover:text-white font-semibold rounded text-base transition-all duration-300">
                 Register Paper
               </a>
-              <button onClick={() => openModal('workshop')}
-                className="inline-flex items-center justify-center px-6 py-3 border border-border-subtle text-text-muted hover:border-accent hover:text-accent font-semibold rounded text-base transition-all duration-300">
-                Register for Workshop
+              <a href={COAUTHOR_FORM_URL} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-6 py-3 border border-accent text-accent hover:bg-accent hover:text-white font-semibold rounded text-base transition-all duration-300">
+                Register Co-Author
+              </a>
+              <a href={ATTENDEE_FORM_URL} target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center justify-center px-6 py-3 border border-accent text-accent hover:bg-accent hover:text-white font-semibold rounded text-base transition-all duration-300">
+                Register Attendee
+              </a>
+              <button disabled aria-disabled="true"
+                className="inline-flex items-center justify-center px-6 py-3 border border-border-subtle text-text-muted font-semibold rounded text-base opacity-50 cursor-not-allowed">
+                Register Workshop (Coming Soon)
               </button>
             </div>
             <p className="text-text-muted text-sm mt-3">
               Questions?{' '}
-              <a href="mailto:registration@nediconics.com" className="text-accent hover:underline">
-                registration@nediconics.com
+              <a href="mailto:contacticonics@gmail.com" className="text-accent hover:underline">
+                contacticonics@gmail.com
               </a>
             </p>
           </motion.div>

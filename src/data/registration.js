@@ -1,7 +1,7 @@
 export const registrationTypes = [
   {
     type: "Early Bird",
-    deadline: "August 10, 2026",
+    deadline: "November 10, 2026",
     prices: {
       national_paper: "PKR 7,000",
       international_paper: "USD 40",
@@ -21,7 +21,7 @@ export const registrationTypes = [
   },
   {
     type: "Regular",
-    deadline: "October 5, 2026",
+    deadline: "December 23, 2026",
     prices: {
       national_paper: "PKR 10,000",
       international_paper: "USD 50",
@@ -43,10 +43,8 @@ export const registrationTypes = [
   },
   {
     type: "Workshop Only",
-    deadline: "October 5, 2026",
-    prices: {
-      all: "PKR 5,000",
-    },
+    comingSoon: true,
+    prices: {},
     benefits: [
       "Access to one workshop",
       "Certificate",
@@ -74,7 +72,7 @@ export const paymentInfo = {
   branch: "Shah Faisal Colony, Karachi",
   coordinator: {
     name: "Ms. Samia Masood Awan",
-    email: "registration@nediconics.com",
+    email: "contacticonics@gmail.com",
     phone: "+92-21-99261261 ext. 2569"
   },
   rules: [
