@@ -77,6 +77,23 @@ const SpeakerModal = ({ speaker, isOpen, onClose }) => {
             <p className="text-sm sm:text-base text-text-secondary leading-relaxed">{speaker.bio}</p>
           </div>
 
+          {/* Workshops */}
+          {speaker.workshops?.length > 0 && (
+            <div className="mb-4 sm:mb-6">
+              <h3 className="text-lg sm:text-xl font-semibold text-text-primary mb-2 sm:mb-3">
+                Workshop{speaker.workshops.length > 1 ? 's' : ''}
+              </h3>
+              <ul className="space-y-1.5">
+                {speaker.workshops.map((w) => (
+                  <li key={w} className="text-sm sm:text-base text-text-secondary flex gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-accent shrink-0 mt-2" />
+                    {w}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* Topics */}
           <div className="mb-4 sm:mb-6">
             <h3 className="text-lg sm:text-xl font-semibold text-text-primary mb-2 sm:mb-3">Research Areas</h3>

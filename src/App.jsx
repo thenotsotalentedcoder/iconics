@@ -15,6 +15,7 @@ import Speakers from './pages/Speakers';
 import CallForPapers from './pages/CallForPapers';
 import Schedule from './pages/Schedule';
 import Registration from './pages/Registration';
+import WorkshopDetail from './pages/WorkshopDetail';
 import Committee from './pages/Committee';
 import Gallery from './pages/Gallery';
 import Contact from './pages/Contact';
@@ -111,6 +112,7 @@ function PublicSite() {
             <Route path="/registration" element={<Registration />} />
             <Route path="/committee" element={<Committee />} />
             <Route path="/workshops" element={<Workshops />} />
+            <Route path="/workshops/:slug" element={<WorkshopDetail />} />
             <Route path="/sponsors" element={<Sponsors />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/reviewers" element={<Reviewers />} />

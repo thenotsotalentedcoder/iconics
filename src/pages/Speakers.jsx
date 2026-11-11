@@ -6,6 +6,7 @@ import SpeakerModal from '../components/speakers/SpeakerModal';
 import PageBackground from '../components/animations/PageBackground';
 import { useApiData } from '../hooks/useApiData';
 import { api } from '../utils/api';
+import { dedupeSpeakers } from '../utils/speakers';
 import ComingSoon from '../components/common/ComingSoon';
 import { useSiteSettings } from '../contexts/SiteSettingsContext';
 
@@ -36,7 +37,7 @@ const Speakers = () => {
   const { data: speakers, loading } = useApiData(api.getSpeakers, []);
   const { settings, loading: settingsLoading } = useSiteSettings();
 
-  const filtered = filter === 'all' ? speakers : speakers.filter(s => s.type === filter);
+  const filtered = filter === 'all' ? dedupeSpeakers(speakers) : speakers.filter(s => s.type === filter);
 
   if (settingsLoading) {
     return (

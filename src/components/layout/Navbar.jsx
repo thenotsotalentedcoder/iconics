@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { NAV_LINKS } from '../../utils/constants';
+import { useApiData } from '../../hooks/useApiData';
+import { api } from '../../utils/api';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
-  const active = (p) => location.pathname === p;
+  const { data: workshops } = useApiData(api.getWorkshops, []);
+  const active = (p) => (p === '/workshops' ? location.pathname.startsWith('/workshops') : location.pathname === p);
   const visibleLinks = NAV_LINKS;
 
   useEffect(() => {
@@ -64,6 +67,28 @@ export default function Navbar() {
                     <Link to="/gallery" className="block w-44 px-4 py-3 text-xs font-semibold rounded-md whitespace-nowrap" style={{ background: '#17343b', color: active('/gallery') ? '#5AA8A3' : 'rgba(255,255,255,0.76)', border: '1px solid rgba(90,168,163,0.18)' }}>
                       Previous Conferences
                     </Link>
+                  </div>
+                </div>
+              ) : link.path === '/workshops' && workshops.length > 0 ? (
+                <div key={link.path} className="relative group">
+                  <Link
+                    to={link.path}
+                    className="relative flex items-center gap-1 px-3 py-1.5 text-[13px] font-medium whitespace-nowrap transition-colors duration-200"
+                    style={{ color: active(link.path) ? '#5AA8A3' : 'rgba(255,255,255,0.55)' }}
+                  >
+                    <span>{link.name}</span><span className="text-[10px] opacity-70">⌄</span>
+                  </Link>
+                  <div className="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150">
+                    <div className="w-64 rounded-md overflow-hidden" style={{ background: '#17343b', border: '1px solid rgba(90,168,163,0.18)' }}>
+                      <Link to="/workshops" className="block px-4 py-3 text-xs font-semibold" style={{ color: location.pathname === '/workshops' ? '#5AA8A3' : 'rgba(255,255,255,0.5)', borderBottom: '1px solid rgba(90,168,163,0.12)' }}>
+                        All Workshops
+                      </Link>
+                      {workshops.map(w => (
+                        <Link key={w.id} to={`/workshops/${w.slug}`} className="block px-4 py-3 text-xs font-semibold" style={{ color: location.pathname === `/workshops/${w.slug}` ? '#5AA8A3' : 'rgba(255,255,255,0.76)' }}>
+                          {w.title}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -180,6 +205,11 @@ export default function Navbar() {
                       <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#5AA8A3' }} />
                     )}
                   </Link>
+                  {link.path === '/workshops' && workshops.map(w => (
+                    <Link key={w.id} to={`/workshops/${w.slug}`} className="flex items-center py-3 pl-5 border-b text-sm font-semibold" style={{ borderColor: 'rgba(90,168,163,0.1)', color: location.pathname === `/workshops/${w.slug}` ? '#5AA8A3' : 'rgba(255,255,255,0.58)' }}>
+                      {w.title}
+                    </Link>
+                  ))}
                   {link.path === '/about' && (
                     <Link to="/gallery" className="flex items-center py-3 pl-5 border-b text-sm font-semibold" style={{ borderColor: 'rgba(90,168,163,0.1)', color: active('/gallery') ? '#5AA8A3' : 'rgba(255,255,255,0.58)' }}>
                       Previous Conferences

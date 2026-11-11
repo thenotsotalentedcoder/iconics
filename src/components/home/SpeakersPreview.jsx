@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
+import { dedupeSpeakers } from '../../utils/speakers';
 import SpeakerModal from '../speakers/SpeakerModal';
 import { useApiData } from '../../hooks/useApiData';
 import { api } from '../../utils/api';
@@ -80,7 +81,7 @@ export default function SpeakersPreview() {
   const { data: speakers, loading } = useApiData(api.getSpeakers, []);
   const { settings } = useSiteSettings();
 
-  const featured = speakers.slice(0, 4);
+  const featured = dedupeSpeakers(speakers).slice(0, 4);
   const isInactive = !loading && (settings.speakers_active === 'false' || speakers.length === 0);
 
   return (

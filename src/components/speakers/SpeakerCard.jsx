@@ -8,7 +8,7 @@ const UserIcon = () => (
   </svg>
 );
 
-const SpeakerCard = ({ speaker, onClick }) => {
+const SpeakerCard = ({ speaker, onClick, showWorkshops = true }) => {
   const [imageError, setImageError] = useState(false);
 
   return (
@@ -45,6 +45,12 @@ const SpeakerCard = ({ speaker, onClick }) => {
         </h3>
         <p className="text-xs text-text-muted mb-0.5 line-clamp-1">{speaker.title}</p>
         <p className="text-xs text-accent mb-1 line-clamp-1 leading-tight font-medium">{speaker.institution}</p>
+        {showWorkshops && speaker.workshops?.length > 0 && (
+          <p className="text-[11px] text-text-secondary mb-1 line-clamp-2 leading-tight">
+            <span className="font-semibold">Workshop{speaker.workshops.length > 1 ? 's' : ''}:</span>{' '}
+            {speaker.workshops.join(' · ')}
+          </p>
+        )}
         <div className="flex items-center gap-1">
           <svg className="w-3 h-3 text-text-muted flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>

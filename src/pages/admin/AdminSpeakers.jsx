@@ -12,7 +12,7 @@ import AdminModal, {
 const EMPTY_FORM = {
   name: '', title: '', institution: '', country: '', type: 'keynote',
   bio: '', topics: '', website: '', linkedin: '', scholar: '', order: '',
-  photo: null,
+  photo: null, workshops: [],
 };
 
 function TagInput({ value, onChange, placeholder }) {
@@ -76,6 +76,7 @@ export default function AdminSpeakers() {
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
   const [filter, setFilter] = useState('all');
+  const [workshopTitles, setWorkshopTitles] = useState([]);
 
   const load = useCallback(async () => {
     setLoading(true); setError('');
@@ -88,6 +89,12 @@ export default function AdminSpeakers() {
 
   useEffect(() => { load(); }, [load]);
 
+  useEffect(() => {
+    api.adminGetWorkshops()
+      .then(res => setWorkshopTitles((res.data || []).map(w => w.title)))
+      .catch(() => {});
+  }, []);
+
   const openAdd = () => { setEditing(null); setForm(EMPTY_FORM); setModalOpen(true); };
   const openEdit = (s) => {
     setEditing(s);
@@ -95,7 +102,7 @@ export default function AdminSpeakers() {
       name: s.name, title: s.title, institution: s.institution, country: s.country,
       type: s.type, bio: s.bio, topics: (s.topics || []).join(', '),
       website: s.website || '', linkedin: s.linkedin || '', scholar: s.scholar || '',
-      order: s.order ?? '', photo: null,
+      order: s.order ?? '', photo: null, workshops: s.workshops || [],
     });
     setModalOpen(true);
   };
@@ -107,6 +114,7 @@ export default function AdminSpeakers() {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => {
         if (k === 'photo') { if (v) fd.append('photo', v); }
+        else if (k === 'workshops') fd.append('workshops', JSON.stringify(form.type === 'workshop' ? v : []));
         else fd.append(k, v);
       });
       if (editing) {
@@ -258,6 +266,34 @@ export default function AdminSpeakers() {
                 placeholder="1" />
             </FormField>
           </div>
+
+          {form.type === 'workshop' && (
+            <FormField label="Workshops (select one or more)">
+              {(() => {
+                // include saved titles that no longer match an existing workshop so they aren't silently lost
+                const options = [...workshopTitles, ...form.workshops.filter(w => !workshopTitles.includes(w))];
+                if (options.length === 0) {
+                  return <p className="text-xs" style={{ color: '#7A9AA6' }}>No workshops yet. Add one under Workshops first.</p>;
+                }
+                return (
+                  <div className="space-y-1.5 max-h-44 overflow-y-auto rounded-xl p-3"
+                    style={{ border: '1.5px solid rgba(62,139,135,0.18)', background: '#FAFBFB' }}>
+                    {options.map(title => (
+                      <label key={title} className="flex items-start gap-2 text-sm cursor-pointer" style={{ color: '#1A2E38' }}>
+                        <input type="checkbox" className="mt-1"
+                          checked={form.workshops.includes(title)}
+                          onChange={e => setForm(f => ({
+                            ...f,
+                            workshops: e.target.checked ? [...f.workshops, title] : f.workshops.filter(w => w !== title),
+                          }))} />
+                        <span>{title}{!workshopTitles.includes(title) && <em style={{ color: '#7A9AA6' }}> (no longer exists)</em>}</span>
+                      </label>
+                    ))}
+                  </div>
+                );
+              })()}
+            </FormField>
+          )}
 
           <FormField label="Bio" required>
             <FormTextarea value={form.bio} onChange={e => setForm(f => ({ ...f, bio: e.target.value }))}
